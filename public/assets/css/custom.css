@@ -1,0 +1,71 @@
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY3VzdG9tLmNzcyIsInNvdXJjZXMiOlsiY3VzdG9tLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiJ9 */
+
+/*# sourceMappingURL=custom.css.map */
+.form-auth {
+    height: 70px;
+    width: 430px;
+}
+
+.btn-login {
+    background-color: #72afff;
+    color: #fff;
+    border-radius: 6px;
+}
+
+/* .scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-board {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.scroll-board .row {
+  display: block;
+}
+.scroll-board .board-card {
+  display: inline-block;
+  float: none;
+} */
+.scrolling-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.scrolling-wrapper .card {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.scrolling-wrapper .board-content {
+    background: #fff;
+    border-radius: 6px;
+    width: 100%;
+    padding: 10px;
+    white-space: normal;
+}
+
+.btn-create-task:hover {
+    background: transparent !important;
+}
+
+.board-content p {
+    line-height: 20px;
+    font-size: 18px;
+}
+
+.board-content .assigned-to {
+    font-size: 14px;
+    font-weight: 500;
+    color: #5e5e5e !important;
+}
+
+.assigned-profile {
+    float: left;
+    margin-right: 3px;
+}
