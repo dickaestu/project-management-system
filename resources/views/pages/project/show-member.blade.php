@@ -1,6 +1,6 @@
  <!-- Search form -->
  @if (Auth::id() == $item->project_manager)
- <form>
+ <form class="form-member">
   @csrf
   
   <div class="form-group">
@@ -125,15 +125,12 @@
     });
     
     // Untuk post data dengan ajax
-    $('form').on('submit', function(e){
+    $('.form-member').on('submit', function(e){
       e.preventDefault();
       var $this = $(this);
       var projects_id = '{{ $item->id }}';
       var data = $this.serializeArray();
-      data.splice(1 , 0 ,{name: "projects_id", value: projects_id})
-      
-      
-      
+      data.splice(1 , 0 ,{name: "projects_id", value: projects_id})   
       $.ajax({
         url: '{{ route('create-member') }}',
         type: 'POST',
