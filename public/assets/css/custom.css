@@ -50,9 +50,6 @@
     white-space: normal;
 }
 
-.btn-create-task:hover {
-    background: transparent !important;
-}
 
 .board-content p {
     line-height: 20px;

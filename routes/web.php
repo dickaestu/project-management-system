@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::delete('/my-project/{id}', 'ProjectController@deleteMember')->name('delete-member');
 Route::get('/my-project/cari', 'ProjectController@getUser')->name('cari-user');
 Route::post('/my-project/create-member', 'ProjectController@createMember')->name('create-member');
+Route::get('/my-project/{id}/board', 'BoardController@index')->name('project-board')->middleware('auth');
+
 Route::resource('/my-project', 'ProjectController')->middleware('auth');
+
+
 
 Auth::routes();

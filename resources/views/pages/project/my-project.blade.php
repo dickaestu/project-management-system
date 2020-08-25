@@ -177,7 +177,7 @@
         <div
         class="col-12 col-lg-4 col-md-4 text-md-right mb-3"
         >
-        <button class="btn btn-primary">Board</button>
+        <a href="{{ route('project-board', $item->id) }}" class="btn btn-primary">Board</a>
         <button class="btn btn-warning mr-3 ml-2">
           Roadmap
         </button>
