@@ -17,7 +17,7 @@ class CreateBoardTasksTable extends Migration
             $table->id();
             $table->foreignId('boards_id');
             $table->string('task_name');
-            $table->text('task_description');
+            $table->text('task_description')->nullable();
             $table->date('due_date');
             $table->timestamps();
 
