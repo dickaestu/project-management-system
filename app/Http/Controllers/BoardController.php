@@ -26,6 +26,13 @@ class BoardController extends Controller
         return redirect()->route('project-board', $id)->with('success', 'Success Create' . $request->board_name);
     }
 
+    public function showTask($id)
+    {
+        $item = BoardTask::findOrFail($id);
+        return view('pages.board.show', compact('item'));
+    }
+
+
     public function showCreateTask($id)
     {
         $id = $id;
@@ -37,5 +44,14 @@ class BoardController extends Controller
         $data = $request->all();
         $item = BoardTask::create($data);
         return response()->json($item);
+    }
+
+    public function taskDescriptionUpdate(Request $request, $id)
+    {
+        $data = $request->all();
+        $item = BoardTask::findOrFail($id);
+
+        $item->update($data);
+        return response()->json();
     }
 }

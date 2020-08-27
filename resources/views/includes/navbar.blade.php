@@ -69,7 +69,7 @@
                     <span class="dropdown-item-avatar text-white">
                       <img
                         alt="image"
-                        src="assets/img/users/user-2.png"
+                        src="{{ asset('assets/img/users/user-2.png') }}"
                         class="rounded-circle"
                       />
                     </span>
@@ -85,7 +85,7 @@
                     <span class="dropdown-item-avatar text-white">
                       <img
                         alt="image"
-                        src="assets/img/users/user-5.png"
+                        src="{{ asset('assets/img/users/user-5.png') }}"
                         class="rounded-circle"
                       />
                     </span>
@@ -101,7 +101,7 @@
                     <span class="dropdown-item-avatar text-white">
                       <img
                         alt="image"
-                        src="assets/img/users/user-4.png"
+                        src="{{ asset('assets/img/users/user-4.png') }}"
                         class="rounded-circle"
                       />
                     </span>
@@ -117,7 +117,7 @@
                     <span class="dropdown-item-avatar text-white">
                       <img
                         alt="image"
-                        src="assets/img/users/user-3.png"
+                        src="{{ asset('assets/img/users/user-3.png') }}"
                         class="rounded-circle"
                       />
                     </span>
@@ -134,7 +134,7 @@
                     <span class="dropdown-item-avatar text-white">
                       <img
                         alt="image"
-                        src="assets/img/users/user-2.png"
+                        src="{{ asset('assets/img/users/user-2.png') }}"
                         class="rounded-circle"
                       />
                     </span>
