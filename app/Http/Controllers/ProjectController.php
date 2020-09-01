@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BoardTask;
 use App\Http\Requests\ProjectRequest;
 use Illuminate\Http\Request;
 use App\Project;
@@ -105,6 +106,8 @@ class ProjectController extends Controller
     {
         $item = Project::findOrFail($id);
 
+
+
         return view('pages.project.edit', compact('item'));
     }
 
@@ -127,7 +130,7 @@ class ProjectController extends Controller
         $item = Project::findOrFail($id);
 
         $item->update($data);
-        return redirect()->route('my-project.index')->with('success', 'Edit Succes');
+        return redirect()->route('my-project.index')->with('success', 'Succes');
     }
 
     /**
@@ -138,15 +141,24 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
+        $item = Project::findOrFail($id);
+        // $item->projectFile()->delete();
+        // foreach ($item->project_member as $task) {
+        //     $task->task_member()->delete();
+        // }
+        // $item->project_member()->delete();
+        $item->delete();
+        return redirect()->route('my-project.index')->with('success', 'Delete Success');
     }
 
     public function deleteMember($id)
     {
         $item = ProjectMember::findOrFail($id);
+        $item->task_member()->delete();
         $item->delete();
 
         return response()->json([
-            'success' => 'Data berhasil dihapus',
+            'success' => 'Delete Successfully',
         ]);
     }
 
@@ -163,6 +175,14 @@ class ProjectController extends Controller
     public function createMember(Request $request)
     {
         $data = $request->all();
+        if (
+            ProjectMember::where('projects_id', $request->projects_id)->where('users_id', $request->users_id)->first()
+            == !null
+        ) {
+            return response()->json([
+                'failed' => 'error'
+            ]);
+        }
         $item = ProjectMember::create($data);
 
 

@@ -53,7 +53,7 @@
                     <span class="dropdown-item-avatar text-white">
                       <img
                         alt="image"
-                        src="assets/img/users/user-1.png"
+                        src="{{ asset('assets/img/users/user-1.png') }}"
                         class="rounded-circle"
                       />
                     </span>

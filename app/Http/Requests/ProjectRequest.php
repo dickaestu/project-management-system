@@ -30,14 +30,20 @@ class ProjectRequest extends FormRequest
             'description' => 'required|string',
             'start' => 'required|date',
             'end' => 'required|date',
-            'file_name' => 'nullable'
+            'file_name' => 'nullable',
         ];
     }
 
-    // public function messages()
-    // {
-    //     return [
-    //         'project_name.required' => 'Please fill the field',
-    //     ];
-    // }
+    public function messages()
+    {
+        return [
+            'project_name.required' => 'Project Name is Required',
+            'client_name.required' => 'Client Name is Required',
+            'description.required' => 'Description is Required',
+            'start.required' => 'Project Start is Required',
+            'end.required' => 'Project End is Required',
+            'project_logo.image' => 'Project Logo must be an image',
+            'project_logo.max' => 'Maximum size 7 MB',
+        ];
+    }
 }

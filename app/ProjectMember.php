@@ -19,4 +19,9 @@ class ProjectMember extends Model
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
+
+    public function task_member()
+    {
+        return $this->hasMany(TaskMember::class, 'project_members_id', 'id');
+    }
 }

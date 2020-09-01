@@ -14,4 +14,9 @@ class BoardTask extends Model
     {
         return $this->belongsTo(Board::class, 'boards_id', 'id');
     }
+
+    public function task_member()
+    {
+        return $this->hasMany(TaskMember::class, 'board_tasks_id', 'id');
+    }
 }

@@ -50,6 +50,7 @@
                       <div class="col-9">
                         <h5 class="card-title mb-0">
                           {{ $item->project_name }}
+                          
                         </h5>
                         <p class="card-text text-muted mb-0">
                           <small>Project Description</small>
@@ -67,17 +68,18 @@
                       <i class="fa fa-clock"></i> Due Date : 
                       {{ Carbon\Carbon::create($item->end)->format('d  F  Y') }}
                     </p>
-                    <span class="badge badge-pill 
+                    <span class="project_status badge badge-pill 
                     @if($item->project_status == 'Pending')
                     badge-light
                     @elseif($item->project_status == 'In Progress')
                     badge-secondary
                     @elseif($item->project_status == 'Completed')
                     badge-success
+                    @elseif($item->project_status == 'Abandoned')
+                    badge-danger
                     @endif
                     "
-                    >{{ $item->project_status }}</span
-                    >
+                    >{{ $item->project_status }}</span>
                   </div>
                   <div class="col-3 text-right">
                     <div class="dropdown dropleft">
@@ -111,6 +113,14 @@
                         <a class="dropdown-item has-icon" href="#"
                         ><i class="fas fa-folder"></i> Project File</a
                         >
+                        @if ($item->project_status == 'Abandoned' && Auth::id() == $item->project_manager)
+                          <form id="project-delete" class="" action="{{ route('my-project.destroy', $item->id) }}" method="post">
+                            @method('delete')
+                          @csrf
+                          <a href="#" onclick="document.getElementById('project-delete').submit();" class="dropdown-item has-icon text-danger"><i class="fas fa-trash"></i>Delete Project</a>  
+                          </form>    
+
+                        @endif
                       </div>
                     </div>
                   </div>
@@ -178,9 +188,9 @@
         class="col-12 col-lg-4 col-md-4 text-md-right mb-3"
         >
         <a href="{{ route('project-board', $item->id) }}" class="btn btn-primary">Board</a>
-        <button class="btn btn-warning mr-3 ml-2">
+        <a href="{{ route('project-roadmap', $item->id) }}" class="btn btn-warning mr-3 ml-2">
           Roadmap
-        </button>
+        </a>
       </div>
     </div>
   </div>

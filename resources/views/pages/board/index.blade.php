@@ -62,7 +62,7 @@
                   data-title="{{ $task->task_name }}"
                   data-target=".bd-example-modal-lg">
                   <p>
-                    {{ $task->task_name }}
+                    {{ $task->task_name }} 
                   </p>
                 </a>
               </div>
@@ -83,14 +83,23 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <div class="assigned-profile">
+              
+           
+              @foreach ($task->task_member as $member)
+              <div class="assigned-profile mb-2">
                 <img
-                src="https://ui-avatars.com/api/?name=a"
+                src="https://ui-avatars.com/api/?name={{ $member->project_members->user->name }}"
                 class="rounded-circle border"
                 height="30"
                 alt=""
+                data-toggle="tooltip"
+                data-original-title="{{ $member->project_members->user->name }}"
                 />
               </div>
+    
+              
+              @endforeach
+              
             </div>
           </div>
         </div>
@@ -101,32 +110,32 @@
         <div class="board-content">
           <div class="row">
             <div class="col-12 pt-2">
-             
+              
               <p class="text-center">
                 Tasks is empty
               </p>
-         
+              
+            </div>
           </div>
+        </div>
+        
       </div>
+      
+      @endforelse
+      
+      <!-- Button create task -->
+      <div class="row justify-content-center">
+        <a
+        style="text-decoration:none;" class="text-black-50" href="#" type="button" 
+        data-toggle="modal" 
+        data-target="#createTask" 
+        data-remote="{{ route('show-create-task', $board->id) }}"
+        data-title="Create Task"
+        >
+        <i class="fas fa-plus"></i> Create Task
+      </a>
     </div>
-    
   </div>
-  
-  @endforelse
-  
-  <!-- Button create task -->
-  <div class="row justify-content-center">
-    <a
-    style="text-decoration:none;" class="text-black-50" href="#" type="button" 
-    data-toggle="modal" 
-    data-target="#createTask" 
-    data-remote="{{ route('show-create-task', $board->id) }}"
-    data-title="Create Task"
-    >
-    <i class="fas fa-plus"></i> Create Task
-  </a>
-</div>
-</div>
 </div>
 
 
@@ -175,4 +184,11 @@ aria-hidden="true">
 @endsection
 
 
+@push('addon-style')
+<link rel="stylesheet" href="{{ asset('assets/bundles/select2/dist/css/select2.min.css') }}">
+@endpush
 
+@push('addon-script')
+<script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
+
+@endpush

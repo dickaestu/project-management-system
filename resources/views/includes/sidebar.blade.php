@@ -17,7 +17,7 @@
                   ><i data-feather="monitor"></i><span>Dashboard</span></a
                 >
               </li>
-              <li class="dropdown {{(request()->is('my-project') || request()->is('my-project/create')) ? 'active' : ""}}">
+              <li class="dropdown {{(request()->is('my-project*')) ? 'active' : ""}}">
                 <a href="#" class="menu-toggle nav-link has-dropdown"
                   ><i data-feather="briefcase"></i><span>Projects</span></a
                 >

@@ -100,7 +100,7 @@
 
 <script>
   $(document).ready(function(){
-
+    
     // Untuk search dengan ajax
     $('#users_id').select2({
       dropdownParent : $('#modalMember'),
@@ -137,38 +137,42 @@
         data: data,
         dataType: 'json',
         success: function(response){
-          
-          $(".hidden-form").append(
-          `<div class="row project-members pl-0 mb-3">
-            <div class="col-2">
-              <img
-              src="https://ui-avatars.com/api/?name=`+ response.name +`"
-              class="rounded-circle avatar-members"
-              height="45"
-              alt=""
-              />
-            </div>
-            <div class="col-7">
-              <p class="text-dark" style="margin-bottom: -5px;">
+          if(response.failed == 'error'){
+            swal('Sorry', 'Member already exists', 'error');
+          } else {
+            swal('Success', response.name + ' Successfully Added' , 'success');
+            $(".hidden-form").append(
+            `<div class="row project-members pl-0 mb-3">
+              <div class="col-2">
+                <img
+                src="https://ui-avatars.com/api/?name=`+ response.name +`"
+                class="rounded-circle avatar-members"
+                height="45"
+                alt=""
+                />
+              </div>
+              <div class="col-7">
+                <p class="text-dark" style="margin-bottom: -5px;">
                   `+response.name +`
-              </p>
-              <small>`+ response.role_member +`</small>
+                </p>
+                <small>`+ response.role_member +`</small>
+              </div>
+              <div class="col-2 pt-2">
+                <button 
+                type="button"
+                data-id = "`+ response.id +`"
+                data-token = "{{ csrf_token() }}"
+                data-url="/my-project/`+response.id +`"
+                data-name="`+ response.name+`"
+                class="btn button_delete rounded-circle btn-sm py-0 btn-outline-danger"
+                >
+                <i class="fas fa-minus"></i>
+              </button>
             </div>
-            <div class="col-2 pt-2">
-              <button 
-              type="button"
-              data-id = "`+ response.id +`"
-              data-token = "{{ csrf_token() }}"
-              data-url="/my-project/`+response.id +`"
-              data-name="`+ response.name+`"
-              class="btn button_delete rounded-circle btn-sm py-0 btn-outline-danger"
-              >
-              <i class="fas fa-minus"></i>
-            </button>
-          </div>
           </div>
           `
           )
+        }
         },
         error: function(response){
           alert('Failed')
@@ -179,7 +183,7 @@
     
   });
   
-
+  
   // Untuk Hapus member project
   $(".project-members").on('click','.button_delete', function (event) {
     

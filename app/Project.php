@@ -19,7 +19,7 @@ class Project extends Model
 
     public function projectFile()
     {
-        return $this->hasMany(ProjectFile::class);
+        return $this->hasMany(ProjectFile::class, 'projects_id', 'id');
     }
 
     public function project_member()

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Board;
 use App\BoardTask;
 use App\Project;
+use App\ProjectMember;
+use App\TaskMember;
+use App\User;
 use Illuminate\Http\Request;
 
 class BoardController extends Controller
@@ -29,7 +32,8 @@ class BoardController extends Controller
     public function showTask($id)
     {
         $item = BoardTask::findOrFail($id);
-        return view('pages.board.show', compact('item'));
+        $boards = Board::where('id', '!=', $item->boards_id)->where('projects_id', $item->board->projects_id)->get();
+        return view('pages.board.show', compact('item', 'boards'));
     }
 
 
@@ -53,5 +57,69 @@ class BoardController extends Controller
 
         $item->update($data);
         return response()->json();
+    }
+
+    public function getMember(Request $request, $id)
+    {
+        $cari = $request->q;
+        if ($request->has('q')) {
+
+            $members = User::select('id', 'name')->where('name', 'LIKE', "%$cari%")
+                ->whereHas("project_member", function ($q) use ($id) {
+                    $q->where("projects_id", "=", $id);
+                })
+                ->get();
+
+
+            return response()->json($members);
+        }
+    }
+
+    public function createTaskMember(Request $request)
+    {
+
+
+        $project_member = ProjectMember::where('users_id', $request->users_id)
+            ->where('projects_id', $request->projects_id)->first();
+
+        if (TaskMember::where('board_tasks_id', $request->board_tasks_id)
+            ->where('project_members_id', $project_member->id)->first() == !null
+        ) {
+            return response()->json([
+                'failed' => 'error'
+            ]);
+        }
+        $item = TaskMember::create([
+            'board_tasks_id' => $request->board_tasks_id,
+            'project_members_id' => $project_member->id,
+        ]);
+
+
+        return response()->json([
+            'id' => $item->id,
+            'name' => $item->project_members->user->name,
+            'role_member' => $item->project_members->role_member
+        ]);
+    }
+
+    public function deleteTaskMember($id)
+    {
+        $item = TaskMember::findOrFail($id);
+        $item->delete();
+
+        return response()->json([
+            'success' => 'Delete Successfully',
+        ]);
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $item = BoardTask::findOrFail($id);
+        $data = $request->boards_id;
+        $item->update([
+            'boards_id' => $data,
+        ]);
+
+        return redirect()->route('project-board', $item->board->projects_id);
     }
 }

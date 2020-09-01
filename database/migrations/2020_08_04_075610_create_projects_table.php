@@ -22,7 +22,7 @@ class CreateProjectsTable extends Migration
             $table->date('start');
             $table->date('end');
             $table->text('description');
-            $table->enum('project_status', ['Pending', 'In Progress', 'Completed']);
+            $table->enum('project_status', ['Pending', 'In Progress', 'Completed', 'Abandoned']);
             $table->softDeletes();
             $table->timestamps();
 
