@@ -16,8 +16,8 @@ class CreateProjectFilesTable extends Migration
         Schema::create('project_files', function (Blueprint $table) {
             $table->id();
             $table->foreignId('projects_id');
-            $table->text('file_name');
-            $table->softDeletes();
+            $table->string('file_name');
+            $table->text('file_path');
             $table->timestamps();
 
             $table->foreign('projects_id')->references('id')->on('projects')->onUpdate('cascade');

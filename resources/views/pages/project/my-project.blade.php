@@ -27,7 +27,7 @@
             <a href="{{ route('my-project.create') }}" class="btn btn-success btn-sm shadow-sm"><i class="fas fa-plus"></i> Create Project</a>
           </div>
         </div>
-        @foreach ($items as $item)
+        @forelse ($items as $item)
         <div class="row">
           <div class="col-12">
             <div class="card mb-5">
@@ -110,7 +110,7 @@
                         >
                         @endif
                         
-                        <a class="dropdown-item has-icon" href="#"
+                        <a class="dropdown-item has-icon" href="{{ route('project-file', $item->id) }}"
                         ><i class="fas fa-folder"></i> Project File</a
                         >
                         @if ($item->project_status == 'Abandoned' && Auth::id() == $item->project_manager)
@@ -196,7 +196,14 @@
   </div>
 </div>
 </div>
-@endforeach
+@empty
+<div class="row mt-5">
+  <div class="col-12 text-center">
+    <img src="{{ asset('assets/img/no-project.svg') }}" height="250" class="mb-3">
+    <h5>You Don't Have Any Project</h5>
+  </div>
+</div>
+@endforelse
 </div>
 </div>
 

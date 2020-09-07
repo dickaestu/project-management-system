@@ -37,7 +37,7 @@
       </div>
       
       <div class="scrolling-wrapper">
-        @foreach ($boards as $board)
+        @forelse ($boards as $board)
         <!-- Board card -->
         <div class="card bg-light align-top" style="width: 320px;">
           <div class="card-body">
@@ -138,11 +138,18 @@
   </div>
 </div>
 
-
+@empty 
+<div class="row">
+    <div class="col text-center">
+      <img src="{{ asset('assets/img/no-project-file.svg') }}" height="200" class="mb-3">
+                      <h5 class="mb-0 mt-3 mb-5">Board Is Empty</h5>
+    </div>
+ 
+</div>
 
 <!-- End of board -->
 
-@endforeach
+@endforelse
 </div>
 </div>
 </div>

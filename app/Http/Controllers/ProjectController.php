@@ -63,12 +63,11 @@ class ProjectController extends Controller
 
         if ($request->hasFile('file_name')) {
             foreach ($request->file('file_name') as $file_name) {
+                $originalName = $file_name->getClientOriginalName();
                 $file[] = [
                     'projects_id' => $project_id->id,
-                    'file_name' => $file_name->store(
-                        'assets/file_project',
-                        'public'
-                    ),
+                    'file_name' => $originalName,
+                    'file_path' => $file_name->storeAs('public/assets/file_project', $originalName),
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
                 ];

@@ -9,6 +9,10 @@
         <textarea name="task_description" class="form-control" cols="30" rows="10" placeholder="description"></textarea>
     </div>
     <div class="form-group">
+        <label>Start Date</label>
+        <input type="date" name="start_date" class="form-control">
+    </div>
+    <div class="form-group">
         <label>Due Date</label>
         <input type="date" name="due_date" class="form-control">
     </div>

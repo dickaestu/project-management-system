@@ -5,6 +5,7 @@
     <script src="{{ url('assets/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
         <!-- JS Libraies -->
     <script src="{{ url('assets/bundles/sweetalert/sweetalert.min.js') }}"></script>
+    
     <!-- Page Specific JS File -->
 
     <!-- Template JS File -->

@@ -26,4 +26,9 @@ class Project extends Model
     {
         return $this->hasMany(ProjectMember::class, 'projects_id', 'id');
     }
+
+    public function board()
+    {
+        return $this->hasMany(Board::class, 'projects_id', 'id');
+    }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class BoardTask extends Model
 {
     protected $fillable = [
-        'boards_id', 'task_name', 'task_description', 'due_date'
+        'boards_id', 'task_name', 'task_description', 'due_date', 'start_date'
     ];
 
     public function board()

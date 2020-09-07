@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Board;
+use App\BoardTask;
+use App\Project;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RoadmapController extends Controller
@@ -13,7 +17,52 @@ class RoadmapController extends Controller
      */
     public function index($id)
     {
-        return view('pages.roadmap.index');
+        $item = Project::findOrFail($id);
+
+        $boards = Board::where('projects_id', $id)->get();
+
+
+        foreach ($boards as $board) {
+            $tasks[] = BoardTask::where('boards_id', $board->id)->get();
+        }
+
+        if (empty($tasks)) {
+            $listTask = 'Empty';
+            return view('pages.roadmap.index', compact('item', 'listTask'));
+        }
+
+        foreach ($tasks as $task) {
+            foreach ($task as $t) {
+                $listTask[] = [
+                    'id' => $t->id,
+                    'task_name' => $t->task_name,
+                    'boards_id' => $t->boards_id,
+                    'start_date' => $t->start_date,
+                    'due_date' => $t->due_date,
+                ];
+            }
+        }
+        if (empty($listTask)) {
+            $listTask = 'Empty';
+            return view('pages.roadmap.index', compact('item', 'listTask'));
+        }
+
+
+
+        return view('pages.roadmap.index', compact('item', 'listTask'));
+    }
+
+    public function getTask($id)
+    {
+        $item = BoardTask::findOrFail($id);
+
+        return response()->json($item);
+    }
+
+    public function editTask(Request $request, $id)
+    {
+        dd($request->due_date);
+        $item = BoardTask::findOrFail($id);
     }
 
     /**
