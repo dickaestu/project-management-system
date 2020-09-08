@@ -28,7 +28,10 @@ class RoadmapController extends Controller
 
         if (empty($tasks)) {
             $listTask = 'Empty';
-            return view('pages.roadmap.index', compact('item', 'listTask'));
+            return view('pages.roadmap.index', [
+                'item' => $item,
+                'listTask' => json_encode($listTask),
+            ]);
         }
 
         foreach ($tasks as $task) {
@@ -44,12 +47,17 @@ class RoadmapController extends Controller
         }
         if (empty($listTask)) {
             $listTask = 'Empty';
-            return view('pages.roadmap.index', compact('item', 'listTask'));
+            return view('pages.roadmap.index', [
+                'item' => $item,
+                'listTask' => json_encode($listTask),
+            ]);
         }
 
 
-
-        return view('pages.roadmap.index', compact('item', 'listTask'));
+        return view('pages.roadmap.index', [
+            'item' => $item,
+            'listTask' => json_encode($listTask),
+        ]);
     }
 
     public function getTask($id)

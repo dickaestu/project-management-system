@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', 'DashboardController@index')->name('dashboard')->middleware('auth');
+
 Route::delete('/my-project/delete-member/{id}', 'ProjectController@deleteMember')->name('delete-member');
 Route::get('/my-project/cari', 'ProjectController@getUser')->name('cari-user');
 Route::post('/my-project/create-member', 'ProjectController@createMember')->name('create-member');

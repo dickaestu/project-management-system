@@ -72,7 +72,7 @@
   
   <script >
     $('document').ready(function(){
-      var listTask = {!! json_encode($listTask) !!};
+      var listTask = {!! $listTask!!};
       if(typeof(listTask) == 'object'){
         
         var tasks = listTask.map(function(item){

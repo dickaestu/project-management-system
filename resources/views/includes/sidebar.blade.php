@@ -13,7 +13,7 @@
             <ul class="sidebar-menu">
               <li class="menu-header">Main</li>
               <li class="dropdown {{(request()->is('dashboard')) ? 'active' : ""}}">
-                <a href="index.html" class="nav-link"
+                <a href="{{ route('dashboard') }}" class="nav-link"
                   ><i data-feather="monitor"></i><span>Dashboard</span></a
                 >
               </li>
