@@ -104,13 +104,19 @@
                 <form action="/my-project/roadmap/tasks/edit/`+response.id+`" method="post">
                   @method('PUT')
                   @csrf
+
+                  <form-group>
+                    <label>Start Date</label>
+                    <input name="start_date" class="form-control form-control-sm start-date-edit" type="date" value="`+response.start_date+`">
+                  </form-group>
+                  
                   <form-group>
                     <label>Due Date</label>
                     <input name="due_date" class="form-control form-control-sm due-date-edit" type="date" value="`+response.due_date+`">
                   </form-group>
-                  
+
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer mt-3">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>

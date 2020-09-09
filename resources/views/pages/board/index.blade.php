@@ -52,7 +52,7 @@
           <!-- Board task -->
           
           @forelse ($board->board_task as $task)
-          <div class="row mb-3">
+          <div class="row mb-3 task">
             <div class="board-content">
               <div class="row mb-4">
                 <div class="col-8">
@@ -67,11 +67,12 @@
                 </a>
               </div>
               <div class="col-4 text-right">
-                <button
-                class="btn btn-sm btn-transparent text-black"
+                <a href="#"
+                data-url="{{ route('delete-task', $task->id) }}"
+                class="text-danger delete-task-button"
                 >
-                <i class="fas fa-thumbtack"></i>
-              </button>
+                <i class="fas fa-times-circle"></i>
+              </a>
             </div>
           </div>
           <div class="row">
@@ -142,7 +143,7 @@
 <div class="row">
     <div class="col text-center">
       <img src="{{ asset('assets/img/no-project-file.svg') }}" height="200" class="mb-3">
-                      <h5 class="mb-0 mt-3 mb-5">Board Is Empty</h5>
+        <h5 class="mb-0 mt-3 mb-5">Board Is Empty</h5>
     </div>
  
 </div>
@@ -197,5 +198,51 @@ aria-hidden="true">
 
 @push('addon-script')
 <script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
+<script>
+  $(document).ready(function(){
+    // Untuk Hapus member project
+  $(".task").on('click','.delete-task-button', function (event) {
+    
+    let token = "{{ csrf_token() }}";
+    let url = $(this).data('url');
+    let task = $(this);
+    
+    swal({
+      title: 'Are you sure?',
+      text: 'This task will be removed',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      
+      if (willDelete) {
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: {
+            "_method" : 'DELETE',
+            "_token" : token,
+            
+          },
+          dataType : "JSON",
+          success: function (response){
+            
+            swal(response.success, {
+              icon: 'success',
+            });
+            
+            $(task).closest('.task').remove()
+          }
+          
+        })
+        
+        
+      } 
+    });
+  });
+
+
+  })
+</script>
 
 @endpush

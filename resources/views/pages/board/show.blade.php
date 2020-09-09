@@ -17,8 +17,12 @@
             </button>
         </form>
         <div class="form-group mt-3">
+            <label>Start Date Task</label>
+            <p>{{Carbon\Carbon::create($item->start_date)->format('d - M - Y') }}</p>
+        </div>
+        <div class="form-group mt-3">
             <label>Due Date Task</label>
-            <input type="date" class="form-control form-control-sm" value="{{$item->due_date }}">
+            <p>{{Carbon\Carbon::create($item->due_date)->format('d - M - Y') }}</p>
         </div>
         <div class="form-group">
             <label>Sub Task</label>

@@ -11,7 +11,7 @@
                 </div>
               <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
-                  <div class="card-statistic-4">
+                  <div class="card-statistic-4 car">
                     <div class="align-items-center justify-content-between">
                       <div class="row">
                         <div
@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                           <div class="banner-img">
-                            <img src="{{ asset('assets/img/banner/5.jpeg') }}" class="w-100"  alt="" />
+                            <img src="{{ asset('assets/img/banner/5.png') }}" alt="" />
                           </div>
                         </div>
                       </div>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                           <div class="banner-img">
-                            <img src="{{ asset('assets/img/banner/6.jpeg') }}"  alt="" />
+                            <img src="{{ asset('assets/img/banner/6.png') }}"  alt="" />
                           </div>
                         </div>
                       </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                           <div class="banner-img">
-                            <img src="{{ asset('assets/img/banner/7.jpeg') }}"  alt="" />
+                            <img src="{{ asset('assets/img/banner/7.png') }}"  alt="" />
                           </div>
                         </div>
                       </div>
@@ -93,7 +93,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                           <div class="banner-img">
-                            <img src="{{ asset('assets/img/banner/8.jpeg') }}"  alt="" />
+                            <img src="{{ asset('assets/img/banner/8.png') }}"  alt="" />
                           </div>
                         </div>
                       </div>

@@ -8,6 +8,8 @@ use App\Project;
 use App\ProjectMember;
 use App\TaskMember;
 use App\User;
+use Carbon\Carbon;
+use Faker\Provider\Barcode;
 use Illuminate\Http\Request;
 
 class BoardController extends Controller
@@ -45,9 +47,22 @@ class BoardController extends Controller
 
     public function createTask(Request $request, $id)
     {
+        $project = Board::findOrFail($request->boards_id);
+        // $start = $project->project->start;
+        // $end = $project->project->end;
         $data = $request->all();
+
         $item = BoardTask::create($data);
         return response()->json($item);
+    }
+
+    public function deleteTask($id)
+    {
+        $item = BoardTask::findOrFail($id);
+        $item->delete();
+        return response()->json([
+            'success' => 'Delete Successfully',
+        ]);
     }
 
     public function taskDescriptionUpdate(Request $request, $id)

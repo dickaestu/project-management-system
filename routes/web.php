@@ -20,6 +20,7 @@ Route::get('/my-project/cari', 'ProjectController@getUser')->name('cari-user');
 Route::post('/my-project/create-member', 'ProjectController@createMember')->name('create-member');
 
 Route::get('/my-project/{id}/board', 'BoardController@index')->name('project-board')->middleware('auth');
+
 Route::get('/my-project/{id}/board/task', 'BoardController@showTask')->name('show-task')->middleware('auth');
 Route::post('/my-project/{id}/board/create', 'BoardController@create')->name('create-board')->middleware('auth');
 Route::post('/my-project/{id}/board/create-task', 'BoardController@createTask')->name('create-task')->middleware('auth');
@@ -29,6 +30,7 @@ Route::get('/my-project/{id}/task-member', 'BoardController@getMember')->name('c
 Route::post('/my-project/create-task-member', 'BoardController@createTaskMember')->name('create-task-member')->middleware('auth');
 Route::delete('/my-project/delete-task-member/{id}', 'BoardController@deleteTaskMember')->name('delete-task-member')->middleware('auth');
 Route::put('/my-project/change-status-task/{id}', 'BoardController@changeStatus')->name('change-status')->middleware('auth');
+Route::delete('/my-project/{id}/delete-task', 'BoardController@deleteTask')->name('delete-task')->middleware('auth');
 
 Route::get('/my-project/{id}/project-file', 'ProjectFileController@index')->name('project-file')->middleware('auth');
 Route::post('/my-project/{id}/upload-project-file', 'ProjectFileController@store')->name('project-file-upload')->middleware('auth');
