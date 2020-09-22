@@ -19,7 +19,7 @@
                         >
                           <div class="card-content">
                             <h2 class="font-18">102</h2>
-                            <h2 class="mb-3 font-15">New Task</h2>
+                            <h2 class="mb-3 font-15">Task</h2>
                           </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">

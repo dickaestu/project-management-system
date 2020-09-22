@@ -2,19 +2,36 @@
     <div class="col-12 col-md-7 mb-4 mb-lg-0">
         <div class="btn-group">
             <a href="#" class="btn btn-icon icon-left btn-secondary text-dark"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</a>
-            <a href="#" class="btn btn-icon icon-left btn-secondary mr-3 ml-2 text-dark"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Add Sub Task</a>
+            <a href="#" class="btn btn-icon icon-left btn-secondary ml-2 text-dark"><i class="fa fa-plus" aria-hidden="true"></i> Add Sub Task</a>
+            @if ($item->status_task == false)
+            <a href="{{ route('status-task', $item->id) }}?status=true" class="btn btn-icon icon-left btn-secondary ml-2 mr-3 text-dark"><i class="fa fa-check" aria-hidden="true"></i> Done</a>
+            @else
+            <a href="{{ route('status-task', $item->id) }}?status=false" class="btn btn-icon icon-left btn-success ml-2 mr-3"><i class="fa fa-check" aria-hidden="true"></i> Done</a>
+            @endif
+            
         </div>
+        <form class="form-upload-file mt-3" enctype="multipart/form-data">
+              @csrf
+              <div class="form-group mb-2">
+                <label for="">Add File</label>
+                <input type="file" id="file_name" name="file_name" required class="form-control form-control-sm" />
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm">Upload File</button>
+              <button class="btn btn-secondary btn-sm">Cancel</button>
+            </form>
         <form class="mt-3 form-update-description">
             @method('PUT')
             @csrf
             <div class="form-group mb-1">
                 <label>Description</label>
-                <textarea name="task_description" class="form-control description">{{ $item->task_description }}</textarea>
+                <textarea name="task_description" {{ Auth::id() == $item->board->project->project_manager ? "" :"readonly"}} class="form-control description">{{ $item->task_description }}</textarea>
             </div>
+            @if (Auth::id() == $item->board->project->project_manager)
             <button class="btn btn-primary btn-sm btn-save-description" style="display: none" type="submit">Save</button>
             <button class="btn btn-light btn-sm mr-3 ml-2 btn-cancel-description" style="display: none" type="reset">
                 Cancel
             </button>
+            @endif
         </form>
         <div class="form-group mt-3">
             <label>Start Date Task</label>
@@ -142,8 +159,31 @@
 </div>
 
 
+
 <script>
     $('document').ready( function(){
+        // Upload File
+        $('.form-upload-file').on('submit', function(e){
+            e.preventDefault();
+            data = new FormData(this)
+            $.ajax({
+                url: '{{ route('upload-file-task', $item->id) }}',
+                type: 'POST',
+                data: data,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(response){
+                    // swal('Success', 'Upload Success' , 'success');
+                    console.log(response)
+                },
+                error: function(response){
+                    alert('Failed')
+                }
+            });
+        });
+
+        // Update Description
         $('.form-update-description').on('submit', function(e){
             e.preventDefault();
             var $this = $(this);
@@ -154,14 +194,18 @@
                 data: data,
                 dataType: 'json',
                 success: function(response){
-                    location.reload()
+                    swal('Success', 'Edit Success' , 'success');
+                    $('.description').html(response.data)
+                    $('.btn-save-description').hide()
+                    $('.btn-cancel-description').hide()
                 },
                 error: function(response){
                     alert('Failed')
                 }
-            })
-        })
+            });
+        });
         
+        // Search member
         $('#project_members_id').select2({
             dropdownParent : $('.bd-example-modal-lg'),
             placeholder : 'Search Name...',
@@ -184,7 +228,7 @@
             }
         });
         
-        // Untuk post data dengan ajax
+        // Post Member yang sudah di search
         $('.form-assign').on('submit', function(e){
             e.preventDefault();
             var $this = $(this);
@@ -203,7 +247,7 @@
                     if(response.failed == 'error'){
                         swal('Sorry', 'Member already exists', 'error');
                     } else {
-                         swal('Success', response.name + ' Successfully Added' , 'success');
+                        swal('Success', response.name + ' Successfully Added' , 'success');
                         $('.hidden-form').append(
                         `
                         <div class="row task-members pl-0 mb-3">
@@ -289,7 +333,7 @@
             } 
         });
     });
-    //  Untuk Hapus Member Project yang baru ditambah
+    //  Hapus task member
     $(".hidden-form").on('click','.button_delete', function (event) {
         
         let id = $(this).data('id');

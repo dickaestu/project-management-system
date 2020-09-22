@@ -12,7 +12,7 @@
             </div>
             <ul class="sidebar-menu">
               <li class="menu-header">Main</li>
-              <li class="dropdown {{(request()->is('dashboard')) ? 'active' : ""}}">
+              <li class="dropdown {{(request()->is('/*')) ? 'active' : ""}}">
                 <a href="{{ route('dashboard') }}" class="nav-link"
                   ><i data-feather="monitor"></i><span>Dashboard</span></a
                 >

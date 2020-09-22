@@ -67,6 +67,9 @@
                 </a>
               </div>
               <div class="col-4 text-right">
+                @if ($task->status_task == true)
+                    <i class="fas fa-check text-success"></i>
+                @endif
                 <a href="#"
                 data-url="{{ route('delete-task', $task->id) }}"
                 class="text-danger delete-task-button"
@@ -187,8 +190,6 @@ aria-hidden="true">
 </div>
 </div>
 
-
-
 @endsection
 
 
@@ -206,7 +207,7 @@ aria-hidden="true">
     let token = "{{ csrf_token() }}";
     let url = $(this).data('url');
     let task = $(this);
-    
+    console.log(task);
     swal({
       title: 'Are you sure?',
       text: 'This task will be removed',

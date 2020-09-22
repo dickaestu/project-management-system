@@ -6,6 +6,7 @@ use App\Board;
 use App\BoardTask;
 use App\Project;
 use App\ProjectMember;
+use App\TaskFile;
 use App\TaskMember;
 use App\User;
 use Carbon\Carbon;
@@ -71,7 +72,7 @@ class BoardController extends Controller
         $item = BoardTask::findOrFail($id);
 
         $item->update($data);
-        return response()->json();
+        return response()->json(['data' => $item->task_description]);
     }
 
     public function getMember(Request $request, $id)
@@ -136,5 +137,39 @@ class BoardController extends Controller
         ]);
 
         return redirect()->route('project-board', $item->board->projects_id);
+    }
+
+    public function statusTask(Request $request, $id)
+    {
+
+        $item = BoardTask::findOrFail($id);
+
+        if ($request->status == 'true') {
+            $item->status_task = true;
+            $item->save();
+        } else {
+            $item->status_task = false;
+            $item->save();
+        }
+
+
+        return redirect()->route('project-board', $item->board->projects_id);
+    }
+
+    public function uploadFileTask(Request $request, $id)
+    {
+        if ($request->hasFile('file_name')) {
+            $originalName = $request->file('file_name')->getClientOriginalName();
+
+            TaskFile::create([
+                'board_tasks_id' => $id,
+                'file_name' => $originalName,
+                'file_path' => $request->file('file_name')->storeAs('public/assets/file_task', $originalName),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+        }
+
+        return response()->json();
     }
 }

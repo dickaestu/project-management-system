@@ -6,8 +6,6 @@
         <!-- JS Libraies -->
     <script src="{{ url('assets/bundles/sweetalert/sweetalert.min.js') }}"></script>
     
-    <!-- Page Specific JS File -->
-
     <!-- Template JS File -->
     <script src="{{ url('assets/js/scripts.js') }}"></script>
     <!-- Custom JS File -->
