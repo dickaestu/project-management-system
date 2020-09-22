@@ -29,17 +29,6 @@ class ProjectFileController extends Controller
 
 
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -48,13 +37,18 @@ class ProjectFileController extends Controller
      */
     public function store(Request $request, $id)
     {
+        $request->validate(
+            ['file_name' => 'required'],
+            ['file_name.required' => 'Upload Failed ']
+        );
+
         if ($request->hasFile('file_name')) {
             foreach ($request->file('file_name') as $file_name) {
                 $originalName = $file_name->getClientOriginalName();
                 $file[] = [
                     'projects_id' => $id,
                     'file_name' => $originalName,
-                    'file_path' => $file_name->storeAs('public/assets/file_project', $originalName),
+                    'file_path' => $file_name->store('assets/file_project', 'public'),
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
                 ];
@@ -77,15 +71,17 @@ class ProjectFileController extends Controller
     {
         $item = ProjectFile::findOrFail($id);
         $projects_id = $item->projects_id;
-        $path = '/public/assets/file_project/' . $item->file_name;
+        $path = '/public/' . $item->file_path;
         Storage::delete($path);
         $item->delete();
 
         return redirect()->route('project-file', $projects_id);
     }
 
-    public function download($file_name)
+    public function download($id)
     {
-        return response()->download(storage_path('/app/public/assets/file_project/' . $file_name));
+        $item = ProjectFile::findOrFail($id);
+        $file_path = Storage::url($item->file_path);
+        return response()->download(public_path($file_path));
     }
 }

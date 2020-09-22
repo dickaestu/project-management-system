@@ -26,6 +26,13 @@
             </nav>
           </div>
         </div>
+        @error('file_name')
+          <div class="row mb-3">
+            <div class="col">
+              <div class="text-danger">{{ $message }}</div>
+            </div>
+          </div>
+        @enderror
         <div class="row mb-3 row-add-file">
           <div class="col-12"><button class="btn btn-success btn-sm add-file">Add File</button></div>
         </div>
@@ -34,6 +41,7 @@
         </div>
         <div class="row form-add-file mb-3">
           <div class="col-12">
+            
             <form action="{{ route('project-file-upload', $project->id) }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="form-group">
@@ -54,7 +62,7 @@
                   <li class="list-group-item d-md-flex  justify-content-between align-items-center">
                     {{ $item->file_name }}
                     <span class="d-block">
-                      <a href="{{ route('project-file-download', $item->file_name) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Download</a>
+                      <a href="{{ route('project-file-download', $item->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i> Download</a>
                       <form class="d-inline" action="{{ route('project-file-delete', $item->id) }}" method="post">
                         @method('Delete')
                         @csrf
@@ -63,13 +71,13 @@
                     </span>
                   </li>
                   @empty
-                   <li class="list-group-item text-center">
-                     <img src="{{ asset('assets/img/no-project-file.svg') }}" height="250" class="mb-3">
-                      <h5 class="mb-0 mt-3">Project File Is Empty</h5>
-                      <p class="text-secondary">Please Click "Add File" To Upload Project File</p>
-                   </li>
+                  <li class="list-group-item text-center">
+                    <img src="{{ asset('assets/img/no-project-file.svg') }}" height="250" class="mb-3">
+                    <h5 class="mb-0 mt-3">Project File Is Empty</h5>
+                    <p class="text-secondary">Please Click "Add File" To Upload Project File</p>
+                  </li>
                   
-                      
+                  
                   
                   @endforelse
                 </ul>

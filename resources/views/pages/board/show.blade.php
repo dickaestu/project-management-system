@@ -14,7 +14,7 @@
               @csrf
               <div class="form-group mb-2">
                 <label for="">Add File</label>
-                <input type="file" id="file_name" name="file_name" required class="form-control form-control-sm" />
+                <input type="file" id="file_name" name="file_name"class="form-control form-control-sm" />
               </div>
               <button type="submit" class="btn btn-primary btn-sm">Upload File</button>
               <button id="cancelButton" type="button" class="btn btn-secondary btn-sm">Cancel</button>
@@ -49,6 +49,7 @@
             </div> -->
             
         </div>
+      
         <div class="form-group">
             <label for="">Attachment</label>
             <div class="card" style="max-height: 250px; overflow:auto" >
@@ -58,7 +59,7 @@
                   <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
                     {{ $file->file_name }}
                     <span class="d-block">
-                      <a href="{{ route('download-file-task', $file->file_name) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
+                      <a href="{{ route('download-file-task', $file->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
                       <form class="d-inline" action="" method="post">
                         <button type="button" 
                         data-token = "{{ csrf_token() }}"
@@ -206,7 +207,7 @@
                    <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
                     `+response.name+`
                     <span class="d-block">
-                      <a href="/my-project/download-task-file/`+response.name+`" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
+                      <a href="/my-project/download-task-file/`+response.id+`" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
                       <form class="d-inline" action="" method="post">
                         <button type="button" 
                         data-token = "{{ csrf_token() }}"
@@ -219,7 +220,7 @@
                   )
                 },
                 error: function(response){
-                    alert('Failed')
+                    swal('Sorry', 'Oops Something Went Wrong', 'error');
                 }
             });
         });

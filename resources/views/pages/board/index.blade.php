@@ -201,13 +201,12 @@ aria-hidden="true">
 <script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
   $(document).ready(function(){
-    // Untuk Hapus member project
+    // Untuk Hapus task
   $(".task").on('click','.delete-task-button', function (event) {
     
     let token = "{{ csrf_token() }}";
     let url = $(this).data('url');
     let task = $(this);
-    console.log(task);
     swal({
       title: 'Are you sure?',
       text: 'This task will be removed',

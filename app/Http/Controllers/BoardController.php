@@ -159,13 +159,18 @@ class BoardController extends Controller
 
     public function uploadFileTask(Request $request, $id)
     {
+        $request->validate(
+            ['file_name' => 'required'],
+            ['file_name.required' => 'Upload Failed ']
+        );
+
         if ($request->hasFile('file_name')) {
             $originalName = $request->file('file_name')->getClientOriginalName();
 
             $item = TaskFile::create([
                 'board_tasks_id' => $id,
                 'file_name' => $originalName,
-                'file_path' => $request->file('file_name')->storeAs('public/assets/file_task', $originalName),
+                'file_path' => $request->file('file_name')->store('assets/file_task', 'public'),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);
@@ -177,15 +182,17 @@ class BoardController extends Controller
         ]);
     }
 
-    public function downloadFileTask($file_name)
+    public function downloadFileTask($id)
     {
-        return response()->download(storage_path('/app/public/assets/file_task/' . $file_name));
+        $item = TaskFile::findOrFail($id);
+        $file_path = Storage::url($item->file_path);
+        return response()->download(public_path($file_path));
     }
 
     public function deleteFileTask($id)
     {
         $item = TaskFile::findOrFail($id);
-        $path = '/public/assets/file_task/' . $item->file_name;
+        $path = '/public/' . $item->file_path;
         Storage::delete($path);
         $item->delete();
 

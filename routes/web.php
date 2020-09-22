@@ -34,13 +34,13 @@ Route::put('/my-project/change-status-task/{id}', 'BoardController@changeStatus'
 Route::delete('/my-project/{id}/delete-task', 'BoardController@deleteTask')->name('delete-task')->middleware('auth');
 Route::get('/my-project/{id}/set-status-task', 'BoardController@statusTask')->name('status-task')->middleware('auth');
 Route::post('/my-project/{id}/upload-task-file', 'BoardController@uploadFileTask')->name('upload-file-task')->middleware('auth');
-Route::get('/my-project/download-task-file/{file_name}', 'BoardController@downloadFileTask')->name('download-file-task')->middleware('auth');
+Route::get('/my-project/download-task-file/{id}', 'BoardController@downloadFileTask')->name('download-file-task')->middleware('auth');
 Route::delete('/my-project/delete-task-file/{id}', 'BoardController@deleteFileTask')->name('delete-file-task')->middleware('auth');
 
 // Project File
 Route::get('/my-project/{id}/project-file', 'ProjectFileController@index')->name('project-file')->middleware('auth');
 Route::post('/my-project/{id}/upload-project-file', 'ProjectFileController@store')->name('project-file-upload')->middleware('auth');
-Route::get('/my-project/project-file/{file_name}', 'ProjectFileController@download')->name('project-file-download')->middleware('auth');
+Route::get('/my-project/project-file/{id}', 'ProjectFileController@download')->name('project-file-download')->middleware('auth');
 Route::delete('/my-project/{id}/project-file-delete', 'ProjectFileController@destroy')->name('project-file-delete')->middleware('auth');
 
 // RoadMap
