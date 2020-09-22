@@ -19,4 +19,9 @@ class BoardTask extends Model
     {
         return $this->hasMany(TaskMember::class, 'board_tasks_id', 'id');
     }
+
+    public function task_file()
+    {
+        return $this->hasMany(TaskFile::class, 'board_tasks_id', 'id');
+    }
 }

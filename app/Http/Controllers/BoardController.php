@@ -12,6 +12,7 @@ use App\User;
 use Carbon\Carbon;
 use Faker\Provider\Barcode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BoardController extends Controller
 {
@@ -161,7 +162,7 @@ class BoardController extends Controller
         if ($request->hasFile('file_name')) {
             $originalName = $request->file('file_name')->getClientOriginalName();
 
-            TaskFile::create([
+            $item = TaskFile::create([
                 'board_tasks_id' => $id,
                 'file_name' => $originalName,
                 'file_path' => $request->file('file_name')->storeAs('public/assets/file_task', $originalName),
@@ -170,6 +171,26 @@ class BoardController extends Controller
             ]);
         }
 
-        return response()->json();
+        return response()->json([
+            'id' => $item->id,
+            'name' => $originalName
+        ]);
+    }
+
+    public function downloadFileTask($file_name)
+    {
+        return response()->download(storage_path('/app/public/assets/file_task/' . $file_name));
+    }
+
+    public function deleteFileTask($id)
+    {
+        $item = TaskFile::findOrFail($id);
+        $path = '/public/assets/file_task/' . $item->file_name;
+        Storage::delete($path);
+        $item->delete();
+
+        return response()->json([
+            'success' => 'Delete Successfully',
+        ]);
     }
 }

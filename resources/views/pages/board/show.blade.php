@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12 col-md-7 mb-4 mb-lg-0">
         <div class="btn-group">
-            <a href="#" class="btn btn-icon icon-left btn-secondary text-dark"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</a>
+            <a id="attachmentButton" href="#" class="btn btn-icon icon-left btn-secondary text-dark"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</a>
             <a href="#" class="btn btn-icon icon-left btn-secondary ml-2 text-dark"><i class="fa fa-plus" aria-hidden="true"></i> Add Sub Task</a>
             @if ($item->status_task == false)
             <a href="{{ route('status-task', $item->id) }}?status=true" class="btn btn-icon icon-left btn-secondary ml-2 mr-3 text-dark"><i class="fa fa-check" aria-hidden="true"></i> Done</a>
@@ -17,7 +17,7 @@
                 <input type="file" id="file_name" name="file_name" required class="form-control form-control-sm" />
               </div>
               <button type="submit" class="btn btn-primary btn-sm">Upload File</button>
-              <button class="btn btn-secondary btn-sm">Cancel</button>
+              <button id="cancelButton" type="button" class="btn btn-secondary btn-sm">Cancel</button>
             </form>
         <form class="mt-3 form-update-description">
             @method('PUT')
@@ -51,6 +51,32 @@
         </div>
         <div class="form-group">
             <label for="">Attachment</label>
+            <div class="card" style="max-height: 250px; overflow:auto" >
+              <div class="card-body">
+                <ul class="list-group">
+                  @forelse ($item->task_file as $file)
+                  <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
+                    {{ $file->file_name }}
+                    <span class="d-block">
+                      <a href="{{ route('download-file-task', $file->file_name) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
+                      <form class="d-inline" action="" method="post">
+                        <button type="button" 
+                        data-token = "{{ csrf_token() }}"
+                        data-url="{{ route('delete-file-task', $file->id) }}"
+                        class="btn btn-danger btn-sm button-delete"><i class="fas fa-trash"></i></button>
+                      </form>
+                    </span>
+                  </li>
+                  @empty
+                   <li class="list-group-item text-center">
+                      <h5>File is empty</h5>
+                   </li>
+                  @endforelse
+                  <div class="hidden-list">
+                  </div>
+                </ul>
+              </div>
+            </div>
         </div>
         <div class="form-group">
             <p style="color: #34395e; font-weight:600; font-size:12px">Activity</p>
@@ -174,14 +200,105 @@
                 contentType: false,
                 dataType: 'json',
                 success: function(response){
-                    // swal('Success', 'Upload Success' , 'success');
-                    console.log(response)
+                  swal('Success', 'Upload Success' , 'success');
+                  $('.hidden-list').append(
+                      `
+                   <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
+                    `+response.name+`
+                    <span class="d-block">
+                      <a href="/my-project/download-task-file/`+response.name+`" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
+                      <form class="d-inline" action="" method="post">
+                        <button type="button" 
+                        data-token = "{{ csrf_token() }}"
+                        data-url="/my-project/delete-task-file/`+response.id+`"
+                        class="btn btn-danger btn-sm button-delete"><i class="fas fa-trash"></i></button>
+                      </form>
+                    </span>
+                  </li>
+                   `
+                  )
                 },
                 error: function(response){
                     alert('Failed')
                 }
             });
         });
+
+        // Untuk Hapus File Task
+    $(".list-file").on('click','.button-delete', function (event) {
+        let list_file = $(this);
+        let token = $(this).data('token');
+        let url = $(this).data('url');
+        swal({
+            title: 'Are you sure?',
+            text: name + ' will be removed from task file',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            
+            if (willDelete) {
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        "_method" : 'DELETE',
+                        "_token" : token,
+                    },
+                    dataType : "JSON",
+                    success: function (response){
+                        
+                        swal(response.success, {
+                            icon: 'success',
+                        });
+                        
+                        $(list_file).closest('.list-file').remove()
+                    }
+                    
+                })
+                
+                
+            } 
+        });
+    });
+
+    // Untuk Hapus File Task yg baru di upload
+    $(".hidden-list").on('click','.button-delete', function (event) {
+        let list_file = $(this);
+        let token = $(this).data('token');
+        let url = $(this).data('url');
+        swal({
+            title: 'Are you sure?',
+            text: name + ' will be removed from task file',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            
+            if (willDelete) {
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        "_method" : 'DELETE',
+                        "_token" : token,
+                    },
+                    dataType : "JSON",
+                    success: function (response){
+                        
+                        swal(response.success, {
+                            icon: 'success',
+                        });
+                        
+                        $(list_file).closest('.list-file').remove()
+                    }
+                    
+                })
+                
+                
+            } 
+        });
+    });
 
         // Update Description
         $('.form-update-description').on('submit', function(e){
@@ -377,6 +494,16 @@
         });
     });
     
+    form_upload_file = $('.form-upload-file');
+    form_upload_file.hide()
+   
+    $('#attachmentButton').click(function(){
+        form_upload_file.show()
+         $('#cancelButton').click(function(){
+        form_upload_file.hide()
+         })
+    })
+
     $('.description').on('focus', function(e){
         $('.btn-save-description').show()
         $('.btn-cancel-description').show()
