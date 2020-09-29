@@ -53,111 +53,62 @@
 
 
 
-<div class="modal" id="modalRoadmap" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-        
-      </div>
-    </div>
-  </div>
-  
-  
-  @endsection
-  
-  @push('addon-style')
-  <link rel="stylesheet" href="{{ asset('assets/bundles/select2/dist/css/select2.min.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.css">
-  @endpush
-  
-  @push('addon-script')
-  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script> --}}
-  <script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
-  <script src="{{ asset('assets/js/frappe-gantt.js') }}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
-  
-  <script >
-    $('document').ready(function(){
-      var listTask = {!! $listTask!!};
-      if(typeof(listTask) == 'object'){
-        
-        var tasks = listTask.map(function(item){
-          return {
-            id: item.id.toString(),
-            name: item.task_name,
-            start: item.start_date,
-            end: item.due_date,
-            progress: 100,
-          }
-        });
-        
-        
-        var gantt = new Gantt("#gantt", tasks, {
-          on_click: function (task) {
-            console.log(task);
-          },
-          
-          custom_popup_html: function(task) {
-            $.ajax({
-              url: "/my-project/roadmap/tasks/"+task.id,
-              type: 'GET',
-              dataType: 'json', 
-              success: function(response) {
-                var modal = $('#modalRoadmap');
-                modal.modal('show');
-                modal.find('.modal-title').html(response.task_name);
-                modal.find('.modal-body').html(`
-                
-                <form action="/my-project/roadmap/tasks/edit/`+response.id+`" method="post">
-                  @method('PUT')
-                  @csrf
-                  
-                   <div class="form-group">
-                    <label>Start Date</label>
-                    <input name="start_date" class="form-control form-control-sm start-date-edit" type="date" value="`+response.start_date+`">
-                  </div>
-                  
-                   <div class="form-group">
-                    <label>Due Date</label>
-                    <input name="due_date" class="form-control form-control-sm due-date-edit" type="date" value="`+response.due_date+`">
-                  </div>
+@endsection
 
-                  <div class="form-group">
-                      <label>Select2 Multiple</label>
-                      <select class="form-control" id="taskList" multiple="multiple">
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
-                        <option>Option 4</option>
-                        <option>Option 5</option>
-                        <option>Option 6</option>
-                      </select>
-                    </div>
-                  
-                
-                <div class="modal-footer mt-3">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
-                </form>
-              </div>
-              `);
-            }
-          });
-          
-          
-          
-          return ``;
-          
+@push('addon-style')
+<link rel="stylesheet" href="{{ asset('assets/bundles/select2/dist/css/select2.min.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.css">
+@endpush
+
+@push('addon-script')
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script> --}}
+<script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('assets/js/frappe-gantt.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+
+<script >
+  $('document').ready(function(){
+    var listTask = {!! $listTask!!};
+    if(typeof(listTask) == 'object'){
+      
+      var tasks = listTask.map(function(item){
+        return {
+          id: item.id.toString(),
+          name: item.task_name,
+          start: item.start_date,
+          end: item.due_date,
+          progress: 100,
         }
+      });
+      
+      
+      var gantt = new Gantt("#gantt", tasks, {
+        // on_click: function (task) {
+        //   console.log(task);
+        // },
+        
+        
+        
+        custom_popup_html: function(task) {
+          return `
+          <div class="p-4 rounded bg-primary" style="width:150px">
+            <h5 class="text-light">${task.name}</h5>
+            <p class="text-light">Expected to finish by ${task.end}</p>
+            <a 
+            class ="btn btn-info btn-sm"
+              href="#modalRoadmap"
+              data-remote="/my-project/roadmap/tasks/${task.id}"
+              data-toggle="modal"
+              data-target="#modalRoadmap"
+              data-title="${task.name}"
+              >Edit Date
+            </a>
+          </div>
+          `;
+        }
+        
+        
       });
       gantt.change_view_mode('Day')
       
@@ -171,7 +122,8 @@
       `
       )
     }
-  
+    
+    
   })
 </script>
 @endpush

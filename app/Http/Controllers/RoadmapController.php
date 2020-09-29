@@ -60,11 +60,12 @@ class RoadmapController extends Controller
         ]);
     }
 
-    public function getTask($id)
+    public function showTask($id)
     {
         $item = BoardTask::findOrFail($id);
+        $tasks = BoardTask::where('id', '!=', $id)->where(project id nya)->get();
 
-        return response()->json($item);
+        return view('pages.roadmap.show', compact('item', 'tasks'));
     }
 
     public function editTask(Request $request, $id)
