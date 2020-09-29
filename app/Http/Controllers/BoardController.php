@@ -6,6 +6,7 @@ use App\Board;
 use App\BoardTask;
 use App\Project;
 use App\ProjectMember;
+use App\SubTask;
 use App\TaskFile;
 use App\TaskMember;
 use App\User;
@@ -194,6 +195,48 @@ class BoardController extends Controller
         $item = TaskFile::findOrFail($id);
         $path = '/public/' . $item->file_path;
         Storage::delete($path);
+        $item->delete();
+
+        return response()->json([
+            'success' => 'Delete Successfully',
+        ]);
+    }
+
+    public function storeSubTask(Request $request, $id)
+    {
+        $request->validate(
+            ['sub_task_name' => 'required'],
+            ['sub_task_name.required' => 'Failed To Add Sub Task']
+        );
+
+        $data = $request->all();
+        $data['board_tasks_id'] = $id;
+        $item = SubTask::create($data);
+        return response()->json($item);
+    }
+
+    public function changeStatusSubTask(Request $request, $id)
+    {
+        if ($request->status == 'true') {
+            $item = SubTask::findOrFail($id);
+            $item->update([
+                'sub_task_status' => true
+            ]);
+
+            return redirect()->back();
+        } else {
+            $item = SubTask::findOrFail($id);
+            $item->update([
+                'sub_task_status' => false
+            ]);
+
+            return redirect()->back();
+        }
+    }
+
+    public function deleteSubTask($id)
+    {
+        $item = SubTask::findOrFail($id);
         $item->delete();
 
         return response()->json([

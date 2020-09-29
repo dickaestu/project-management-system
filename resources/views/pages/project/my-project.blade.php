@@ -163,7 +163,7 @@
               @endforeach
               
               @if($item->project_member->count() > 0)
-              <a href="" 
+              <a 
               href="#modalMember"
               data-remote="{{ route('my-project.show', $item->id) }}"
               data-toggle="modal"

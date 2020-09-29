@@ -36,6 +36,9 @@ Route::get('/my-project/{id}/set-status-task', 'BoardController@statusTask')->na
 Route::post('/my-project/{id}/upload-task-file', 'BoardController@uploadFileTask')->name('upload-file-task')->middleware('auth');
 Route::get('/my-project/download-task-file/{id}', 'BoardController@downloadFileTask')->name('download-file-task')->middleware('auth');
 Route::delete('/my-project/delete-task-file/{id}', 'BoardController@deleteFileTask')->name('delete-file-task')->middleware('auth');
+Route::post('/my-project/{id}/sub-task', 'BoardController@storeSubTask')->name('add-sub-task')->middleware('auth');
+Route::get('/my-project/status-sub-task/{id}', 'BoardController@changeStatusSubTask')->name('change-status-sub-task')->middleware('auth');
+Route::delete('/my-project/delete-sub-task/{id}', 'BoardController@deleteSubTask')->name('delete-sub-task')->middleware('auth');
 
 // Project File
 Route::get('/my-project/{id}/project-file', 'ProjectFileController@index')->name('project-file')->middleware('auth');

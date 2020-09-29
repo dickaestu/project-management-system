@@ -24,4 +24,9 @@ class BoardTask extends Model
     {
         return $this->hasMany(TaskFile::class, 'board_tasks_id', 'id');
     }
+
+    public function sub_task()
+    {
+        return $this->hasMany(SubTask::class, 'board_tasks_id', 'id');
+    }
 }

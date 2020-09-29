@@ -2,23 +2,34 @@
     <div class="col-12 col-md-7 mb-4 mb-lg-0">
         <div class="btn-group">
             <a id="attachmentButton" href="#" class="btn btn-icon icon-left btn-secondary text-dark"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</a>
-            <a href="#" class="btn btn-icon icon-left btn-secondary ml-2 text-dark"><i class="fa fa-plus" aria-hidden="true"></i> Add Sub Task</a>
+            <a id="subTaskButton" href="#" class="btn btn-icon icon-left btn-secondary ml-2 text-dark"><i class="fa fa-plus" aria-hidden="true"></i> Add Sub Task</a>
             @if ($item->status_task == false)
-            <a href="{{ route('status-task', $item->id) }}?status=true" class="btn btn-icon icon-left btn-secondary ml-2 mr-3 text-dark"><i class="fa fa-check" aria-hidden="true"></i> Done</a>
+            <a href="{{ route('status-task', $item->id) }}?status=true" class="btn btn-icon icon-left btn-success ml-2 mr-3"><i class="fa fa-check" aria-hidden="true"></i> Done</a>
             @else
-            <a href="{{ route('status-task', $item->id) }}?status=false" class="btn btn-icon icon-left btn-success ml-2 mr-3"><i class="fa fa-check" aria-hidden="true"></i> Done</a>
+            <a href="{{ route('status-task', $item->id) }}?status=false" class="btn btn-icon icon-left btn-secondary text-dark ml-2 mr-3"><i class="fa fa-check" aria-hidden="true"></i> Cancel Status</a>
             @endif
             
         </div>
+
         <form class="form-upload-file mt-3" enctype="multipart/form-data">
-              @csrf
-              <div class="form-group mb-2">
+            @csrf
+            <div class="form-group mb-2">
                 <label for="">Add File</label>
                 <input type="file" id="file_name" name="file_name"class="form-control form-control-sm" />
-              </div>
-              <button type="submit" class="btn btn-primary btn-sm">Upload File</button>
-              <button id="cancelButton" type="button" class="btn btn-secondary btn-sm">Cancel</button>
-            </form>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Upload File</button>
+            <button id="cancelButton" type="button" class="btn btn-secondary btn-sm">Cancel</button>
+        </form>
+
+        <form class="form-sub-task mt-3">
+            @csrf
+            <div class="form-group mb-2">
+                <label for="">Add Sub Task</label>
+                <input type="text" id="sub_task_name" name="sub_task_name"class="form-control form-control-sm" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            <button id="cancelSub" type="button" class="btn btn-secondary btn-sm">Cancel</button>
+        </form>
         <form class="mt-3 form-update-description">
             @method('PUT')
             @csrf
@@ -43,40 +54,64 @@
         </div>
         <div class="form-group">
             <label>Sub Task</label>
-            <!-- <div class="progress">
-                <div class="progress-bar" role="progressbar" data-width="50%" aria-valuenow="50" aria-valuemin="0"
-                aria-valuemax="100">50%</div>
-            </div> -->
+            <ul class="list-group">
+                @foreach ($item->sub_task as $subTask)
+                <li class="list-group-item list-sub-task d-flex justify-content-between">{{ $subTask->sub_task_name }}
+                    <span class="d-block">
+                    @if ($subTask->sub_task_status == false)
+                    <a
+                        href="{{ route('change-status-sub-task', $subTask->id) }}?status=true"
+                        class="btn rounded-circle btn-sm py-0 btn-outline-secondary">
+                        <i class="fas fa-check"></i>
+                    </a>
+                    @else 
+                    <a
+                        href="{{ route('change-status-sub-task', $subTask->id) }}?status=false"
+                        class="btn btn-cancel-sub-task rounded-circle btn-sm py-0 btn-outline-success">
+                        <i class="fas fa-check"></i>
+                    </a>
+                    @endif
+                    <button 
+                    type="button"
+                    data-token = "{{ csrf_token() }}"
+                    data-url="{{ route('delete-sub-task', $subTask->id) }}"
+                    data-name="{{ $subTask->sub_task_name }}"
+                    class="btn btn-delete-sub-task rounded-circle btn-sm py-0 btn-outline-danger"
+                    >
+                    <i class="fas fa-minus"></i>
+                    </button></span> 
+                </li>
+                @endforeach
+
+                 <div class="hidden-sub-task"></div>
+            </ul>
             
         </div>
-      
+        
         <div class="form-group">
             <label for="">Attachment</label>
             <div class="card" style="max-height: 250px; overflow:auto" >
-              <div class="card-body">
-                <ul class="list-group">
-                  @forelse ($item->task_file as $file)
-                  <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
-                    {{ $file->file_name }}
-                    <span class="d-block">
-                      <a href="{{ route('download-file-task', $file->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
-                      <form class="d-inline" action="" method="post">
-                        <button type="button" 
-                        data-token = "{{ csrf_token() }}"
-                        data-url="{{ route('delete-file-task', $file->id) }}"
-                        class="btn btn-danger btn-sm button-delete"><i class="fas fa-trash"></i></button>
-                      </form>
-                    </span>
-                  </li>
-                  @empty
-                   <li class="list-group-item text-center">
-                      <h5>File is empty</h5>
-                   </li>
-                  @endforelse
-                  <div class="hidden-list">
-                  </div>
-                </ul>
-              </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach ($item->task_file as $file)
+                        <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
+                            {{ $file->file_name }}
+                            <span class="d-block">
+                                <a href="{{ route('download-file-task', $file->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
+                                <form class="d-inline" action="" method="post">
+                                    <button type="button" 
+                                    data-token = "{{ csrf_token() }}"
+                                    data-url="{{ route('delete-file-task', $file->id) }}"
+                                     data-name="{{ $file->file_name }}"
+                                    class="btn btn-danger btn-sm button-delete"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </span>
+                        </li>
+                        @endforeach
+                        <div class="hidden-list">
+                        </div>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="form-group">
@@ -153,23 +188,26 @@
                 </p>
                 <small>{{ $task->project_members->role_member }}</small>
             </div>
+             @if ($item->board->project->project_manager == Auth::id())
             <div class="col-2 pt-2">
                 <button 
-                type="button"
-                data-id = "{{ $task->id }}"
-                data-token = "{{ csrf_token() }}"
-                data-url="{{ route('delete-task-member', $task->id) }}"
-                data-name="{{ $task->project_members->user->name }}"
-                class="btn button_delete rounded-circle btn-sm py-0 btn-outline-danger"
-                >
-                <i class="fas fa-minus"></i>
-            </button>
-        </div>
+                    type="button"
+                    data-id = "{{ $task->id }}"
+                    data-token = "{{ csrf_token() }}"
+                    data-url="{{ route('delete-task-member', $task->id) }}"
+                    data-name="{{ $task->project_members->user->name }}"
+                    class="btn button_delete rounded-circle btn-sm py-0 btn-outline-danger"
+                    >
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+            @endif
     </div>
     @endforeach
     <div class="hidden-form"></div>
     
     
+    @if ($item->board->project->project_manager == Auth::id())
     <form  class="form-assign" class="mt-4">
         @csrf
         <label>Search</label>
@@ -180,6 +218,7 @@
         
         <button type="submit" class="btn btn-success btn-block btn-md mt-3">Add</button>
     </form>
+    @endif
 </div>
 
 
@@ -201,23 +240,142 @@
                 contentType: false,
                 dataType: 'json',
                 success: function(response){
-                  swal('Success', 'Upload Success' , 'success');
-                  $('.hidden-list').append(
-                      `
-                   <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
-                    `+response.name+`
+                    swal('Success', 'Upload Success' , 'success');
+                    $('.hidden-list').append(
+                    `
+                    <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
+                        `+response.name+`
+                        <span class="d-block">
+                            <a href="/my-project/download-task-file/`+response.id+`" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
+                            <form class="d-inline" action="" method="post">
+                                <button type="button" 
+                                data-name="`+response.name+`"
+                                data-token = "{{ csrf_token() }}"
+                                data-url="/my-project/delete-task-file/`+response.id+`"
+                                class="btn btn-danger btn-sm button-delete"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </span>
+                    </li>
+                    `
+                    )
+                },
+                error: function(response){
+                    swal('Sorry', 'Oops Something Went Wrong', 'error');
+                }
+            });
+        });
+        
+        // Untuk Hapus File Task
+        $(".list-file").on('click','.button-delete', function (event) {
+            let list_file = $(this);
+            let token = $(this).data('token');
+            let url = $(this).data('url');
+            let name = $(this).data('name');
+            swal({
+                title: 'Are you sure?',
+                text: name + ' will be removed from task file',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                
+                if (willDelete) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            "_method" : 'DELETE',
+                            "_token" : token,
+                        },
+                        dataType : "JSON",
+                        success: function (response){
+                            
+                            swal(response.success, {
+                                icon: 'success',
+                            });
+                            
+                            $(list_file).closest('.list-file').remove()
+                        }
+                        
+                    })
+                    
+                    
+                } 
+            });
+        });
+        
+        // Untuk Hapus File Task yg baru di upload
+        $(".hidden-list").on('click','.button-delete', function (event) {
+            let list_file = $(this);
+            let token = $(this).data('token');
+            let url = $(this).data('url');
+            let name = $(this).data('name');
+            swal({
+                title: 'Are you sure?',
+                text: name + ' will be removed from task file',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                
+                if (willDelete) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            "_method" : 'DELETE',
+                            "_token" : token,
+                        },
+                        dataType : "JSON",
+                        success: function (response){
+                            
+                            swal(response.success, {
+                                icon: 'success',
+                            });
+                            
+                            $(list_file).closest('.list-file').remove()
+                        }
+                        
+                    })
+                    
+                    
+                } 
+            });
+        });
+
+        // Add Sub Task
+        $('.form-sub-task').on('submit', function(e){
+            e.preventDefault();
+            var $this = $(this);
+            var data = $this.serializeArray(); 
+            console.log(data)
+            $.ajax({
+                url: '{{ route('add-sub-task', $item->id) }}',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: function(response){
+                    swal('Success', 'Sub Task Success Added' , 'success');
+                    $('.hidden-sub-task').append(
+                    `
+                    <li class="list-group-item list-sub-task d-flex justify-content-between">`+response.sub_task_name+`
                     <span class="d-block">
-                      <a href="/my-project/download-task-file/`+response.id+`" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
-                      <form class="d-inline" action="" method="post">
-                        <button type="button" 
-                        data-token = "{{ csrf_token() }}"
-                        data-url="/my-project/delete-task-file/`+response.id+`"
-                        class="btn btn-danger btn-sm button-delete"><i class="fas fa-trash"></i></button>
-                      </form>
-                    </span>
-                  </li>
-                   `
-                  )
+                    <a
+                        href="/my-project/status-sub-task/`+response.id+`?status=true"
+                        class="btn rounded-circle btn-sm py-0 btn-outline-secondary">
+                        <i class="fas fa-check"></i>
+                    </a>
+                    <button 
+                    type="button"
+                    data-token = "{{ csrf_token() }}"
+                    data-url="/my-project/delete-sub-task/`+response.id+`"
+                    data-name="`+response.sub_task_name+`"
+                    class="btn btn-delete-sub-task rounded-circle btn-sm py-0 btn-outline-danger" >
+                    <i class="fas fa-minus"></i>
+                    </button></span> 
+                    </li>
+                    `
+                    );
                 },
                 error: function(response){
                     swal('Sorry', 'Oops Something Went Wrong', 'error');
@@ -225,82 +383,84 @@
             });
         });
 
-        // Untuk Hapus File Task
-    $(".list-file").on('click','.button-delete', function (event) {
-        let list_file = $(this);
-        let token = $(this).data('token');
-        let url = $(this).data('url');
-        swal({
-            title: 'Are you sure?',
-            text: name + ' will be removed from task file',
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            
-            if (willDelete) {
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: {
-                        "_method" : 'DELETE',
-                        "_token" : token,
-                    },
-                    dataType : "JSON",
-                    success: function (response){
-                        
-                        swal(response.success, {
-                            icon: 'success',
-                        });
-                        
-                        $(list_file).closest('.list-file').remove()
-                    }
-                    
-                })
-                
-                
-            } 
-        });
-    });
 
-    // Untuk Hapus File Task yg baru di upload
-    $(".hidden-list").on('click','.button-delete', function (event) {
-        let list_file = $(this);
-        let token = $(this).data('token');
-        let url = $(this).data('url');
-        swal({
-            title: 'Are you sure?',
-            text: name + ' will be removed from task file',
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            
-            if (willDelete) {
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: {
-                        "_method" : 'DELETE',
-                        "_token" : token,
-                    },
-                    dataType : "JSON",
-                    success: function (response){
+        // Untuk Hapus Sub Task
+        $(".list-sub-task").on('click','.btn-delete-sub-task', function (event) {
+            let list_sub_task = $(this);
+            let token = $(this).data('token');
+            let url = $(this).data('url');
+            let name = $(this).data('name');
+            swal({
+                title: 'Are you sure?',
+                text: name + ' will be removed from sub task',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                
+                if (willDelete) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            "_method" : 'DELETE',
+                            "_token" : token,
+                        },
+                        dataType : "JSON",
+                        success: function (response){
+                            
+                            swal(response.success, {
+                                icon: 'success',
+                            });
+                            
+                            $(list_sub_task).closest('.list-sub-task').remove()
+                        }
                         
-                        swal(response.success, {
-                            icon: 'success',
-                        });
-                        
-                        $(list_file).closest('.list-file').remove()
-                    }
+                    })
                     
-                })
-                
-                
-            } 
+                    
+                } 
+            });
         });
-    });
-
+        // Untuk Hapus Sub Task (2)
+        $(".hidden-sub-task").on('click','.btn-delete-sub-task', function (event) {
+            let list_sub_task = $(this);
+            let token = $(this).data('token');
+            let url = $(this).data('url');
+            let name = $(this).data('name');
+            swal({
+                title: 'Are you sure?',
+                text: name + ' will be removed from sub task',
+                icon: 'warning',
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                
+                if (willDelete) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            "_method" : 'DELETE',
+                            "_token" : token,
+                        },
+                        dataType : "JSON",
+                        success: function (response){
+                            
+                            swal(response.success, {
+                                icon: 'success',
+                            });
+                            
+                            $(list_sub_task).closest('.list-sub-task').remove()
+                        }
+                        
+                    })
+                    
+                    
+                } 
+            });
+        });
+        
         // Update Description
         $('.form-update-description').on('submit', function(e){
             e.preventDefault();
@@ -497,14 +657,26 @@
     
     form_upload_file = $('.form-upload-file');
     form_upload_file.hide()
-   
+    form_sub_task = $('.form-sub-task');
+    form_sub_task.hide()
+    
+    // Attachment button
     $('#attachmentButton').click(function(){
         form_upload_file.show()
-         $('#cancelButton').click(function(){
-        form_upload_file.hide()
-         })
-    })
+        $('#cancelButton').click(function(){
+            form_upload_file.hide()
+        })
+    });
 
+    // Sub Task Button
+    $('#subTaskButton').click(function(){
+        form_sub_task.show()
+        $('#cancelSub').click(function(){
+            form_sub_task.hide()
+        })
+    });
+    
+    // Edit Description button only project manager can access
     $('.description').on('focus', function(e){
         $('.btn-save-description').show()
         $('.btn-cancel-description').show()
@@ -515,6 +687,7 @@
         $('.btn-cancel-description').hide()
     })
     
+    // Change Board Status button
     $btn = $('#change-status');
     $btn.hide();
     $('.boards_id').on('change', function() {

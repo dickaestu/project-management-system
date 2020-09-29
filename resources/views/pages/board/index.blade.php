@@ -26,6 +26,7 @@
             </nav>
           </div>
         </div>
+    @if ($item->project_manager == Auth::id())
         <div class="row mb-3">
           <div class="col">
             <button
@@ -35,7 +36,7 @@
           </button>
         </div>
       </div>
-      
+    @endif
       <div class="scrolling-wrapper">
         @forelse ($boards as $board)
         <!-- Board card -->
@@ -128,6 +129,7 @@
       @endforelse
       
       <!-- Button create task -->
+      @if ($item->project_manager == Auth::id())
       <div class="row justify-content-center">
         <a
         style="text-decoration:none;" class="text-black-50" href="#" type="button" 
@@ -139,6 +141,8 @@
         <i class="fas fa-plus"></i> Create Task
       </a>
     </div>
+          
+      @endif
   </div>
 </div>
 

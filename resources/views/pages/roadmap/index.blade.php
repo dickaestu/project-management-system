@@ -9,6 +9,18 @@
       <div class="container">
         <div class="row">
           <div class="col-12">
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible show fade">
+              <div class="alert-body">
+                <button class="close" data-dismiss="alert">
+                  <span>&times;</span>
+                </button>
+                {{ session('success') }}
+              </div>
+            </div>
+            @endif
+          </div>
+          <div class="col-12">
             <h3 class="text-dark mb-3">Roadmap  {{ $item->project_name }}</h3>
           </div>
         </div>
@@ -52,6 +64,7 @@
       </div>
       <div class="modal-body">
         
+      </div>
         
       </div>
     </div>
@@ -61,11 +74,13 @@
   @endsection
   
   @push('addon-style')
+  <link rel="stylesheet" href="{{ asset('assets/bundles/select2/dist/css/select2.min.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.css">
   @endpush
   
   @push('addon-script')
   {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.5.0/frappe-gantt.min.js"></script> --}}
+  <script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
   <script src="{{ asset('assets/js/frappe-gantt.js') }}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
@@ -95,27 +110,40 @@
             $.ajax({
               url: "/my-project/roadmap/tasks/"+task.id,
               type: 'GET',
-              dataType: 'json', // added data type
+              dataType: 'json', 
               success: function(response) {
                 var modal = $('#modalRoadmap');
                 modal.modal('show');
                 modal.find('.modal-title').html(response.task_name);
                 modal.find('.modal-body').html(`
+                
                 <form action="/my-project/roadmap/tasks/edit/`+response.id+`" method="post">
                   @method('PUT')
                   @csrf
-
-                  <form-group>
+                  
+                   <div class="form-group">
                     <label>Start Date</label>
                     <input name="start_date" class="form-control form-control-sm start-date-edit" type="date" value="`+response.start_date+`">
-                  </form-group>
+                  </div>
                   
-                  <form-group>
+                   <div class="form-group">
                     <label>Due Date</label>
                     <input name="due_date" class="form-control form-control-sm due-date-edit" type="date" value="`+response.due_date+`">
-                  </form-group>
+                  </div>
 
-                </div>
+                  <div class="form-group">
+                      <label>Select2 Multiple</label>
+                      <select class="form-control" id="taskList" multiple="multiple">
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                        <option>Option 3</option>
+                        <option>Option 4</option>
+                        <option>Option 5</option>
+                        <option>Option 6</option>
+                      </select>
+                    </div>
+                  
+                
                 <div class="modal-footer mt-3">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -143,9 +171,7 @@
       `
       )
     }
-    
-    
-    
+  
   })
 </script>
 @endpush

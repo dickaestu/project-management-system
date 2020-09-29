@@ -69,8 +69,15 @@ class RoadmapController extends Controller
 
     public function editTask(Request $request, $id)
     {
-        dd($request->due_date);
         $item = BoardTask::findOrFail($id);
+        $item->update(
+            [
+                'start_date' => $request->start_date,
+                'due_date' => $request->due_date,
+            ]
+        );
+
+        return redirect()->back()->with('success', 'Update Success');
     }
 
     /**
