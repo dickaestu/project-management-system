@@ -91,10 +91,11 @@
         
         
         custom_popup_html: function(task) {
+          const end =  moment(task.end).format('LL');
           return `
           <div class="p-4 rounded bg-primary" style="width:150px">
             <h5 class="text-light">${task.name}</h5>
-            <p class="text-light">Expected to finish by ${task.end}</p>
+            <p class="text-light">Expected to finish by ${end}</p>
             <a 
             class ="btn btn-info btn-sm"
               href="#modalRoadmap"
@@ -110,7 +111,7 @@
         
         
       });
-      gantt.change_view_mode('Day')
+      gantt.change_view_mode('Week')
       
     } else{
       $('.roadmap-content').html(

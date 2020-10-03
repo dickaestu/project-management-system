@@ -48,7 +48,7 @@ Route::delete('/my-project/{id}/project-file-delete', 'ProjectFileController@des
 
 // RoadMap
 Route::get('/my-project/{id}/roadmap', 'RoadmapController@index')->name('project-roadmap')->middleware('auth');
-Route::get('/my-project/roadmap/tasks/{id}', 'RoadmapController@showTask')->name('show-task')->middleware('auth');
+Route::get('/my-project/roadmap/tasks/{id}', 'RoadmapController@showTask')->name('show-roadmap-task')->middleware('auth');
 Route::put('/my-project/roadmap/tasks/edit/{id}', 'RoadmapController@editTask')->name('edit-task')->middleware('auth');
 
 Route::resource('/my-project', 'ProjectController')->middleware('auth');

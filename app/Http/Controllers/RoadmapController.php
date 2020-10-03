@@ -63,7 +63,11 @@ class RoadmapController extends Controller
     public function showTask($id)
     {
         $item = BoardTask::findOrFail($id);
-        $tasks = BoardTask::where('id', '!=', $id)->where(project id nya)->get();
+        $projects_id = $item->board->projects_id;
+        $tasks = BoardTask::where('id', '!=', $id)
+            ->whereHas("board", function ($q) use ($projects_id) {
+                $q->where("projects_id", "=", $projects_id);
+            })->get();
 
         return view('pages.roadmap.show', compact('item', 'tasks'));
     }
@@ -77,6 +81,15 @@ class RoadmapController extends Controller
                 'due_date' => $request->due_date,
             ]
         );
+
+
+        if (!empty($request->add_days && $request->add_tasks)) {
+            foreach ($request->add_tasks as $task) {
+                $task = BoardTask::findOrFail($task);
+                $date = Carbon::parse($task->due_date)->addDays($request->add_days);
+                $task->update(['due_date' => $date]);
+            }
+        }
 
         return redirect()->back()->with('success', 'Update Success');
     }
