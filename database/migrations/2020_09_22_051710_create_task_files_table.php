@@ -20,7 +20,7 @@ class CreateTaskFilesTable extends Migration
             $table->text('file_path');
             $table->timestamps();
 
-            $table->foreign('board_tasks_id')->references('id')->on('board_tasks')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('board_tasks_id')->references('id')->on('board_tasks')->onUpdate('cascade');
         });
     }
 

@@ -3,11 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BoardTask extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
-        'boards_id', 'task_name', 'task_description', 'due_date', 'start_date', 'status_task'
+        'boards_id', 'task_name', 'task_description', 'due_date', 'start_date', 'status_task', 'tags'
     ];
 
     public function board()

@@ -20,6 +20,8 @@ class CreateBoardTasksTable extends Migration
             $table->text('task_description')->nullable();
             $table->date('start_date');
             $table->date('due_date');
+            $table->string('tags');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('boards_id')->references('id')->on('boards')->onUpdate('cascade');

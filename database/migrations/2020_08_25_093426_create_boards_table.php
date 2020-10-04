@@ -18,6 +18,7 @@ class CreateBoardsTable extends Migration
             $table->foreignId('projects_id');
             $table->string('board_name');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('projects_id')->references('id')->on('projects')->onUpdate('cascade');
         });
