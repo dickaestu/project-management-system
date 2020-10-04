@@ -68,14 +68,12 @@
                 </a>
               </div>
               <div class="col-4 text-right">
-                @if ($task->status_task == true)
-                    <i class="fas fa-check text-success"></i>
-                @endif
+                
                 <a href="#"
                 data-url="{{ route('delete-task', $task->id) }}"
                 class="text-danger delete-task-button"
                 >
-                <i class="fas fa-times-circle"></i>
+                <i class="fas fa-trash"></i>
               </a>
             </div>
           </div>

@@ -31,7 +31,8 @@
             </ul>
           </div>
           <ul class="navbar-nav navbar-right">
-            <li class="dropdown dropdown-list-toggle">
+            {{-- Messages --}}
+            {{-- <li class="dropdown dropdown-list-toggle">
               <a
                 href="#"
                 data-toggle="dropdown"
@@ -70,8 +71,9 @@
                   <a href="#">View All <i class="fas fa-chevron-right"></i></a>
                 </div>
               </div>
-            </li>
-            <li class="dropdown dropdown-list-toggle">
+            </li> --}}
+            {{-- Notifications --}}
+            {{-- <li class="dropdown dropdown-list-toggle">
               <a
                 href="#"
                 data-toggle="dropdown"
@@ -103,7 +105,8 @@
                   <a href="#">View All <i class="fas fa-chevron-right"></i></a>
                 </div>
               </div>
-            </li>
+            </li> --}}
+            {{-- Profile --}}
             <li class="dropdown">
               <a
                 href="#"

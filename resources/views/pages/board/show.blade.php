@@ -3,11 +3,7 @@
         <div class="btn-group">
             <a id="attachmentButton" href="#" class="btn btn-icon icon-left btn-secondary text-dark"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</a>
             <a id="subTaskButton" href="#" class="btn btn-icon icon-left btn-secondary ml-2 text-dark"><i class="fa fa-plus" aria-hidden="true"></i> Add Sub Task</a>
-            @if ($item->status_task == false)
-            <a href="{{ route('status-task', $item->id) }}?status=true" class="btn btn-icon icon-left btn-success ml-2 mr-3"><i class="fa fa-check" aria-hidden="true"></i> Done</a>
-            @else
-            <a href="{{ route('status-task', $item->id) }}?status=false" class="btn btn-icon icon-left btn-secondary text-dark ml-2 mr-3"><i class="fa fa-check" aria-hidden="true"></i> Cancel Status</a>
-            @endif
+            
             
         </div>
 
@@ -90,7 +86,7 @@
         
         <div class="form-group">
             <label for="">Attachment</label>
-            <div class="card" style="max-height: 250px; overflow:auto" >
+            <div class="card shadow-sm" style="max-height: 250px; overflow:auto" >
                 <div class="card-body">
                     <ul class="list-group">
                         @foreach ($item->task_file as $file)

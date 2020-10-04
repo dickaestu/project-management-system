@@ -32,7 +32,6 @@ Route::post('/my-project/create-task-member', 'BoardController@createTaskMember'
 Route::delete('/my-project/delete-task-member/{id}', 'BoardController@deleteTaskMember')->name('delete-task-member')->middleware('auth');
 Route::put('/my-project/change-status-task/{id}', 'BoardController@changeStatus')->name('change-status')->middleware('auth');
 Route::delete('/my-project/{id}/delete-task', 'BoardController@deleteTask')->name('delete-task')->middleware('auth');
-Route::get('/my-project/{id}/set-status-task', 'BoardController@statusTask')->name('status-task')->middleware('auth');
 Route::post('/my-project/{id}/upload-task-file', 'BoardController@uploadFileTask')->name('upload-file-task')->middleware('auth');
 Route::get('/my-project/download-task-file/{id}', 'BoardController@downloadFileTask')->name('download-file-task')->middleware('auth');
 Route::delete('/my-project/delete-task-file/{id}', 'BoardController@deleteFileTask')->name('delete-file-task')->middleware('auth');

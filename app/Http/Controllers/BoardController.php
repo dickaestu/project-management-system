@@ -141,22 +141,7 @@ class BoardController extends Controller
         return redirect()->route('project-board', $item->board->projects_id);
     }
 
-    public function statusTask(Request $request, $id)
-    {
 
-        $item = BoardTask::findOrFail($id);
-
-        if ($request->status == 'true') {
-            $item->status_task = true;
-            $item->save();
-        } else {
-            $item->status_task = false;
-            $item->save();
-        }
-
-
-        return redirect()->route('project-board', $item->board->projects_id);
-    }
 
     public function uploadFileTask(Request $request, $id)
     {
