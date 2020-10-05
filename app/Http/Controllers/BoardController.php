@@ -77,10 +77,19 @@ class BoardController extends Controller
         return response()->json($item);
     }
 
-    public function deleteTask($id)
+    public function archiveTask($id)
     {
         $item = BoardTask::findOrFail($id);
         $item->delete();
+        return response()->json([
+            'success' => 'Task has been archived',
+        ]);
+    }
+
+    public function deleteTask($id)
+    {
+        $item = BoardTask::findOrFail($id);
+        $item->forceDelete();
         return response()->json([
             'success' => 'Delete Successfully',
         ]);

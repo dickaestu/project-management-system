@@ -9,7 +9,7 @@ class BoardTask extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'boards_id', 'task_name', 'task_description', 'due_date', 'start_date', 'status_task', 'tags'
+        'boards_id', 'task_name', 'task_description', 'due_date', 'start_date', 'status_task', 'tags', 'tags_color'
     ];
 
     public function board()

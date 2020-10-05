@@ -52,7 +52,7 @@
               <a href="#" 
               data-url="{{ route('delete-board', $board->id) }}"
               class="delete-board"><i class="fas fa-trash text-danger"></i></a>
-
+              
             </p>
             
           </div>
@@ -80,17 +80,36 @@
                   <p>
                     {{ $task->task_name }} 
                   </p>
-                </a>
+                </a><span class="badge badge-{{ $task->tags_color }} badge-sm">{{ $task->tags }}</span>
               </div>
               <div class="col-4 text-right">
-                
-                <a href="#"
-                data-url="{{ route('delete-task', $task->id) }}"
-                class="text-danger delete-task-button"
-                >
-                <i class="fas fa-trash"></i>
-              </a>
+                <div class="dropdown dropright">
+                  <a
+                  href="#"
+                  class="text-dark"
+                  type="button"
+                  id="dropdownMenuButton2"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  >
+                  <i class="material-icons">more_vert</i>
+                </a>
+                <div class="dropdown-menu">
+                  <a
+                  class="dropdown-item archive-task-button has-icon"
+                  data-url="{{ route('archive-task', $task->id) }}"
+                  href="#"
+                  ><i class="material-icons">archive</i> Archive Task</a>
+
+                  <a class="dropdown-item has-icon delete-task-button text-danger" href="#"
+                  data-url="{{ route('delete-task', $task->id) }}"
+                  ><i class="material-icons">delete</i> Delete</a
+                  >
+                </div>
+              </div>
             </div>
+            
           </div>
           <div class="row">
             <div class="col-12">
@@ -101,8 +120,6 @@
           </div>
           <div class="row">
             <div class="col-12">
-              
-              
               @foreach ($task->task_member as $member)
               <div class="assigned-profile mb-2">
                 <img
@@ -114,8 +131,6 @@
                 data-original-title="{{ $member->project_members->user->name }}"
                 />
               </div>
-              
-              
               @endforeach
               
             </div>
@@ -161,11 +176,11 @@
 
 @empty 
 
-  <div class="col-12 text-center">
-    <img src="{{ asset('assets/img/no-project-file.svg') }}" height="200" class="my-3">
-    <h5 class="mb-0 mt-3 mb-5">Board Is Empty</h5>
-  </div>
-  
+<div class="col-12 text-center">
+  <img src="{{ asset('assets/img/no-project-file.svg') }}" height="200" class="my-3">
+  <h5 class="mb-0 mt-3 mb-5">Board Is Empty</h5>
+</div>
+
 
 
 <!-- End of board -->
@@ -218,6 +233,46 @@ aria-hidden="true">
 <script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
 <script>
   $(document).ready(function(){
+    // Untuk Archive task
+    $(".task").on('click','.archive-task-button', function (event) {
+      
+      let token = "{{ csrf_token() }}";
+      let url = $(this).data('url');
+      let task = $(this);
+      swal({
+        title: 'Are you sure?',
+        text: 'This task will be archived',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        
+        if (willDelete) {
+          $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+              "_method" : 'DELETE',
+              "_token" : token,
+              
+            },
+            dataType : "JSON",
+            success: function (response){
+              
+              swal(response.success, {
+                icon: 'success',
+              });
+              
+              $(task).closest('.task').remove()
+            }
+            
+          })
+          
+          
+        } 
+      });
+    });
+
     // Untuk Hapus task
     $(".task").on('click','.delete-task-button', function (event) {
       
@@ -300,7 +355,7 @@ aria-hidden="true">
         } 
       });
     });
-
+    
     // Untuk Edit Board
     let board_name = $('.board-name');
     var input_board_name = $('.input-board-name');

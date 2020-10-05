@@ -11,8 +11,8 @@
                   <i data-feather="align-justify"></i
                 ></a>
               </li>
-          
-              <li>
+          {{-- Search --}}
+              {{-- <li>
                 <form class="form-inline mr-auto">
                   <div class="search-element">
                     <input
@@ -27,7 +27,7 @@
                     </button>
                   </div>
                 </form>
-              </li>
+              </li> --}}
             </ul>
           </div>
           <ul class="navbar-nav navbar-right">
