@@ -22,10 +22,14 @@ Route::post('/my-project/create-member', 'ProjectController@createMember')->name
 
 // Board
 Route::get('/my-project/{id}/board', 'BoardController@index')->name('project-board')->middleware('auth');
+Route::put('/my-project/board/{id}/edit', 'BoardController@editBoard')->name('edit-board')->middleware('auth');
 Route::get('/my-project/{id}/board/task', 'BoardController@showTask')->name('show-task')->middleware('auth');
 Route::post('/my-project/{id}/board/create', 'BoardController@create')->name('create-board')->middleware('auth');
 Route::post('/my-project/{id}/board/create-task', 'BoardController@createTask')->name('create-task')->middleware('auth');
 Route::get('/my-project/{id}/board/show-create-task', 'BoardController@showCreateTask')->name('show-create-task')->middleware('auth');
+Route::delete('/my-project/{id}/board/delete', 'BoardController@deleteBoard')->name('delete-board')->middleware('auth');
+
+// Task
 Route::put('/my-project/{id}/task/description', 'BoardController@taskDescriptionUpdate')->name('task-description-update')->middleware('auth');
 Route::get('/my-project/{id}/task-member', 'BoardController@getMember')->name('cari-member')->middleware('auth');
 Route::post('/my-project/create-task-member', 'BoardController@createTaskMember')->name('create-task-member')->middleware('auth');

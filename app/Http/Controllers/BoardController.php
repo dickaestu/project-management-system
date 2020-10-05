@@ -34,6 +34,24 @@ class BoardController extends Controller
         return redirect()->route('project-board', $id)->with('success', 'Success Create' . $request->board_name);
     }
 
+    public function editBoard(Request $request, $id)
+    {
+        $item = Board::findOrFail($id);
+        $item->update(['board_name' => $request->board_name]);
+
+        return redirect()->back();
+    }
+
+    public function deleteBoard($id)
+    {
+        $item = Board::findOrFail($id);
+        $item->board_task()->delete();
+        $item->delete();
+        return response()->json([
+            'success' => 'Delete Successfully',
+        ]);
+    }
+
     public function showTask($id)
     {
         $item = BoardTask::findOrFail($id);

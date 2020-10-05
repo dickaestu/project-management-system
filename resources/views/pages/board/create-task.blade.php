@@ -5,6 +5,10 @@
         <input type="text" name="task_name" class="form-control" placeholder="task name">
     </div>
     <div class="form-group">
+        <label>Task Tags</label>
+        <input type="text" name="tags" class="form-control" placeholder="task tags">
+    </div>
+    <div class="form-group">
         <label>Task Description</label>
         <textarea name="task_description" class="form-control" cols="30" rows="10" placeholder="description"></textarea>
     </div>
@@ -16,7 +20,7 @@
         <label>Due Date</label>
         <input type="date" name="due_date" class="form-control">
     </div>
-    <button type="submit" class="btn btn-primary m-t-15 waves-effect">Create</button>
+    <button type="submit" class="btn btn-primary mb-5">Create</button>
 </form>
 
 

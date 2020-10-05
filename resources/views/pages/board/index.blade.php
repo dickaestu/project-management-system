@@ -26,7 +26,7 @@
             </nav>
           </div>
         </div>
-    @if ($item->project_manager == Auth::id())
+        @if ($item->project_manager == Auth::id())
         <div class="row mb-3">
           <div class="col">
             <button
@@ -36,19 +36,34 @@
           </button>
         </div>
       </div>
-    @endif
+      @endif
       <div class="scrolling-wrapper">
         @forelse ($boards as $board)
         <!-- Board card -->
         <div class="card bg-light align-top" style="width: 320px;">
           <div class="card-body">
-            <div class="row">
+            <div class="row board-name">
               <p
               style="font-weight: 600; font-size: 17px;"
-              class="text-dark"
+              class="text-dark "
               >
-              {{ $board->board_name }}
+              {{ $board->board_name }} 
+              <a href="#" class="edit-board"><i class="fas fa-pencil-alt text-warning"></i></a>
+              <a href="#" 
+              data-url="{{ route('delete-board', $board->id) }}"
+              class="delete-board"><i class="fas fa-trash text-danger"></i></a>
+
             </p>
+            
+          </div>
+          <div class="row input-board-name mb-2">
+            <form action="{{ route('edit-board',$board->id) }}" class="form-inline" method="post">
+              @method('PUT')
+              @csrf
+              <input type="text" name="board_name" class="form-control form-control-sm" value="{{ $board->board_name }}">
+              <button  class="btn btn-success ml-2 btn-sm"><i class="fas fa-check"></i></button>
+            </form>
+            <a href="#" class="btn btn-secondary ml-1 btn-sm btn-close"><i class="fas fa-times"></i></a>
           </div>
           <!-- Board task -->
           
@@ -87,7 +102,7 @@
           <div class="row">
             <div class="col-12">
               
-           
+              
               @foreach ($task->task_member as $member)
               <div class="assigned-profile mb-2">
                 <img
@@ -99,7 +114,7 @@
                 data-original-title="{{ $member->project_members->user->name }}"
                 />
               </div>
-    
+              
               
               @endforeach
               
@@ -139,19 +154,19 @@
         <i class="fas fa-plus"></i> Create Task
       </a>
     </div>
-          
-      @endif
+    
+    @endif
   </div>
 </div>
 
 @empty 
-<div class="row">
-    <div class="col text-center">
-      <img src="{{ asset('assets/img/no-project-file.svg') }}" height="200" class="mb-3">
-        <h5 class="mb-0 mt-3 mb-5">Board Is Empty</h5>
-    </div>
- 
-</div>
+
+  <div class="col-12 text-center">
+    <img src="{{ asset('assets/img/no-project-file.svg') }}" height="200" class="my-3">
+    <h5 class="mb-0 mt-3 mb-5">Board Is Empty</h5>
+  </div>
+  
+
 
 <!-- End of board -->
 
@@ -204,46 +219,103 @@ aria-hidden="true">
 <script>
   $(document).ready(function(){
     // Untuk Hapus task
-  $(".task").on('click','.delete-task-button', function (event) {
-    
-    let token = "{{ csrf_token() }}";
-    let url = $(this).data('url');
-    let task = $(this);
-    swal({
-      title: 'Are you sure?',
-      text: 'This task will be removed',
-      icon: 'warning',
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
+    $(".task").on('click','.delete-task-button', function (event) {
       
-      if (willDelete) {
-        $.ajax({
-          type: 'POST',
-          url: url,
-          data: {
-            "_method" : 'DELETE',
-            "_token" : token,
+      let token = "{{ csrf_token() }}";
+      let url = $(this).data('url');
+      let task = $(this);
+      swal({
+        title: 'Are you sure?',
+        text: 'This task will be removed',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        
+        if (willDelete) {
+          $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+              "_method" : 'DELETE',
+              "_token" : token,
+              
+            },
+            dataType : "JSON",
+            success: function (response){
+              
+              swal(response.success, {
+                icon: 'success',
+              });
+              
+              $(task).closest('.task').remove()
+            }
             
-          },
-          dataType : "JSON",
-          success: function (response){
-            
-            swal(response.success, {
-              icon: 'success',
-            });
-            
-            $(task).closest('.task').remove()
-          }
+          })
           
-        })
-        
-        
-      } 
+          
+        } 
+      });
     });
-  });
+    // Untuk Hapus board
+    $(".board-name").on('click','.delete-board', function (event) {
+      
+      let token = "{{ csrf_token() }}";
+      let url = $(this).data('url');
+      let board = $(this);
+      swal({
+        title: 'Are you sure?',
+        text: 'This board will be removed',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        
+        if (willDelete) {
+          $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+              "_method" : 'DELETE',
+              "_token" : token,
+              
+            },
+            dataType : "JSON",
+            success: function (response){
+              
+              swal(response.success, {
+                icon: 'success',
+                button:false
+                
+              });
+              
+              setTimeout(function() {
+                location.reload()
+              }, 1300);
+            }
+            
+          })
+          
+          
+        } 
+      });
+    });
 
-
+    // Untuk Edit Board
+    let board_name = $('.board-name');
+    var input_board_name = $('.input-board-name');
+    input_board_name.hide()
+    $('.edit-board').click(function(){
+      board_name.hide()
+      input_board_name.show()
+      input_board_name.find('input').focus()
+    })
+    
+    input_board_name.find('.btn-close').click(function(){
+      board_name.show()
+      input_board_name.hide()
+    })
+    
   })
 </script>
 
