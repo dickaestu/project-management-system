@@ -104,21 +104,25 @@
             <label>Sub Task</label>
             <ul class="list-group">
                 @foreach ($item->sub_task as $subTask)
-                <li class="list-group-item list-sub-task d-flex justify-content-between">{{ $subTask->sub_task_name }}
+                <li class="list-group-item list-sub-task d-flex justify-content-between">
+                    @if ($subTask->sub_task_status == false)
+                    {{ $subTask->sub_task_name }}
                     <span class="d-block">
-                        @if ($subTask->sub_task_status == false)
                         <a
                         href="{{ route('change-status-sub-task', $subTask->id) }}?status=true"
-                        class="btn rounded-circle btn-sm py-0 btn-outline-secondary">
+                        class="btn rounded-circle btn-sm py-0 btn-outline-success">
                         <i class="fas fa-check"></i>
                     </a>
-                    @else 
+                    @else
+                    
                     <a
                     href="{{ route('change-status-sub-task', $subTask->id) }}?status=false"
-                    class="btn btn-cancel-sub-task rounded-circle btn-sm py-0 btn-outline-success">
-                    <i class="fas fa-check"></i>
+                    class="text-decoration-none text-black-50">
+                    <s>{{ $subTask->sub_task_name }}</s>
                 </a>
                 @endif
+                
+                
                 <button 
                 type="button"
                 data-token = "{{ csrf_token() }}"
@@ -146,13 +150,13 @@
                     {{ $file->file_name }}
                     <span class="d-block">
                         <a href="{{ route('download-file-task', $file->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
-                        <form class="d-inline" action="" method="post">
+                      
                             <button type="button" 
                             data-token = "{{ csrf_token() }}"
                             data-url="{{ route('delete-file-task', $file->id) }}"
                             data-name="{{ $file->file_name }}"
                             class="btn btn-danger btn-sm button-delete"><i class="fas fa-trash"></i></button>
-                        </form>
+                       
                     </span>
                 </li>
                 @endforeach
@@ -164,39 +168,46 @@
 </div>
 <div class="form-group">
     <p style="color: #34395e; font-weight:600; font-size:12px">Activity</p>
-    <div class="assigned-profile float-left mr-2">
+    @forelse ($item->comment as $comment)
+        <div class="assigned-profile float-left mr-2">
         <img
-        src="https://ui-avatars.com/api/?name=a"
+        src="https://ui-avatars.com/api/?name={{ $comment->user->name }}"
         class="rounded-circle border"
         height="40"
         alt=""
         />
     </div>
     <div class="activity float-left">
-        <div class="activity-user">
-            Cemoren Dallas <span>1 minute ago</span>
+        <div class="activity-user text-small">
+            {{ $comment->user->name }} <small class="ml-2">{{ $comment->created_at->diffForHumans()}}</small>
         </div>
-        <div class="activity-comment">
-            Jangan lupa diklik!
-        </div>
-        <div class="activity-button">
-            <button class="btn bg-transparent">Edit</button>
-            <button class="btn bg-transparent">Delete</button>
-        </div>
+        
+            <p class="text-dark mb-1 p-comment">{{ $comment->comment }}</p>
+            @if ($comment->users_id == Auth::id())
+                <button
+                data-token = "{{ csrf_token() }}"
+                data-url="{{ route('delete-comment', $comment->id) }}"
+                class="btn bg-transparent delete-comment p-0 btn-sm text-black-50">Delete</button>
+
+            @endif
+       
     </div>
+    <div class="clearfix mb-2"></div>
+    @empty
+        <p>No comment</p>
+    @endforelse
 </div>
-<div class="clearfix"></div>
-{{-- <div class="form-group">
-    <div class="assigned-profile mr-2">
-        <img
-        src="https://ui-avatars.com/api/?name=a"
-        class="rounded-circle border"
-        height="40"
-        alt=""
-        />
+
+{{-- Untuk isi komentar --}}
+<form class="form-comment mt-3" >
+    @csrf
+    <textarea name="comment" id="comment" placeholder="Enter your comment here..." 
+    required class="form-control form-control-sm" rows="1" ></textarea>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-add-comment btn-success btn-sm mt-2 mr-2">Add Comment</button>
+        <button type="button" class="btn btn-close-add-comment btn-secondary btn-sm mt-2">Close</button>
     </div>
-    <textarea name="comment" id="" rows="1" style="border-radius: 5px;"></textarea>
-</div> --}}
+</form>
 </div>
 <div class="col-12 col-md-5">
     <form action="{{ route('change-status',$item->id) }}" class="mb-3" method="POST">
@@ -279,7 +290,7 @@
         // Upload File
         $('.form-upload-file').on('submit', function(e){
             e.preventDefault();
-            data = new FormData(this)
+            let data = new FormData(this)
             $.ajax({
                 url: '{{ route('upload-file-task', $item->id) }}',
                 type: 'POST',
@@ -396,7 +407,6 @@
             e.preventDefault();
             var $this = $(this);
             var data = $this.serializeArray(); 
-            console.log(data)
             $.ajax({
                 url: '{{ route('add-sub-task', $item->id) }}',
                 type: 'POST',
@@ -703,11 +713,11 @@ $(".hidden-form").on('click','.button_delete', function (event) {
     });
 });
 
-form_upload_file = $('.form-upload-file');
+let form_upload_file = $('.form-upload-file');
 form_upload_file.hide()
-form_sub_task = $('.form-sub-task');
+let form_sub_task = $('.form-sub-task');
 form_sub_task.hide()
-form_tags = $('.form-tags');
+let form_tags = $('.form-tags');
 form_tags.hide()
 
 // Attachment button
@@ -746,7 +756,7 @@ $('.btn-cancel-description').click(function(){
 })
 
 // Change Board Status button
-$btn = $('#change-status');
+let $btn = $('#change-status');
 $btn.hide();
 $('.boards_id').on('change', function() {
     $btn.hide();
@@ -757,6 +767,84 @@ $('.boards_id').on('change', function() {
         }
     });
 });
+
+// Button Add Comment
+let btn_add_comment = $('.btn-add-comment');
+btn_add_comment.hide()
+$('.btn-close-add-comment').hide()
+$('#comment').on('focus', function(){
+    btn_add_comment.show();
+    $('.btn-close-add-comment').show()
+})
+
+$('.btn-close-add-comment').click(function(){
+    btn_add_comment.hide()
+$('.btn-close-add-comment').hide()
+})
+
+
+// Add Comment
+$('.form-comment').on('submit', function(e){
+    e.preventDefault();
+    var $this = $(this);
+    var data = $this.serializeArray(); 
+    $.ajax({
+        url: '{{ route('add-comment', $item->id) }}',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function(response){
+            swal('Success', 'Comment Success' , 'success',{button:false});
+            setTimeout(function() {
+                location.reload()
+              }, 1300);
+    },
+    error: function(response){
+        swal('Sorry', 'Max character 255', 'error');
+        $('#comment').addClass('is-invalid');
+    }
+});
+});
+
+// Untuk Hapus Comment
+    $(".activity").on('click','.delete-comment', function (event) {
+        let token = $(this).data('token');
+        let url = $(this).data('url');
+        swal({
+            title: 'Are you sure?',
+            text: 'Your comment will be deleted permanently',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            
+            if (willDelete) {
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        "_method" : 'DELETE',
+                        "_token" : token,
+                    },
+                    dataType : "JSON",
+                    success: function (response){
+                        
+                        swal(response.success, {
+                            icon: 'success',
+                            button:false
+                        });
+                        
+                        setTimeout(function() {
+                            location.reload()
+                        }, 1300);
+                    }
+                    
+                })
+                
+                
+            } 
+        });
+    });
 
 
 })

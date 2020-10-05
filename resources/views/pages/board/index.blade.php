@@ -157,7 +157,7 @@
       @endforelse
       
       <!-- Button create task -->
-      @if ($item->project_manager == Auth::id())
+     
       <div class="row justify-content-center">
         <a
         style="text-decoration:none;" class="text-black-50" href="#" type="button" 
@@ -170,7 +170,7 @@
       </a>
     </div>
     
-    @endif
+    
   </div>
 </div>
 

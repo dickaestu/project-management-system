@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Board;
 use App\BoardTask;
+use App\CommentTask;
 use App\Project;
 use App\ProjectMember;
 use App\SubTask;
@@ -11,6 +12,7 @@ use App\TaskFile;
 use App\TaskMember;
 use App\User;
 use Carbon\Carbon;
+use Auth;
 use Faker\Provider\Barcode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -258,6 +260,34 @@ class BoardController extends Controller
     public function deleteSubTask($id)
     {
         $item = SubTask::findOrFail($id);
+        $item->delete();
+
+        return response()->json([
+            'success' => 'Delete Successfully',
+        ]);
+    }
+
+    public function addComment(Request $request, $id)
+    {
+        $request->validate(
+            ['comment' => 'required|max:255'],
+            [
+                'comment.required' => 'Please enter your comment',
+                'comment.max' => 'Max character 255'
+            ]
+        );
+
+        $data = $request->all();
+        $data['board_tasks_id'] = $id;
+        $data['users_id'] = Auth::id();
+        $item = CommentTask::create($data);
+
+        return response()->json($item);
+    }
+
+    public function deleteComment($id)
+    {
+        $item = CommentTask::findOrFail($id);
         $item->delete();
 
         return response()->json([

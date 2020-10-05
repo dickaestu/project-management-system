@@ -51,7 +51,7 @@
     </div>
     <div class="form-group">
         <label>Task Description</label>
-        <textarea required name="task_description" class="form-control" cols="30" rows="10" placeholder="description"></textarea>
+        <textarea name="task_description" class="form-control" cols="30" rows="10" placeholder="description"></textarea>
     </div>
     <div class="form-group">
         <label>Start Date</label>

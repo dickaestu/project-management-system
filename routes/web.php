@@ -44,6 +44,8 @@ Route::delete('/my-project/delete-task-file/{id}', 'BoardController@deleteFileTa
 Route::post('/my-project/{id}/sub-task', 'BoardController@storeSubTask')->name('add-sub-task')->middleware('auth');
 Route::get('/my-project/status-sub-task/{id}', 'BoardController@changeStatusSubTask')->name('change-status-sub-task')->middleware('auth');
 Route::delete('/my-project/delete-sub-task/{id}', 'BoardController@deleteSubTask')->name('delete-sub-task')->middleware('auth');
+Route::post('/my-project/{id}/add-comment', 'BoardController@addComment')->name('add-comment')->middleware('auth');
+Route::delete('/my-project/comment/delete/{id}', 'BoardController@deleteComment')->name('delete-comment')->middleware('auth');
 
 // Project File
 Route::get('/my-project/{id}/project-file', 'ProjectFileController@index')->name('project-file')->middleware('auth');

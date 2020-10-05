@@ -31,4 +31,9 @@ class BoardTask extends Model
     {
         return $this->hasMany(SubTask::class, 'board_tasks_id', 'id');
     }
+
+    public function comment()
+    {
+        return $this->hasMany(CommentTask::class, 'board_tasks_id', 'id');
+    }
 }

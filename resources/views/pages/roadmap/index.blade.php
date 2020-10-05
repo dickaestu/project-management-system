@@ -43,6 +43,13 @@
           <svg id="gantt"></svg>
         </div>
         
+        <div class="row mt-3">
+          <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
+            <button id="btnDay" type="button" class="btn btn-primary">Day</button>
+            <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
+            <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
+          </div>
+        </div>
         
       </div>
     </div>
@@ -85,19 +92,19 @@
       
       var gantt = new Gantt("#gantt", tasks, {
         // on_click: function (task) {
-        //   console.log(task);
-        // },
-        
-        
-        
-        custom_popup_html: function(task) {
-          const end =  moment(task.end).format('LL');
-          return `
-          <div class="p-4 rounded bg-primary" style="width:150px">
-            <h5 class="text-light">${task.name}</h5>
-            <p class="text-light">Expected to finish by ${end}</p>
-            <a 
-            class ="btn btn-info btn-sm"
+          //   console.log(task);
+          // },
+          
+          
+          
+          custom_popup_html: function(task) {
+            const end =  moment(task.end).format('LL');
+            return `
+            <div class="p-4 rounded bg-primary" style="width:100%">
+              <h5 class="text-light">${task.name}</h5>
+              <p class="text-light">Expected to finish by ${end}</p>
+              <a 
+              class ="btn btn-info btn-sm"
               href="#modalRoadmap"
               data-remote="/my-project/roadmap/tasks/${task.id}"
               data-toggle="modal"
@@ -112,6 +119,16 @@
         
       });
       gantt.change_view_mode('Week')
+
+      $('#btnDay').click(function(){
+        gantt.change_view_mode('Day')
+      });
+      $('#btnWeek').click(function(){
+        gantt.change_view_mode('Week')
+      });
+      $('#btnMonth').click(function(){
+        gantt.change_view_mode('Month')
+      });
       
     } else{
       $('.roadmap-content').html(
