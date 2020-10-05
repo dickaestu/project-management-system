@@ -168,6 +168,15 @@ class BoardController extends Controller
         return redirect()->route('project-board', $item->board->projects_id);
     }
 
+    public function changeTags(Request $request, $id)
+    {
+        $item = BoardTask::findOrFail($id);
+        $data = $request->all();
+        $item->update($data);
+
+        return redirect()->route('project-board', $item->board->projects_id);
+    }
+
 
 
     public function uploadFileTask(Request $request, $id)
