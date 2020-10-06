@@ -39,8 +39,8 @@
                   @else
                   src="{{ Storage::url($item->project_logo)}}"
                   @endif
-                  class="card-img"
-                  style="max-height: 165px; object-fit: cover;"
+                  class="card-img img-fluid"
+                  style="height: 165px; object-fit:cover"
                   alt="..."
                   />
                 </div>

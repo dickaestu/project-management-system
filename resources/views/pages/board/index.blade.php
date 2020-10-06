@@ -101,7 +101,7 @@
                   data-url="{{ route('archive-task', $task->id) }}"
                   href="#"
                   ><i class="material-icons">archive</i> Archive Task</a>
-
+                  
                   <a class="dropdown-item has-icon delete-task-button text-danger" href="#"
                   data-url="{{ route('delete-task', $task->id) }}"
                   ><i class="material-icons">delete</i> Delete</a
@@ -157,7 +157,7 @@
       @endforelse
       
       <!-- Button create task -->
-     
+      
       <div class="row justify-content-center">
         <a
         style="text-decoration:none;" class="text-black-50" href="#" type="button" 
@@ -193,7 +193,19 @@
 
 </div>
 
-
+<div class="settingSidebar">
+  <a href="javascript:void(0)" class="settingPanelToggle"><i class="fas fa-history"></i> 
+  </a>
+  <div class="settingSidebar-body ps-container ps-theme-default">
+    <div class=" fade show active">
+      <div class="setting-panel-header">Log Activity
+      </div>
+     {{-- Content --}}
+     <p>wow</p>
+     {{-- End of Content --}}
+    </div>
+  </div>
+</div>
 
 
 
@@ -272,7 +284,7 @@ aria-hidden="true">
         } 
       });
     });
-
+    
     // Untuk Hapus task
     $(".task").on('click','.delete-task-button', function (event) {
       
