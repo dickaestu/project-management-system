@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-12 col-md-7 mb-4 mb-lg-0">
+    <div class="col-12 col-lg-7 mb-4 mb-lg-0">
         <div class="btn-group">
             <a id="attachmentButton" href="#" class="btn btn-icon icon-left btn-secondary text-dark"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</a>
             <a id="subTaskButton" href="#" class="btn btn-icon icon-left btn-secondary ml-2 text-dark"><i class="fa fa-plus" aria-hidden="true"></i> Add Sub Task</a>
@@ -233,7 +233,7 @@
     </div>
     @foreach ($item->task_member as $task)
     <div class="row task-members pl-0 mb-3">
-        <div class="col-2">
+        <div class="col-2 col-md-3 col-lg-2">
             <img
             src="https://ui-avatars.com/api/?name={{ $task->project_members->user->name }}"
             class="rounded-circle avatar-members"
@@ -241,7 +241,7 @@
             alt=""
             />
         </div>
-        <div class="col-7">
+        <div class="col-auto col-md-8 col-lg-7">
             <p class="text-dark" style="margin-bottom: -5px;">
                 {{ $task->project_members->user->name }}
             </p>

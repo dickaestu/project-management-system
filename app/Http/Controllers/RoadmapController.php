@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Board;
 use App\BoardTask;
+use App\LogActivity;
 use App\Project;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class RoadmapController extends Controller
         $item = Project::findOrFail($id);
 
         $boards = Board::where('projects_id', $id)->get();
-
+        $logs = LogActivity::where('projects_id', $id)->orderBy('created_at', 'DESC')->get();
 
         foreach ($boards as $board) {
             $tasks[] = BoardTask::where('boards_id', $board->id)->get();
@@ -57,6 +58,7 @@ class RoadmapController extends Controller
         return view('pages.roadmap.index', [
             'item' => $item,
             'listTask' => json_encode($listTask),
+            'logs' => $logs
         ]);
     }
 

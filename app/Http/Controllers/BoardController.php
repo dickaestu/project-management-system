@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Board;
 use App\BoardTask;
 use App\CommentTask;
+use App\LogActivity;
 use App\Project;
 use App\ProjectMember;
 use App\SubTask;
@@ -23,7 +24,9 @@ class BoardController extends Controller
     {
         $item = Project::findOrFail($id);
         $boards = Board::with(['board_task'])->where('projects_id', $id)->get();
-        return view('pages.board.index', compact('item', 'boards'));
+
+        $logs = LogActivity::where('projects_id', $id)->orderBy('created_at', 'DESC')->get();
+        return view('pages.board.index', compact('item', 'boards', 'logs'));
     }
 
     public function create(Request $request, $id)
@@ -31,6 +34,12 @@ class BoardController extends Controller
         Board::create([
             'projects_id' => $id,
             'board_name' => $request->board_name
+        ]);
+
+        LogActivity::create([
+            'projects_id' => $id,
+            'activity' => Auth::user()->name . ' create board ' . 'named ' . $request->board_name,
+            'activity_icon' => '<i class="fas fa-square"></i>'
         ]);
 
         return redirect()->route('project-board', $id)->with('success', 'Success Create' . $request->board_name);

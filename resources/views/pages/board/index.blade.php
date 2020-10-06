@@ -37,141 +37,150 @@
         </div>
       </div>
       @endif
-      <div class="scrolling-wrapper">
-        @forelse ($boards as $board)
-        <!-- Board card -->
-        <div class="card bg-light align-top" style="width: 320px;">
-          <div class="card-body">
-            <div class="row board-name">
-              <p
-              style="font-weight: 600; font-size: 17px;"
-              class="text-dark "
-              >
-              {{ $board->board_name }} 
-              <a href="#" class="edit-board"><i class="fas fa-pencil-alt text-warning"></i></a>
-              <a href="#" 
-              data-url="{{ route('delete-board', $board->id) }}"
-              class="delete-board"><i class="fas fa-trash text-danger"></i></a>
-              
+      <div class="row d-lg-none  mb-3">
+        <div class="col">
+          <a href="{{ route('log-activity',$item->id) }}"
+          class="btn btn-info btn-sm text-primary"  
+          >
+          <i class="fas fa-history"></i>  Log Activity
+        </a>
+      </div>
+    </div>
+    <div class="scrolling-wrapper">
+      @forelse ($boards as $board)
+      <!-- Board card -->
+      <div class="card bg-light align-top" style="width: 320px;">
+        <div class="card-body">
+          <div class="row board-name">
+            <p
+            style="font-weight: 600; font-size: 17px;"
+            class="text-dark "
+            >
+            {{ $board->board_name }} 
+            <a href="#" class="edit-board"><i class="fas fa-pencil-alt text-warning"></i></a>
+            <a href="#" 
+            data-url="{{ route('delete-board', $board->id) }}"
+            class="delete-board"><i class="fas fa-trash text-danger"></i></a>
+            
+          </p>
+          
+        </div>
+        <div class="row input-board-name mb-2">
+          <form action="{{ route('edit-board',$board->id) }}" class="form-inline" method="post">
+            @method('PUT')
+            @csrf
+            <input type="text" name="board_name" class="form-control form-control-sm" value="{{ $board->board_name }}">
+            <button  class="btn btn-success ml-2 btn-sm"><i class="fas fa-check"></i></button>
+          </form>
+          <a href="#" class="btn btn-secondary ml-1 btn-sm btn-close"><i class="fas fa-times"></i></a>
+        </div>
+        <!-- Board task -->
+        
+        @forelse ($board->board_task as $task)
+        <div class="row mb-3 task">
+          <div class="board-content">
+            <div class="row mb-4">
+              <div class="col-8">
+                <a href="" style="text-decoration: none" 
+                data-toggle="modal"
+                data-remote="{{ route('show-task', $task->id) }}"
+                data-title="{{ $task->task_name }}"
+                data-target=".bd-example-modal-lg">
+                <p>
+                  {{ $task->task_name }} 
+                </p>
+              </a><span class="badge badge-{{ $task->tags_color }} badge-sm">{{ $task->tags }}</span>
+            </div>
+            <div class="col-4 text-right">
+              <div class="dropdown dropright">
+                <a
+                href="#"
+                class="text-dark"
+                type="button"
+                id="dropdownMenuButton2"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                >
+                <i class="material-icons">more_vert</i>
+              </a>
+              <div class="dropdown-menu">
+                <a
+                class="dropdown-item archive-task-button has-icon"
+                data-url="{{ route('archive-task', $task->id) }}"
+                href="#"
+                ><i class="material-icons">archive</i> Archive Task</a>
+                
+                <a class="dropdown-item has-icon delete-task-button text-danger" href="#"
+                data-url="{{ route('delete-task', $task->id) }}"
+                ><i class="material-icons">delete</i> Delete</a
+                >
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <p class="assigned-to mb-2">
+              Assigned To
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            @foreach ($task->task_member as $member)
+            <div class="assigned-profile mb-2">
+              <img
+              src="https://ui-avatars.com/api/?name={{ $member->project_members->user->name }}"
+              class="rounded-circle border"
+              height="30"
+              alt=""
+              data-toggle="tooltip"
+              data-original-title="{{ $member->project_members->user->name }}"
+              />
+            </div>
+            @endforeach
+            
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    @empty 
+    <div class="row mb-3">
+      <div class="board-content">
+        <div class="row">
+          <div class="col-12 pt-2">
+            
+            <p class="text-center">
+              Tasks is empty
             </p>
             
           </div>
-          <div class="row input-board-name mb-2">
-            <form action="{{ route('edit-board',$board->id) }}" class="form-inline" method="post">
-              @method('PUT')
-              @csrf
-              <input type="text" name="board_name" class="form-control form-control-sm" value="{{ $board->board_name }}">
-              <button  class="btn btn-success ml-2 btn-sm"><i class="fas fa-check"></i></button>
-            </form>
-            <a href="#" class="btn btn-secondary ml-1 btn-sm btn-close"><i class="fas fa-times"></i></a>
-          </div>
-          <!-- Board task -->
-          
-          @forelse ($board->board_task as $task)
-          <div class="row mb-3 task">
-            <div class="board-content">
-              <div class="row mb-4">
-                <div class="col-8">
-                  <a href="" style="text-decoration: none" 
-                  data-toggle="modal"
-                  data-remote="{{ route('show-task', $task->id) }}"
-                  data-title="{{ $task->task_name }}"
-                  data-target=".bd-example-modal-lg">
-                  <p>
-                    {{ $task->task_name }} 
-                  </p>
-                </a><span class="badge badge-{{ $task->tags_color }} badge-sm">{{ $task->tags }}</span>
-              </div>
-              <div class="col-4 text-right">
-                <div class="dropdown dropright">
-                  <a
-                  href="#"
-                  class="text-dark"
-                  type="button"
-                  id="dropdownMenuButton2"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  >
-                  <i class="material-icons">more_vert</i>
-                </a>
-                <div class="dropdown-menu">
-                  <a
-                  class="dropdown-item archive-task-button has-icon"
-                  data-url="{{ route('archive-task', $task->id) }}"
-                  href="#"
-                  ><i class="material-icons">archive</i> Archive Task</a>
-                  
-                  <a class="dropdown-item has-icon delete-task-button text-danger" href="#"
-                  data-url="{{ route('delete-task', $task->id) }}"
-                  ><i class="material-icons">delete</i> Delete</a
-                  >
-                </div>
-              </div>
-            </div>
-            
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <p class="assigned-to mb-2">
-                Assigned To
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              @foreach ($task->task_member as $member)
-              <div class="assigned-profile mb-2">
-                <img
-                src="https://ui-avatars.com/api/?name={{ $member->project_members->user->name }}"
-                class="rounded-circle border"
-                height="30"
-                alt=""
-                data-toggle="tooltip"
-                data-original-title="{{ $member->project_members->user->name }}"
-                />
-              </div>
-              @endforeach
-              
-            </div>
-          </div>
         </div>
-        
-      </div>
-      @empty 
-      <div class="row mb-3">
-        <div class="board-content">
-          <div class="row">
-            <div class="col-12 pt-2">
-              
-              <p class="text-center">
-                Tasks is empty
-              </p>
-              
-            </div>
-          </div>
-        </div>
-        
       </div>
       
-      @endforelse
-      
-      <!-- Button create task -->
-      
-      <div class="row justify-content-center">
-        <a
-        style="text-decoration:none;" class="text-black-50" href="#" type="button" 
-        data-toggle="modal" 
-        data-target="#createTask" 
-        data-remote="{{ route('show-create-task', $board->id) }}"
-        data-title="Create Task"
-        >
-        <i class="fas fa-plus"></i> Create Task
-      </a>
     </div>
     
+    @endforelse
     
+    <!-- Button create task -->
+    
+    <div class="row justify-content-center">
+      <a
+      style="text-decoration:none;" class="text-black-50" href="#" type="button" 
+      data-toggle="modal" 
+      data-target="#createTask" 
+      data-remote="{{ route('show-create-task', $board->id) }}"
+      data-title="Create Task"
+      >
+      <i class="fas fa-plus"></i> Create Task
+    </a>
   </div>
+  
+  
+</div>
 </div>
 
 @empty 
@@ -193,6 +202,7 @@
 
 </div>
 
+{{-- Log activity --}}
 <div class="settingSidebar">
   <a href="javascript:void(0)" class="settingPanelToggle"><i class="fas fa-history"></i> 
   </a>
@@ -200,38 +210,75 @@
     <div class=" fade show active">
       <div class="setting-panel-header">Log Activity
       </div>
-     {{-- Content --}}
-     <p>wow</p>
-     {{-- End of Content --}}
-    </div>
-  </div>
-</div>
-
-
-
-<!-- Create Board Modal -->
-<div class="modal fade" id="createBoard" tabindex="-1" role="dialog" aria-labelledby="formModal"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="formModal">Create Board</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <form action="{{ route('create-board',$item->id) }}" method="POST">
-        @csrf
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" name="board_name" class="form-control" placeholder="Board Name">
+      {{-- Content --}}
+      <div class="container">
+        <section class="section">
+          <div class="section-body">
+            <h2 class="section-title"></h2>
+            <div class="row">
+              <div class="col-12">
+                <div class="activities">
+                  
+                  @forelse ($logs as $log)
+                  <div class="activity">
+                    <div class="activity-icon bg-info text-white">
+                      {!! $log->activity_icon !!}
+                    </div>
+                    <div class="activity-detail">
+                      <div class="mb-2">
+                        <span class="text-job">{{ $log->created_at->diffForHumans() }}</span>
+                        <div class="float-right dropdown">
+                          <a href="#" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></a>
+                          <div class="dropdown-menu">
+                            <div class="dropdown-title">Options</div>
+                            <a href="#" class="dropdown-item has-icon"><i class="material-icons text-small">assignment</i> Board</a>
+                            <a href="{{ route('project-roadmap',$log->projects_id) }}" class="dropdown-item has-icon"><i class="material-icons text-small">compare_arrows</i> Roadmap</a>
+                          </div>
+                        </div>
+                      </div>
+                      <p>{{ $log->activity }}</p>
+                      </div>
+                    </div>
+                    @empty
+                    <p>No Activites</p>
+                    @endforelse
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
-        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Create</button>
-      </form>
+        {{-- End of Content --}}
+      </div>
     </div>
   </div>
-</div>
+  
+  
+  
+  <!-- Create Board Modal -->
+  <div class="modal fade" id="createBoard" tabindex="-1" role="dialog" aria-labelledby="formModal"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModal">Create Board</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('create-board',$item->id) }}" method="POST">
+          @csrf
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="board_name" class="form-control" placeholder="Board Name">
+          </div>
+          <button type="submit" class="btn btn-primary m-t-15 waves-effect">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 @endsection

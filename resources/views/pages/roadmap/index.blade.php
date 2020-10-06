@@ -38,26 +38,114 @@
             </nav>
           </div>
         </div>
-        <div class="row roadmap-content">
-          
-          <svg id="gantt"></svg>
-        </div>
         
-        <div class="row mt-3">
-          <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
-            <button id="btnDay" type="button" class="btn btn-primary">Day</button>
-            <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
-            <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
-          </div>
+        <div class="row d-lg-none  mb-3">
+          <div class="col">
+            <a href="{{ route('log-activity',$item->id) }}"
+            class="btn btn-info btn-sm text-primary"  
+            >
+            <i class="fas fa-history"></i>  Log Activity
+          </a>
         </div>
-        
       </div>
+      
+      <div class="row roadmap-content">
+        
+        <svg id="gantt"></svg>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
+          <button id="btnDay" type="button" class="btn btn-primary">Day</button>
+          <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
+          <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
+        </div>
+      </div>
+      
     </div>
-  </section>
-  
+  </div>
+</section>
+
+</div>
+
+{{-- Log activity --}}
+<div class="settingSidebar">
+  <a href="javascript:void(0)" class="settingPanelToggle"><i class="fas fa-history"></i> 
+  </a>
+  <div class="settingSidebar-body ps-container ps-theme-default">
+    <div class=" fade show active">
+      <div class="setting-panel-header">Log Activity
+      </div>
+      {{-- Content --}}
+      <div class="container">
+        <section class="section">
+          <div class="section-body">
+            <h2 class="section-title"></h2>
+            <div class="row">
+              <div class="col-12">
+                <div class="activities">
+                  
+                  @forelse ($logs as $log)
+                  <div class="activity">
+                    <div class="activity-icon bg-info text-white">
+                      {!! $log->activity_icon !!}
+                    </div>
+                    <div class="activity-detail">
+                      <div class="mb-2">
+                        <span class="text-job">{{ $log->created_at->diffForHumans() }}</span>
+                        <div class="float-right dropdown">
+                          <a href="#" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></a>
+                          <div class="dropdown-menu">
+                            <div class="dropdown-title">Options</div>
+                            <a href="{{ route('project-board',$log->projects_id) }}" class="dropdown-item has-icon"><i class="material-icons text-small">assignment</i> Board</a>
+                            <a href="#" class="dropdown-item has-icon"><i class="material-icons text-small">compare_arrows</i> Roadmap</a>
+                          </div>
+                        </div>
+                      </div>
+                      <p>{{ $log->activity }}</p>
+                    </div>
+                  </div>
+                  @empty
+                  <p>No Activites</p>
+                  @endforelse
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      {{-- End of Content --}}
+    </div>
+  </div>
 </div>
 
 
+
+<!-- Create Board Modal -->
+<div class="modal fade" id="createBoard" tabindex="-1" role="dialog" aria-labelledby="formModal"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="formModal">Create Board</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form action="{{ route('create-board',$item->id) }}" method="POST">
+        @csrf
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" name="board_name" class="form-control" placeholder="Board Name">
+        </div>
+        <button type="submit" class="btn btn-primary m-t-15 waves-effect">Create</button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
 
 
 @endsection
@@ -119,7 +207,7 @@
         
       });
       gantt.change_view_mode('Week')
-
+      
       $('#btnDay').click(function(){
         gantt.change_view_mode('Day')
       });
