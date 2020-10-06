@@ -40,7 +40,7 @@
         var button = $(e.relatedTarget);
         var modal = $(this);
         modal.find('.modal-body').load(button.data("remote"));
-        modal.find('.modal-title').html(button.data("title"));
+        
       });
     });
     
@@ -107,7 +107,7 @@
   <div class="modal-dialog modal-lg ">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="myLargeModalLabel">Modal Title</h5>
+        <h5 class="modal-title text-dark" id="myLargeModalLabel">Detail Task</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

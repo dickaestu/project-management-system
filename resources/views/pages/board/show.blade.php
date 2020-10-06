@@ -1,3 +1,20 @@
+<div class="row task-name mb-3">
+    <div class="col-12">
+        <h5 class="text-dark float-left">{{ $item->task_name }} </h5>
+        <a href="#" class="edit-task-name"><i class="fas fa-pencil-alt text-warning"></i></a>
+    </div>
+</div>
+<div class="row input-task-name mb-2">
+    <div class="col-12">
+        <form class="form-inline form-edit-task-name" >
+            @method('PUT')
+            @csrf
+            <input type="text" name="task_name" class="form-control form-control-sm" value="{{ $item->task_name }}">
+            <button type="submit" class="btn btn-success ml-2 btn-sm"><i class="fas fa-check"></i></button>
+            <a href="#" class="btn btn-secondary ml-1 btn-sm btn-close-task"><i class="fas fa-times"></i></a>
+        </form>
+    </div>
+</div>
 <div class="row">
     <div class="col-12 col-lg-7 mb-4 mb-lg-0">
         <div class="btn-group">
@@ -150,13 +167,13 @@
                     {{ $file->file_name }}
                     <span class="d-block">
                         <a href="{{ route('download-file-task', $file->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-download"></i></a>
-                      
-                            <button type="button" 
-                            data-token = "{{ csrf_token() }}"
-                            data-url="{{ route('delete-file-task', $file->id) }}"
-                            data-name="{{ $file->file_name }}"
-                            class="btn btn-danger btn-sm button-delete"><i class="fas fa-trash"></i></button>
-                       
+                        
+                        <button type="button" 
+                        data-token = "{{ csrf_token() }}"
+                        data-url="{{ route('delete-file-task', $file->id) }}"
+                        data-name="{{ $file->file_name }}"
+                        class="btn btn-danger btn-sm button-delete"><i class="fas fa-trash"></i></button>
+                        
                     </span>
                 </li>
                 @endforeach
@@ -169,7 +186,7 @@
 <div class="form-group">
     <p style="color: #34395e; font-weight:600; font-size:12px">Activity</p>
     @forelse ($item->comment as $comment)
-        <div class="assigned-profile float-left mr-2">
+    <div class="assigned-profile float-left mr-2">
         <img
         src="https://ui-avatars.com/api/?name={{ $comment->user->name }}"
         class="rounded-circle border"
@@ -182,19 +199,19 @@
             {{ $comment->user->name }} <small class="ml-2">{{ $comment->created_at->diffForHumans()}}</small>
         </div>
         
-            <p class="text-dark mb-1 p-comment">{{ $comment->comment }}</p>
-            @if ($comment->users_id == Auth::id())
-                <button
-                data-token = "{{ csrf_token() }}"
-                data-url="{{ route('delete-comment', $comment->id) }}"
-                class="btn bg-transparent delete-comment p-0 btn-sm text-black-50">Delete</button>
-
-            @endif
-       
+        <p class="text-dark mb-1 p-comment">{{ $comment->comment }}</p>
+        @if ($comment->users_id == Auth::id())
+        <button
+        data-token = "{{ csrf_token() }}"
+        data-url="{{ route('delete-comment', $comment->id) }}"
+        class="btn bg-transparent delete-comment p-0 btn-sm text-black-50">Delete</button>
+        
+        @endif
+        
     </div>
     <div class="clearfix mb-2"></div>
     @empty
-        <p>No comment</p>
+    <p>No comment</p>
     @endforelse
 </div>
 
@@ -779,7 +796,7 @@ $('#comment').on('focus', function(){
 
 $('.btn-close-add-comment').click(function(){
     btn_add_comment.hide()
-$('.btn-close-add-comment').hide()
+    $('.btn-close-add-comment').hide()
 })
 
 
@@ -797,55 +814,91 @@ $('.form-comment').on('submit', function(e){
             swal('Success', 'Comment Success' , 'success',{button:false});
             setTimeout(function() {
                 location.reload()
-              }, 1300);
-    },
-    error: function(response){
-        swal('Sorry', 'Max character 255', 'error');
-        $('#comment').addClass('is-invalid');
-    }
-});
+            }, 1300);
+        },
+        error: function(response){
+            swal('Sorry', 'Max character 255', 'error');
+            $('#comment').addClass('is-invalid');
+        }
+    });
 });
 
 // Untuk Hapus Comment
-    $(".activity").on('click','.delete-comment', function (event) {
-        let token = $(this).data('token');
-        let url = $(this).data('url');
-        swal({
-            title: 'Are you sure?',
-            text: 'Your comment will be deleted permanently',
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            
-            if (willDelete) {
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: {
-                        "_method" : 'DELETE',
-                        "_token" : token,
-                    },
-                    dataType : "JSON",
-                    success: function (response){
-                        
-                        swal(response.success, {
-                            icon: 'success',
-                            button:false
-                        });
-                        
-                        setTimeout(function() {
-                            location.reload()
-                        }, 1300);
-                    }
+$(".activity").on('click','.delete-comment', function (event) {
+    let token = $(this).data('token');
+    let url = $(this).data('url');
+    swal({
+        title: 'Are you sure?',
+        text: 'Your comment will be deleted permanently',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+    }).then((willDelete) => {
+        
+        if (willDelete) {
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    "_method" : 'DELETE',
+                    "_token" : token,
+                },
+                dataType : "JSON",
+                success: function (response){
                     
-                })
+                    swal(response.success, {
+                        icon: 'success',
+                        button:false
+                    });
+                    
+                    setTimeout(function() {
+                        location.reload()
+                    }, 1300);
+                }
                 
-                
-            } 
-        });
+            })
+            
+            
+        } 
+    });
+});
+
+// Untuk Edit Task name
+    let task_name = $('.task-name');
+    var input_task_name = $('.input-task-name');
+    input_task_name.hide()
+    $('.edit-task-name').click(function(){
+      task_name.hide()
+      input_task_name.show()
+      input_task_name.find('input').focus()
+    })
+    
+    input_task_name.find('.btn-close-task').click(function(){
+      task_name.show()
+      input_task_name.hide()
     });
 
+// Update Task Name
+    $('.form-edit-task-name').on('submit', function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var data = $this.serializeArray();  
+        $.ajax({
+            url: '{{ route('edit-task-name', $item->id) }}',
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function(response){
+                swal('Success', 'Edit Success' , 'success');
+                task_name.show()
+                task_name.find('h5').html(response.data)
+                input_task_name.hide()
+            },
+            error: function(response){
+                alert('Failed')
+            }
+        });
+    });
 
 })
 </script>

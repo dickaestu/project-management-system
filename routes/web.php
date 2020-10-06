@@ -30,6 +30,7 @@ Route::get('/my-project/{id}/board/show-create-task', 'BoardController@showCreat
 Route::delete('/my-project/{id}/board/delete', 'BoardController@deleteBoard')->name('delete-board')->middleware('auth');
 
 // Task
+Route::put('/my-project/{id}/task/name', 'BoardController@taskNameEdit')->name('edit-task-name')->middleware('auth');
 Route::put('/my-project/{id}/task/description', 'BoardController@taskDescriptionUpdate')->name('task-description-update')->middleware('auth');
 Route::get('/my-project/{id}/task-member', 'BoardController@getMember')->name('cari-member')->middleware('auth');
 Route::post('/my-project/create-task-member', 'BoardController@createTaskMember')->name('create-task-member')->middleware('auth');

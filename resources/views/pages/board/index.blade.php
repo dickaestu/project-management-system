@@ -84,7 +84,6 @@
                 <a href="" style="text-decoration: none" 
                 data-toggle="modal"
                 data-remote="{{ route('show-task', $task->id) }}"
-                data-title="{{ $task->task_name }}"
                 data-target=".bd-example-modal-lg">
                 <p>
                   {{ $task->task_name }} 

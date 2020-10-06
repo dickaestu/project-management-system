@@ -106,6 +106,15 @@ class BoardController extends Controller
         ]);
     }
 
+    public function taskNameEdit(Request $request, $id)
+    {
+        $data = $request->all();
+        $item = BoardTask::findOrFail($id);
+
+        $item->update($data);
+        return response()->json(['data' => $item->task_name]);
+    }
+
     public function taskDescriptionUpdate(Request $request, $id)
     {
         $data = $request->all();
