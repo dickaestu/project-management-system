@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BoardTask;
 use App\Http\Requests\ProjectRequest;
+use App\LogActivity;
 use Illuminate\Http\Request;
 use App\Project;
 use App\ProjectFile;
@@ -49,6 +50,7 @@ class ProjectController extends Controller
      */
     public function store(ProjectRequest $request)
     {
+        $id = Auth::id();
 
         $data = $request->all();
         if ($request->project_logo != null) {
@@ -57,7 +59,7 @@ class ProjectController extends Controller
                 'public'
             );
         }
-        $data['project_manager'] = Auth::id();
+        $data['project_manager'] = $id;
 
         $project_id = Project::create($data);
 
@@ -75,7 +77,13 @@ class ProjectController extends Controller
             ProjectFile::insert($file);
         }
 
-        return redirect()->route('my-project.index');
+        LogActivity::create([
+            'projects_id' => $project_id->id,
+            'activity' => '"' . Auth::user()->name . '"'  . ' has created new project ' . 'named ' . '"' . $request->project_name . '"',
+            'activity_icon' => '<i class="fas fa-briefcase"></i>'
+        ]);
+
+        return redirect()->route('my-project.index')->with('success', 'Create Project Success');
     }
 
     /**
@@ -129,6 +137,12 @@ class ProjectController extends Controller
         $item = Project::findOrFail($id);
 
         $item->update($data);
+
+        LogActivity::create([
+            'projects_id' => $item->id,
+            'activity' => '"' . Auth::user()->name . '"'  . ' has edited ' . $item->project_name . ' project',
+            'activity_icon' => '<i class="fas fa-edit"></i>'
+        ]);
         return redirect()->route('my-project.index')->with('success', 'Succes');
     }
 
@@ -156,6 +170,13 @@ class ProjectController extends Controller
         $item->task_member()->delete();
         $item->delete();
 
+        LogActivity::create([
+            'projects_id' => $item->projects_id,
+            'activity' => '"' . Auth::user()->name . '"'  . ' has removed ' .  '"' . $item->user->name . '"' . ' from ' .   $item->project->project_name,
+            'activity_icon' => '<i class="fas fa-user-minus"></i>'
+        ]);
+
+
         return response()->json([
             'success' => 'Delete Successfully',
         ]);
@@ -173,6 +194,7 @@ class ProjectController extends Controller
 
     public function createMember(Request $request)
     {
+
         $data = $request->all();
         if (
             ProjectMember::where('projects_id', $request->projects_id)->where('users_id', $request->users_id)->first()
@@ -183,7 +205,11 @@ class ProjectController extends Controller
             ]);
         }
         $item = ProjectMember::create($data);
-
+        LogActivity::create([
+            'projects_id' => $item->projects_id,
+            'activity' => '"' . Auth::user()->name . '"'  . ' assigned ' .  '"' . $item->user->name . '"' . ' into ' .  '"' . $item->project->project_name . '"' . ' as ' . $item->role_member,
+            'activity_icon' => '<i class="fas fa-user-plus"></i>'
+        ]);
 
         return response()->json([
             'id' => $item->id,

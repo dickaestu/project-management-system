@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Board;
 use App\BoardTask;
+use App\LogActivity;
 use App\ProjectFile;
 use App\Project;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Auth;
 
 class ProjectFileController extends Controller
 {
@@ -42,6 +44,8 @@ class ProjectFileController extends Controller
             ['file_name.required' => 'Upload Failed ']
         );
 
+        $count = count($request->file_name);
+        $item = Project::findOrFail($id);
         if ($request->hasFile('file_name')) {
             foreach ($request->file('file_name') as $file_name) {
                 $originalName = $file_name->getClientOriginalName();
@@ -55,6 +59,12 @@ class ProjectFileController extends Controller
             }
             ProjectFile::insert($file);
         }
+
+        LogActivity::create([
+            'projects_id' => $id,
+            'activity' => '"' . Auth::user()->name . '"'  . ' has added ' . $count . ' new file in ' . $item->project_name,
+            'activity_icon' => '<i class="fas fa-file-upload"></i>'
+        ]);
 
         return redirect()->route('project-file', $id);
     }
@@ -74,6 +84,12 @@ class ProjectFileController extends Controller
         $path = '/public/' . $item->file_path;
         Storage::delete($path);
         $item->delete();
+
+        LogActivity::create([
+            'projects_id' => $item->projects_id,
+            'activity' => '"' . Auth::user()->name . '"'  . ' has deleted ' . $item->file_name . ' in ' . $item->project->project_name,
+            'activity_icon' => '<i class="fas fa-trash"></i>'
+        ]);
 
         return redirect()->route('project-file', $projects_id);
     }

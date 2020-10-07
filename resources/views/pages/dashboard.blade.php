@@ -116,7 +116,7 @@
       </div>
       
       <div class="card-body">
-       @foreach ($due_tasks as $due_task)
+       @forelse ($due_tasks as $due_task)
         <div class="row">
           <div class="col-8">
             <h6 class="card-title mb-1">{{ $due_task->board->project->project_name }}</h6>
@@ -128,7 +128,9 @@
           </div>
         </div>
         <hr>
-        @endforeach
+        @empty
+        <p>No Tasks...</p>
+        @endforelse
       </div>
     </div>
   </div>
@@ -145,7 +147,7 @@
       </div>
       
       <div class="card-body">
-        @foreach ($in_going_tasks as $task)
+        @forelse ($in_going_tasks as $task)
         <div class="row">
           <div class="col-8">
             <h6 class="card-title mb-1">{{ $task->board->project->project_name }}</h6>
@@ -157,7 +159,9 @@
           </div>
         </div>
         <hr>
-        @endforeach
+        @empty 
+        <p>No Tasks...</p>
+        @endforelse
       </div>
     </div>
   </div>

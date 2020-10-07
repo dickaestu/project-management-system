@@ -42,30 +42,31 @@
         <div class="row d-lg-none  mb-3">
           <div class="col">
             <a href="{{ route('log-activity',$item->id) }}"
-            class="btn btn-info btn-sm text-primary"  
-            >
-            <i class="fas fa-history"></i>  Log Activity
-          </a>
+              class="btn btn-info btn-sm text-primary"  
+              >
+              <i class="fas fa-history"></i>  Log Activity
+            </a>
+          </div>
         </div>
-      </div>
-      
-      <div class="row roadmap-content">
         
-        <svg id="gantt"></svg>
-      </div>
-      
-      <div class="row mt-3">
-        <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
-          <button id="btnDay" type="button" class="btn btn-primary">Day</button>
-          <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
-          <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
+        <div class="row roadmap-content">
+          
+          <svg id="gantt"></svg>
         </div>
-      </div>
+       
+        <div class="row mt-3">
+          <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
+            <button id="btnDay" type="button" class="btn btn-primary">Day</button>
+            <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
+            <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
+          </div>
+        </div>
       
+        
+      </div>
     </div>
-  </div>
-</section>
-
+  </section>
+  
 </div>
 
 {{-- Log activity --}}
@@ -74,7 +75,7 @@
   </a>
   <div class="settingSidebar-body ps-container ps-theme-default">
     <div class=" fade show active">
-      <div class="setting-panel-header">Log Activity
+      <div class="setting-panel-header">Log Activity <a class="text-small text-decoration-none" href="{{ route('log-activity',$item->id) }}"><i class="fas fa-eye"></i></a>
       </div>
       {{-- Content --}}
       <div class="container">

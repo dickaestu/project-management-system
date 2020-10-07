@@ -25,7 +25,7 @@ class BoardController extends Controller
         $item = Project::findOrFail($id);
         $boards = Board::with(['board_task'])->where('projects_id', $id)->get();
 
-        $logs = LogActivity::where('projects_id', $id)->orderBy('created_at', 'DESC')->get();
+        $logs = LogActivity::where('projects_id', $id)->orderBy('created_at', 'DESC')->get()->take(10);
         return view('pages.board.index', compact('item', 'boards', 'logs'));
     }
 
@@ -38,7 +38,7 @@ class BoardController extends Controller
 
         LogActivity::create([
             'projects_id' => $id,
-            'activity' => Auth::user()->name . ' create board ' . 'named ' . $request->board_name,
+            'activity' => Auth::user()->name . ' has created '  . $request->board_name . ' board',
             'activity_icon' => '<i class="fas fa-square"></i>'
         ]);
 
@@ -48,7 +48,16 @@ class BoardController extends Controller
     public function editBoard(Request $request, $id)
     {
         $item = Board::findOrFail($id);
+
+        LogActivity::create([
+            'projects_id' => $item->projects_id,
+            'activity' => Auth::user()->name . ' has renamed '  . $item->board_name . ' board into ' . $request->board_name . ' board',
+            'activity_icon' => '<i class="fas fa-pencil-alt"></i>'
+        ]);
+
         $item->update(['board_name' => $request->board_name]);
+
+
 
         return redirect()->back();
     }
@@ -58,6 +67,11 @@ class BoardController extends Controller
         $item = Board::findOrFail($id);
         $item->board_task()->delete();
         $item->delete();
+        LogActivity::create([
+            'projects_id' => $item->projects_id,
+            'activity' => Auth::user()->name . ' has deleted '  . '"' . $item->board_name . '"' . ' board',
+            'activity_icon' => '<i class="fas fa-trash-alt"></i>'
+        ]);
         return response()->json([
             'success' => 'Delete Successfully',
         ]);
@@ -79,12 +93,14 @@ class BoardController extends Controller
 
     public function createTask(Request $request, $id)
     {
-        $project = Board::findOrFail($request->boards_id);
-        // $start = $project->project->start;
-        // $end = $project->project->end;
         $data = $request->all();
 
         $item = BoardTask::create($data);
+        LogActivity::create([
+            'projects_id' => $item->board->projects_id,
+            'activity' => Auth::user()->name . ' has created '  . '"' . $item->task_name . '"' . ' task',
+            'activity_icon' => '<i class="fas fa-tasks"></i>'
+        ]);
         return response()->json($item);
     }
 
@@ -92,6 +108,11 @@ class BoardController extends Controller
     {
         $item = BoardTask::findOrFail($id);
         $item->delete();
+        LogActivity::create([
+            'projects_id' => $item->board->projects_id,
+            'activity' => Auth::user()->name . ' archived '  . '"' . $item->task_name . '"' . ' task',
+            'activity_icon' => '<i class="fas fa-archive"></i>'
+        ]);
         return response()->json([
             'success' => 'Task has been archived',
         ]);
@@ -101,6 +122,11 @@ class BoardController extends Controller
     {
         $item = BoardTask::findOrFail($id);
         $item->forceDelete();
+        LogActivity::create([
+            'projects_id' => $item->board->projects_id,
+            'activity' => Auth::user()->name . ' has deleted '  . '"' . $item->task_name . '"' . ' task',
+            'activity_icon' => '<i class="fas fa-trash"></i>'
+        ]);
         return response()->json([
             'success' => 'Delete Successfully',
         ]);
@@ -110,7 +136,11 @@ class BoardController extends Controller
     {
         $data = $request->all();
         $item = BoardTask::findOrFail($id);
-
+        LogActivity::create([
+            'projects_id' => $item->board->projects_id,
+            'activity' => Auth::user()->name . ' has renamed task '  . '"' . $item->task_name . '"' . ' into ' . '"' . $request->task_name . '"' . ' task',
+            'activity_icon' => '<i class="fas fa-pen"></i>'
+        ]);
         $item->update($data);
         return response()->json(['data' => $item->task_name]);
     }
@@ -121,6 +151,11 @@ class BoardController extends Controller
         $item = BoardTask::findOrFail($id);
 
         $item->update($data);
+        LogActivity::create([
+            'projects_id' => $item->board->projects_id,
+            'activity' => Auth::user()->name . ' has updated the description of '  . $item->task_name . ' task',
+            'activity_icon' => '<i class="fas fa-pencil-alt"></i>'
+        ]);
         return response()->json(['data' => $item->task_description]);
     }
 
@@ -142,8 +177,6 @@ class BoardController extends Controller
 
     public function createTaskMember(Request $request)
     {
-
-
         $project_member = ProjectMember::where('users_id', $request->users_id)
             ->where('projects_id', $request->projects_id)->first();
 
@@ -154,12 +187,17 @@ class BoardController extends Controller
                 'failed' => 'error'
             ]);
         }
+
         $item = TaskMember::create([
             'board_tasks_id' => $request->board_tasks_id,
             'project_members_id' => $project_member->id,
         ]);
 
-
+        LogActivity::create([
+            'projects_id' => $item->board_task->board->projects_id,
+            'activity' => Auth::user()->name . ' assigned '  . $item->project_members->user->name . ' into ' . $item->board_task->task_name . ' task',
+            'activity_icon' => '<i class="fas fa-user-plus"></i>'
+        ]);
         return response()->json([
             'id' => $item->id,
             'name' => $item->project_members->user->name,
@@ -172,6 +210,11 @@ class BoardController extends Controller
         $item = TaskMember::findOrFail($id);
         $item->delete();
 
+        LogActivity::create([
+            'projects_id' => $item->board_task->board->projects_id,
+            'activity' => Auth::user()->name . ' has removed '  . $item->project_members->user->name . ' in ' . $item->board_task->task_name . ' task',
+            'activity_icon' => '<i class="fas fa-user-minus"></i>'
+        ]);
         return response()->json([
             'success' => 'Delete Successfully',
         ]);
@@ -180,17 +223,28 @@ class BoardController extends Controller
     public function changeStatus(Request $request, $id)
     {
         $item = BoardTask::findOrFail($id);
+        $task = BoardTask::findOrFail($id);
+
         $data = $request->boards_id;
         $item->update([
             'boards_id' => $data,
         ]);
-
+        LogActivity::create([
+            'projects_id' => $item->board->projects_id,
+            'activity' => Auth::user()->name . ' has changed '  . $item->task_name . ' task from ' . $task->board->board_name . ' board into ' . $item->board->board_name . ' board',
+            'activity_icon' => '<i class="fas fa-exchange-alt"></i>'
+        ]);
         return redirect()->route('project-board', $item->board->projects_id);
     }
 
     public function changeTags(Request $request, $id)
     {
         $item = BoardTask::findOrFail($id);
+        LogActivity::create([
+            'projects_id' => $item->board->projects_id,
+            'activity' => Auth::user()->name . ' has changed tags '   . '"' . $item->tags . '"' . ' to ' . '"' . $request->tags . '"' . ' in ' . '"' . $item->task_name . '"' . ' task',
+            'activity_icon' => '<i class="fas fa-pencil-alt"></i>'
+        ]);
         $data = $request->all();
         $item->update($data);
 
@@ -218,6 +272,12 @@ class BoardController extends Controller
             ]);
         }
 
+        LogActivity::create([
+            'projects_id' => $item->board_task->board->projects_id,
+            'activity' => Auth::user()->name . ' has uploaded new file named '  . '"' . $item->file_name . '"' . ' in ' . '"' . $item->board_task->task_name . '"' . ' task',
+            'activity_icon' => '<i class="fas fa-file-upload"></i>'
+        ]);
+
         return response()->json([
             'id' => $item->id,
             'name' => $originalName
@@ -237,7 +297,11 @@ class BoardController extends Controller
         $path = '/public/' . $item->file_path;
         Storage::delete($path);
         $item->delete();
-
+        LogActivity::create([
+            'projects_id' => $item->board_task->board->projects_id,
+            'activity' => Auth::user()->name . ' has deleted '   . $item->file_name .  ' in ' . '"' . $item->board_task->task_name . '"' . ' task',
+            'activity_icon' => '<i class="fas fa-trash"></i>'
+        ]);
         return response()->json([
             'success' => 'Delete Successfully',
         ]);
@@ -253,6 +317,11 @@ class BoardController extends Controller
         $data = $request->all();
         $data['board_tasks_id'] = $id;
         $item = SubTask::create($data);
+        LogActivity::create([
+            'projects_id' => $item->board_task->board->projects_id,
+            'activity' => Auth::user()->name . ' has created sub task '   . '"' . $item->sub_task_name . '"' . ' in ' . '"' . $item->board_task->task_name . '"' . ' task',
+            'activity_icon' => '<i class="fas fa-plus"></i>'
+        ]);
         return response()->json($item);
     }
 
@@ -260,15 +329,26 @@ class BoardController extends Controller
     {
         if ($request->status == 'true') {
             $item = SubTask::findOrFail($id);
+
             $item->update([
                 'sub_task_status' => true
             ]);
+            LogActivity::create([
+                'projects_id' => $item->board_task->board->projects_id,
+                'activity' => Auth::user()->name . ' has changed '   . '"' . $item->sub_task_name . '"' . ' sub task status from not completed into completed',
+                'activity_icon' => '<i class="fas fa-check"></i>'
+            ]);
 
-            return redirect()->back();
+            return response()->json($item);
         } else {
             $item = SubTask::findOrFail($id);
             $item->update([
                 'sub_task_status' => false
+            ]);
+            LogActivity::create([
+                'projects_id' => $item->board_task->board->projects_id,
+                'activity' => Auth::user()->name . ' has changed '   . '"' . $item->sub_task_name . '"' . ' sub task status from completed into not completed',
+                'activity_icon' => '<i class="fas fa-times"></i>'
             ]);
 
             return redirect()->back();
@@ -280,6 +360,11 @@ class BoardController extends Controller
         $item = SubTask::findOrFail($id);
         $item->delete();
 
+        LogActivity::create([
+            'projects_id' => $item->board_task->board->projects_id,
+            'activity' => Auth::user()->name . ' has deleted sub task '   . '"' . $item->sub_task_name . '"' . ' in ' . '"' . $item->board_task->task_name . '"' . ' task',
+            'activity_icon' => '<i class="fas fa-trash"></i>'
+        ]);
         return response()->json([
             'success' => 'Delete Successfully',
         ]);
@@ -299,7 +384,11 @@ class BoardController extends Controller
         $data['board_tasks_id'] = $id;
         $data['users_id'] = Auth::id();
         $item = CommentTask::create($data);
-
+        LogActivity::create([
+            'projects_id' => $item->board_task->board->projects_id,
+            'activity' => Auth::user()->name . ' has commented on '  . $item->board_task->task_name . ' task',
+            'activity_icon' => '<i class="fas fa-comment"></i>'
+        ]);
         return response()->json($item);
     }
 

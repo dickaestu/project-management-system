@@ -27,7 +27,7 @@
           </div>
         </div>
         @if ($item->project_manager == Auth::id())
-        <div class="row mb-3">
+        <div class="row mb-3 float-left">
           <div class="col">
             <button
             class="btn btn-primary btn-sm text-primary" type="button" data-toggle="modal" data-target="#createBoard" 
@@ -46,6 +46,7 @@
         </a>
       </div>
     </div>
+    <div class="clearfix"></div>
     <div class="scrolling-wrapper">
       @forelse ($boards as $board)
       <!-- Board card -->
@@ -65,7 +66,7 @@
           </p>
           
         </div>
-        <div class="row input-board-name mb-2">
+        <div  class="input-board-name row mb-2">
           <form action="{{ route('edit-board',$board->id) }}" class="form-inline" method="post">
             @method('PUT')
             @csrf
@@ -207,14 +208,13 @@
   </a>
   <div class="settingSidebar-body ps-container ps-theme-default">
     <div class=" fade show active">
-      <div class="setting-panel-header">Log Activity
-      </div>
+      <div class="setting-panel-header">Log Activity <a class="text-small text-decoration-none" href="{{ route('log-activity',$item->id) }}"><i class="fas fa-eye"></i></a></div> 
       {{-- Content --}}
-      <div class="container">
+      <div class="container mb-5">
         <section class="section">
           <div class="section-body">
             <h2 class="section-title"></h2>
-            <div class="row">
+            <div class="row ">
               <div class="col-12">
                 <div class="activities">
                   
@@ -339,7 +339,7 @@
       let task = $(this);
       swal({
         title: 'Are you sure?',
-        text: 'This task will be removed',
+        text: 'This task will be deleted permanently',
         icon: 'warning',
         buttons: true,
         dangerMode: true,

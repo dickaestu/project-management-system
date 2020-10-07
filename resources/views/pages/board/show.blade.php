@@ -117,24 +117,26 @@
             <label>Due Date Task</label>
             <p>{{Carbon\Carbon::create($item->due_date)->format('d - M - Y') }}</p>
         </div>
-        <div class="form-group">
+        <div id="list-group-sub-task" class="form-group" >
             <label>Sub Task</label>
             <ul class="list-group">
-                @foreach ($item->sub_task as $subTask)
+                @forelse ($item->sub_task as $subTask)
                 <li class="list-group-item list-sub-task d-flex justify-content-between">
                     @if ($subTask->sub_task_status == false)
                     {{ $subTask->sub_task_name }}
                     <span class="d-block">
                         <a
-                        href="{{ route('change-status-sub-task', $subTask->id) }}?status=true"
-                        class="btn rounded-circle btn-sm py-0 btn-outline-success">
+                        href="#"
+                        data-url="{{ route('change-status-sub-task', $subTask->id) }}?status=true"
+                        class="btn rounded-circle btn-sm py-0 btn-outline-success btn-sub-task-completed">
                         <i class="fas fa-check"></i>
                     </a>
                     @else
                     
                     <a
-                    href="{{ route('change-status-sub-task', $subTask->id) }}?status=false"
-                    class="text-decoration-none text-black-50">
+                    href="#"
+                    data-url="{{ route('change-status-sub-task', $subTask->id) }}?status=false"
+                    class="text-decoration-none text-black-50 btn-sub-task-uncompleted">
                     <s>{{ $subTask->sub_task_name }}</s>
                 </a>
                 @endif
@@ -150,7 +152,9 @@
                 <i class="fas fa-minus"></i>
             </button></span> 
         </li>
-        @endforeach
+        @empty 
+        <li class="list-group-item list-no-sub-task">No Sub Task</li>
+        @endforelse
         
         <div class="hidden-sub-task"></div>
     </ul>
@@ -162,7 +166,7 @@
     <div class="card shadow-sm" style="max-height: 250px; overflow:auto" >
         <div class="card-body">
             <ul class="list-group">
-                @foreach ($item->task_file as $file)
+                @forelse ($item->task_file as $file)
                 <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
                     {{ $file->file_name }}
                     <span class="d-block">
@@ -176,7 +180,9 @@
                         
                     </span>
                 </li>
-                @endforeach
+                @empty 
+                <li class="list-group-item list-no-file align-items-center">No File Attached...</li>
+                @endforelse
                 <div class="hidden-list">
                 </div>
             </ul>
@@ -317,6 +323,7 @@
                 dataType: 'json',
                 success: function(response){
                     swal('Success', 'Upload Success' , 'success');
+                    $('.list-no-file').hide()
                     $('.hidden-list').append(
                     `
                     <li class="list-group-item list-file d-md-flex  justify-content-between align-items-center">
@@ -371,6 +378,7 @@
                             });
                             
                             $(list_file).closest('.list-file').remove()
+                            
                         }
                         
                     })
@@ -451,7 +459,11 @@
                 </li>
                 `
                 );
+                
+                $('.list-no-sub-task').hide()
             },
+            
+            
             error: function(response){
                 swal('Sorry', 'Oops Something Went Wrong', 'error');
             }
@@ -864,41 +876,71 @@ $(".activity").on('click','.delete-comment', function (event) {
 });
 
 // Untuk Edit Task name
-    let task_name = $('.task-name');
-    var input_task_name = $('.input-task-name');
+let task_name = $('.task-name');
+var input_task_name = $('.input-task-name');
+input_task_name.hide()
+$('.edit-task-name').click(function(){
+    task_name.hide()
+    input_task_name.show()
+    input_task_name.find('input').focus()
+})
+
+input_task_name.find('.btn-close-task').click(function(){
+    task_name.show()
     input_task_name.hide()
-    $('.edit-task-name').click(function(){
-      task_name.hide()
-      input_task_name.show()
-      input_task_name.find('input').focus()
-    })
-    
-    input_task_name.find('.btn-close-task').click(function(){
-      task_name.show()
-      input_task_name.hide()
-    });
+});
 
 // Update Task Name
-    $('.form-edit-task-name').on('submit', function(e){
-        e.preventDefault();
-        var $this = $(this);
-        var data = $this.serializeArray();  
-        $.ajax({
-            url: '{{ route('edit-task-name', $item->id) }}',
-            type: 'POST',
-            data: data,
-            dataType: 'json',
-            success: function(response){
-                swal('Success', 'Edit Success' , 'success');
-                task_name.show()
-                task_name.find('h5').html(response.data)
-                input_task_name.hide()
-            },
-            error: function(response){
-                alert('Failed')
-            }
-        });
+$('.form-edit-task-name').on('submit', function(e){
+    e.preventDefault();
+    var $this = $(this);
+    var data = $this.serializeArray();  
+    $.ajax({
+        url: '{{ route('edit-task-name', $item->id) }}',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function(response){
+            swal('Success', 'Edit Success' , 'success');
+            task_name.show()
+            task_name.find('h5').html(response.data)
+            input_task_name.hide()
+        },
+        error: function(response){
+            alert('Failed')
+        }
     });
+});
+
+// Update Status Sub Task
+$("#list-group-sub-task").on('click','.btn-sub-task-completed', function (event) {
+    
+    let url = $(this).data('url');
+    $.ajax({
+        url: url,
+        cache: false,
+        success: function(response){
+            location.reload()
+        }
+    });
+    
+    
+});
+
+$("#list-group-sub-task").on('click','.btn-sub-task-uncompleted', function (event) {
+    
+    let url = $(this).data('url');
+    $.ajax({
+        url: url,
+        cache: false,
+        success: function(response){
+            location.reload()
+        }
+    });
+    
+    
+});
+
 
 })
 </script>

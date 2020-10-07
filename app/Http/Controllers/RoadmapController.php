@@ -8,6 +8,7 @@ use App\LogActivity;
 use App\Project;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Auth;
 
 class RoadmapController extends Controller
 {
@@ -21,7 +22,7 @@ class RoadmapController extends Controller
         $item = Project::findOrFail($id);
 
         $boards = Board::where('projects_id', $id)->get();
-        $logs = LogActivity::where('projects_id', $id)->orderBy('created_at', 'DESC')->get();
+        $logs = LogActivity::where('projects_id', $id)->orderBy('created_at', 'DESC')->get()->take(10);
 
         foreach ($boards as $board) {
             $tasks[] = BoardTask::where('boards_id', $board->id)->get();
@@ -32,6 +33,7 @@ class RoadmapController extends Controller
             return view('pages.roadmap.index', [
                 'item' => $item,
                 'listTask' => json_encode($listTask),
+                'logs' => $logs
             ]);
         }
 
@@ -51,6 +53,7 @@ class RoadmapController extends Controller
             return view('pages.roadmap.index', [
                 'item' => $item,
                 'listTask' => json_encode($listTask),
+                'logs' => $logs
             ]);
         }
 
@@ -92,6 +95,12 @@ class RoadmapController extends Controller
                 $task->update(['due_date' => $date]);
             }
         }
+
+        LogActivity::create([
+            'projects_id' => $item->board->projects_id,
+            'activity' => Auth::user()->name . ' changed '  . $item->task_name . ' date',
+            'activity_icon' => '<i class="fas fa-calendar-alt"></i>'
+        ]);
 
         return redirect()->back()->with('success', 'Update Success');
     }
