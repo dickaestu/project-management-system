@@ -34,15 +34,7 @@
             <button id="cancelButton" type="button" class="btn btn-secondary btn-sm">Cancel</button>
         </form>
         
-        <form class="form-sub-task mt-3">
-            @csrf
-            <div class="form-group mb-2">
-                <label for="">Add Sub Task</label>
-                <input type="text" id="sub_task_name" name="sub_task_name"class="form-control form-control-sm" />
-            </div>
-            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-            <button id="cancelSub" type="button" class="btn btn-secondary btn-sm">Cancel</button>
-        </form>
+        
         
         <form action="{{ route('change-tags', $item->id) }}" class="form-tags mt-3" method="post">
             @csrf
@@ -117,9 +109,18 @@
             <label>Due Date Task</label>
             <p>{{Carbon\Carbon::create($item->due_date)->format('d - M - Y') }}</p>
         </div>
-        <div id="list-group-sub-task" class="form-group" >
+        <div class="form-group">
+            <form class="form-sub-task mb-3">
+            @csrf
+            <div class="form-group mb-2">
+                <label for="">Add Sub Task</label>
+                <input type="text" id="sub_task_name" name="sub_task_name"class="form-control form-control-sm" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            <button id="cancelSub" type="button" class="btn btn-secondary btn-sm">Cancel</button>
+        </form>
             <label>Sub Task</label>
-            <ul class="list-group">
+            <ul  id="list-group-sub-task" class="list-group">
                 @forelse ($item->sub_task as $subTask)
                 <li class="list-group-item list-sub-task d-flex justify-content-between">
                     @if ($subTask->sub_task_status == false)
@@ -444,8 +445,9 @@
                     <li class="list-group-item list-sub-task d-flex justify-content-between">`+response.sub_task_name+`
                         <span class="d-block">
                             <a
-                            href="/my-project/status-sub-task/`+response.id+`?status=true"
-                            class="btn rounded-circle btn-sm py-0 btn-outline-secondary">
+                            href="#"
+                            data-url="/my-project/status-sub-task/`+response.id+`?status=true"
+                            class="btn rounded-circle btn-sm py-0 btn-outline-success btn-sub-task-completed">
                             <i class="fas fa-check"></i>
                         </a>
                         <button 
@@ -461,6 +463,7 @@
                 );
                 
                 $('.list-no-sub-task').hide()
+                form_sub_task.hide()
             },
             
             
@@ -472,7 +475,7 @@
     
     
     // Untuk Hapus Sub Task
-    $(".list-sub-task").on('click','.btn-delete-sub-task', function (event) {
+    $("#list-group-sub-task").on('click','.btn-delete-sub-task', function (event) {
         let list_sub_task = $(this);
         let token = $(this).data('token');
         let url = $(this).data('url');
@@ -509,44 +512,7 @@
             } 
         });
     });
-    // Untuk Hapus Sub Task (2)
-    $(".hidden-sub-task").on('click','.btn-delete-sub-task', function (event) {
-        let list_sub_task = $(this);
-        let token = $(this).data('token');
-        let url = $(this).data('url');
-        let name = $(this).data('name');
-        swal({
-            title: 'Are you sure?',
-            text: name + ' will be removed from sub task',
-            icon: 'warning',
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            
-            if (willDelete) {
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: {
-                        "_method" : 'DELETE',
-                        "_token" : token,
-                    },
-                    dataType : "JSON",
-                    success: function (response){
-                        
-                        swal(response.success, {
-                            icon: 'success',
-                        });
-                        
-                        $(list_sub_task).closest('.list-sub-task').remove()
-                    }
-                    
-                })
-                
-                
-            } 
-        });
-    });
+    
     
     // Update Description
     $('.form-update-description').on('submit', function(e){
@@ -912,33 +878,68 @@ $('.form-edit-task-name').on('submit', function(e){
     });
 });
 
-// Update Status Sub Task
+// Update Status Sub Task complete
 $("#list-group-sub-task").on('click','.btn-sub-task-completed', function (event) {
-    
     let url = $(this).data('url');
+    let list_sub = $(this);
     $.ajax({
         url: url,
         cache: false,
         success: function(response){
-            location.reload()
-        }
-    });
-    
-    
+            $(list_sub).closest('.list-sub-task').html(`
+            <a
+            href="#"
+            data-url="/my-project/status-sub-task/${response.id}?status=false"
+            class="text-decoration-none text-black-50 btn-sub-task-uncompleted">
+            <s>${response.sub_task_name}</s>
+        </a>
+        <button 
+        type="button"
+        data-token = "{{ csrf_token() }}"
+        data-url="/my-project/delete-sub-task/${response.id}"
+        data-name="${response.sub_task_name}"
+        class="btn btn-delete-sub-task rounded-circle btn-sm py-0 btn-outline-danger"
+        >
+        <i class="fas fa-minus"></i>
+    </button>
+    `)
+}
 });
 
+
+});
+
+// Update Status Sub Task uncomplete
 $("#list-group-sub-task").on('click','.btn-sub-task-uncompleted', function (event) {
     
     let url = $(this).data('url');
+    let list_sub = $(this);
     $.ajax({
         url: url,
         cache: false,
         success: function(response){
-            location.reload()
-        }
-    });
-    
-    
+            $(list_sub).closest('.list-sub-task').html(`
+            ${response.sub_task_name}
+            <span class="d-block">
+            <a href="#"
+            data-url="/my-project/status-sub-task/${response.id}?status=true"
+            class="btn rounded-circle btn-sm py-0 btn-outline-success btn-sub-task-completed">
+             <i class="fas fa-check"></i>
+        </a>
+        <button 
+        type="button"
+        data-token = "{{ csrf_token() }}"
+        data-url="/my-project/delete-sub-task/${response.id}"
+        data-name="${response.sub_task_name}"
+        class="btn btn-delete-sub-task rounded-circle btn-sm py-0 btn-outline-danger"
+        >
+        <i class="fas fa-minus"></i>
+    </button></span> 
+    `)
+}
+});
+
+
 });
 
 

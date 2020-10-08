@@ -53,20 +53,14 @@
       <div class="card bg-light align-top" style="width: 320px;">
         <div class="card-body">
           <div class="row board-name">
-            <p
-            style="font-weight: 600; font-size: 17px;"
-            class="text-dark "
-            >
-            {{ $board->board_name }} 
-            <a href="#" class="edit-board"><i class="fas fa-pencil-alt text-warning"></i></a>
+            <p data-id="{{ $board->id }}" style="font-weight: 600; font-size: 17px;"
+            class="text-dark">{{ $board->board_name }}</p>
+            <a href="#" class="edit-board ml-1 mr-1"><i class="fas fa-pencil-alt text-warning"></i></a>
             <a href="#" 
             data-url="{{ route('delete-board', $board->id) }}"
             class="delete-board"><i class="fas fa-trash text-danger"></i></a>
-            
-          </p>
-          
-        </div>
-        <div  class="input-board-name row mb-2">
+          </div>
+        {{-- <div  class="input-board-name row mb-2">
           <form action="{{ route('edit-board',$board->id) }}" class="form-inline" method="post">
             @method('PUT')
             @csrf
@@ -74,9 +68,8 @@
             <button  class="btn btn-success ml-2 btn-sm"><i class="fas fa-check"></i></button>
           </form>
           <a href="#" class="btn btn-secondary ml-1 btn-sm btn-close"><i class="fas fa-times"></i></a>
-        </div>
+        </div> --}}
         <!-- Board task -->
-        
         @forelse ($board->board_task as $task)
         <div class="row mb-3 task">
           <div class="board-content">
@@ -417,17 +410,43 @@
     // Untuk Edit Board
     let board_name = $('.board-name');
     var input_board_name = $('.input-board-name');
-    input_board_name.hide()
-    $('.edit-board').click(function(){
-      board_name.hide()
-      input_board_name.show()
-      input_board_name.find('input').focus()
-    })
+    $(function(){
+      $('.board-name').on('click','.edit-board',function(e){
+      let text = $(this).parent().find('p').text();
+      let id = $(this).parent().find('p').data('id');
+   
+      $(this).parent().html(`
+      <div class="container input-board-name">
+      <div class="row mb-1" data-id="${id}">
+      <form action="/my-project/board/${id}/edit" class="d-flex" method="post">
+            @method('PUT')
+            @csrf
+            <input type="text" name="board_name" class="form-control form-control-sm" value="${text}">
+            <button  class="btn btn-success ml-2 btn-sm"><i class="fas fa-check"></i></button>
+      </form>
+      <a href="#" class="btn btn-secondary ml-1 btn-sm btn-close"><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      `);
+     
+      
+    });
+
+     $('.board-name').on('click', '.btn-close', function(e){
+       let text2 = $(this).parent().find("input[name='board_name']").val();
+       let id2 = $(this).parent().data('id');
+       $(this).parent().parent().parent().html(`
+        <p data-id="${id2}" style="font-weight: 600; font-size: 17px;"
+            class="text-dark">${text2}</p>
+            <a href="#" class="edit-board ml-1 mr-1"><i class="fas fa-pencil-alt text-warning"></i></a>
+            <a href="#" 
+            data-url="/my-project/${id2}/board/delete"
+            class="delete-board"><i class="fas fa-trash text-danger"></i></a>
+       `)
+     })
+    });
     
-    input_board_name.find('.btn-close').click(function(){
-      board_name.show()
-      input_board_name.hide()
-    })
+   
     
   })
 </script>

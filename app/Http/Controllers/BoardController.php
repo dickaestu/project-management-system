@@ -121,6 +121,18 @@ class BoardController extends Controller
     public function deleteTask($id)
     {
         $item = BoardTask::findOrFail($id);
+        foreach ($item->task_member as $task_member) {
+            $task_member->delete();
+        }
+        foreach ($item->task_file as $task_file) {
+            $task_file->delete();
+        }
+        foreach ($item->sub_task as $sub_task) {
+            $sub_task->delete();
+        }
+        foreach ($item->comment as $comment) {
+            $comment->delete();
+        }
         $item->forceDelete();
         LogActivity::create([
             'projects_id' => $item->board->projects_id,
@@ -351,7 +363,7 @@ class BoardController extends Controller
                 'activity_icon' => '<i class="fas fa-times"></i>'
             ]);
 
-            return redirect()->back();
+            return response()->json($item);
         }
     }
 
