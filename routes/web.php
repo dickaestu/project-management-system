@@ -77,6 +77,18 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', 'DashboardController@index')
             ->name('dashboard-admin');
+        Route::resource('manage-users', 'ManageUsersController');
     });
+
+// lEADER
+// Admin
+Route::prefix('leader')
+    ->namespace('Leader')
+    ->middleware(['auth', 'leader'])
+    ->group(function () {
+        Route::get('/', 'DashboardController@index')
+            ->name('dashboard-leader');
+    });
+
 
 Auth::routes();

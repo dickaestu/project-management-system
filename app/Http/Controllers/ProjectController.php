@@ -53,12 +53,14 @@ class ProjectController extends Controller
         $id = Auth::id();
 
         $data = $request->all();
+        // Store logo project ke storage
         if ($request->project_logo != null) {
             $data['project_logo'] = $request->file('project_logo')->store(
                 'assets/project_logo',
                 'public'
             );
         }
+        // set auth id sebagai project manager
         $data['project_manager'] = $id;
 
         $project_id = Project::create($data);

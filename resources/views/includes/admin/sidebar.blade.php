@@ -7,9 +7,14 @@
             </div>
             <ul class="sidebar-menu">
               <li class="menu-header">Main</li>
-              <li class="dropdown active">
-                <a href="#" class="nav-link"
-                  ><i data-feather="monitor"></i><span>Dashboard</span></a
+              <li class="dropdown {{(request()->is('admin')) ? 'active' : ""}}">
+                <a href="{{ route('dashboard-admin') }}" class="nav-link"
+                  ><i class="material-icons">dashboard</i><span>Dashboard</span></a
+                >
+              </li>
+              <li class="dropdown {{(request()->is('admin/manage-users*')) ? 'active' : ""}}">
+                <a href="{{ route('manage-users.index') }}" class="nav-link"
+                  ><i data-feather="users"></i><span>Manage Users</span></a
                 >
               </li>
               {{-- <li class="dropdown {{(request()->is('my-project*')) ? 'active' : ""}}">

@@ -417,7 +417,7 @@
    
       $(this).parent().html(`
       <div class="container input-board-name">
-      <div class="row mb-1" data-id="${id}">
+      <div class="row mb-3" data-id="${id}">
       <form action="/my-project/board/${id}/edit" class="d-flex" method="post">
             @method('PUT')
             @csrf

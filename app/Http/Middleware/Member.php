@@ -18,6 +18,8 @@ class Member
     {
         if (Auth::check() && Auth::user()->roles == 'MEMBER') {
             return $next($request);
+        } elseif (Auth::check() && Auth::user()->roles == 'LEADER') {
+            return redirect('/leader');
         } elseif (Auth::check() && Auth::user()->roles == 'ADMIN') {
             return redirect('/admin');
         }

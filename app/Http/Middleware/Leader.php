@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
-class Admin
+class Leader
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,10 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->roles == 'ADMIN') {
+        if (Auth::check() && Auth::user()->roles == 'LEADER') {
             return $next($request);
-        } elseif (Auth::check() && Auth::user()->roles == 'LEADER') {
-            return redirect('/leader');
+        } elseif (Auth::check() && Auth::user()->roles == 'ADMIN') {
+            return redirect('/admin');
         } elseif (Auth::check() && Auth::user()->roles == 'MEMBER') {
             return redirect('/');
         }
