@@ -62,11 +62,18 @@
                         {{ $item->description }}
                       </p>
                       <p
-                      class="card-text text-black-50"
+                      class="card-text mb-1 text-black-50"
                       style="font-size: 14px;"
                       >
                       <i class="fa fa-clock"></i> Due Date : 
                       {{ Carbon\Carbon::create($item->end)->format('d  F  Y') }}
+                    </p>
+                      <p
+                      class="card-text text-black-50"
+                      style="font-size: 14px;"
+                      >
+                      <i class="fa fa-calendar-alt"></i> Working Days : 
+                      {{ Carbon\Carbon::parse($item->start)->diffInBusinessDays(Carbon\Carbon::parse($item->end)->endOfDay()) }}
                     </p>
                     <span class="project_status badge badge-pill 
                     @if($item->project_status == 'Pending')

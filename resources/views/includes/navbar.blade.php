@@ -121,9 +121,9 @@
               ></a>
               <div class="dropdown-menu dropdown-menu-right pullDown">
                 <div class="dropdown-title">Hello {{ Auth::user()->name }}</div>
-                <a href="#" class="dropdown-item has-icon">
+                {{-- <a href="#" class="dropdown-item has-icon">
                   <i class="far fa-user"></i> Profile
-                </a>
+                </a> --}}
                 <a href="#" class="dropdown-item has-icon">
                   <i class="fas fa-cog"></i>
                   Settings

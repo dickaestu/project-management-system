@@ -55,7 +55,7 @@ class DashboardController extends Controller
 
         // Due Tasks
         $deadline_start_date = Carbon::now()->format('Y-m-d');
-        $deadline_due_date = Carbon::now()->addDays(3)->format('Y-m-d');
+        $deadline_due_date = Carbon::now()->addDays(2)->format('Y-m-d');
 
         $due_tasks = BoardTask::with(['board.project'])
             ->whereBetween('due_date', [$deadline_start_date, $deadline_due_date])

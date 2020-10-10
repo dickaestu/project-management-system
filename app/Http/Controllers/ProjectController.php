@@ -53,6 +53,9 @@ class ProjectController extends Controller
         $id = Auth::id();
 
         $data = $request->all();
+        // dd(Carbon::getYearHolidays(2021));
+        // dd(Carbon::getBusinessDaysInMonth('2020-11'));
+        // dd(Carbon::parse($request->start)->diffInBusinessDays(Carbon::parse($request->end)->endOfDay()));
         // Store logo project ke storage
         if ($request->project_logo != null) {
             $data['project_logo'] = $request->file('project_logo')->store(

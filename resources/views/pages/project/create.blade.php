@@ -61,7 +61,7 @@
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label>Project Start</label>
-                        <input name="start" type="text" class="form-control datepicker @error('start') is-invalid @enderror" value="{{ old('start') }}">
+                        <input name="start" type="date" class="form-control @error('start') is-invalid @enderror" value="{{ old('start') }}">
                         @error('start')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -69,7 +69,7 @@
                       
                       <div class="form-group">
                         <label>Project Deadline</label>
-                        <input name="end" type="text" class="form-control datepicker2 @error('end') is-invalid @enderror" value="{{ old('end') }}">
+                        <input name="end" type="date" class="form-control  @error('end') is-invalid @enderror" value="{{ old('end') }}">
                         @error('end')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

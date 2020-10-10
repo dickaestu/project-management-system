@@ -53,7 +53,7 @@
           
           <svg id="gantt"></svg>
         </div>
-       
+        
         <div class="row mt-3">
           <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
             <button id="btnDay" type="button" class="btn btn-primary">Day</button>
@@ -61,7 +61,22 @@
             <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
           </div>
         </div>
-      
+        
+        <div class="row">
+          <div class="card">
+            <div class="card-header">
+              <h4>Working Days</h4>
+            </div>
+            <div class="card-body">
+              <ul class="list-group">
+                <li class="list-group-item">Start Day : <span class="text-dark">{{ Carbon\Carbon::parse($item->start)->format('d, F Y') }}</span></li>
+                <li class="list-group-item">End Day : <span class="text-dark">{{ Carbon\Carbon::parse($item->end)->format('d, F Y') }}</span></li>
+                <li class="list-group-item">Total Working Days : <span class="text-dark">{{ Carbon\Carbon::parse($item->start)->diffInBusinessDays(Carbon\Carbon::parse($item->end)->endOfDay()) }}</span></li>
+              
+              </ul>
+            </div>
+          </div>
+        </div>
         
       </div>
     </div>
@@ -192,6 +207,7 @@ aria-hidden="true">
             <div class="p-4 rounded bg-primary" style="width:100%">
               <h5 class="text-light">${task.name}</h5>
               <p class="text-light">Expected to finish by ${end}</p>
+              
               <a 
               class ="btn btn-info btn-sm"
               href="#modalRoadmap"
@@ -201,6 +217,7 @@ aria-hidden="true">
               data-title="${task.name}"
               >Edit Date
             </a>
+            
           </div>
           `;
         }
