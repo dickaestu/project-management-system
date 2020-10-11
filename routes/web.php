@@ -77,11 +77,16 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', 'DashboardController@index')
             ->name('dashboard-admin');
+        Route::get('show-project/{id}', 'DashboardController@showProject')
+            ->name('show-project-detail');
+        Route::get('show-project-user/{id}', 'DashboardController@showProjectUser')
+            ->name('show-project-user');
+        Route::get('show-task-user/{id}', 'DashboardController@showTaskUser')
+            ->name('show-task-user');
         Route::resource('manage-users', 'ManageUsersController');
     });
 
 // lEADER
-// Admin
 Route::prefix('leader')
     ->namespace('Leader')
     ->middleware(['auth', 'leader'])

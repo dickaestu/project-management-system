@@ -81,20 +81,18 @@
 
 @endsection
 
-@push('addon-style')
-<link rel="stylesheet" href="{{ asset('assets/bundles/datatables/datatables.min.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}">
-@endpush
 
 @push('addon-script')
 
 <script src="{{ asset('assets/bundles/datatables/datatables.min.js') }}"></script>
 <script src="{{ asset('assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
-        $("#tableUsers").dataTable({
+        $(document).ready(function(){
+            $("#tableUsers").dataTable({
             // "columnDefs": [
             // { "sortable": false, "targets": [2, 3] }
             // ]
         });
+        })
     </script>
 @endpush

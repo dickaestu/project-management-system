@@ -25,8 +25,8 @@ class ProjectRequest extends FormRequest
     {
         return [
             'project_logo' => 'nullable|image|mimes:png,jpg,jpeg|max:7000',
-            'project_name' => 'required|string',
-            'client_name' => 'required|string',
+            'project_name' => 'required|string|max:255',
+            'client_name' => 'required|string|max:255',
             'description' => 'required|string',
             'start' => 'required|date',
             'end' => 'required|date',

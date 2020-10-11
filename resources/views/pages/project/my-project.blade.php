@@ -59,7 +59,7 @@
                         class="card-text text-black"
                         style="line-height: 18px;"
                         >
-                        {{ $item->description }}
+                          {!! Str::limit($item->description,100,'<a id="readMore" href="#" class="text-decoration-none text-small">...Read More</a>') !!}
                       </p>
                       <p
                       class="card-text mb-1 text-black-50"
@@ -113,8 +113,7 @@
                       Member</a>
                       
                       <a class="dropdown-item has-icon" href="{{ route('my-project.edit', $item->id) }}"
-                        ><i class="fas fa-pencil-alt"></i> Edit</a
-                        >
+                        ><i class="fas fa-pencil-alt"></i> Edit</a>
                         @endif
                         
                         <a class="dropdown-item has-icon" href="{{ route('project-file', $item->id) }}"
