@@ -27,13 +27,13 @@ Route::middleware(['auth', 'member'])
         // Board
         Route::get('/my-project/{id}/board', 'BoardController@index')->name('project-board');
         Route::put('/my-project/board/{id}/edit', 'BoardController@editBoard')->name('edit-board');
-        Route::get('/my-project/{id}/board/task', 'BoardController@showTask')->name('show-task');
         Route::post('/my-project/{id}/board/create', 'BoardController@create')->name('create-board');
-        Route::post('/my-project/{id}/board/create-task', 'BoardController@createTask')->name('create-task');
-        Route::get('/my-project/{id}/board/show-create-task', 'BoardController@showCreateTask')->name('show-create-task');
         Route::delete('/my-project/{id}/board/delete', 'BoardController@deleteBoard')->name('delete-board');
 
         // Task
+        Route::get('/my-project/{id}/board/task', 'BoardController@showTask')->name('show-task');
+        Route::get('/my-project/{id}/board/show-create-task', 'BoardController@showCreateTask')->name('show-create-task');
+        Route::post('/my-project/{id}/board/create-task', 'BoardController@createTask')->name('create-task');
         Route::put('/my-project/{id}/task/name', 'BoardController@taskNameEdit')->name('edit-task-name');
         Route::put('/my-project/{id}/task/description', 'BoardController@taskDescriptionUpdate')->name('task-description-update');
         Route::get('/my-project/{id}/task-member', 'BoardController@getMember')->name('cari-member');
@@ -93,6 +93,53 @@ Route::prefix('leader')
     ->group(function () {
         Route::get('/', 'DashboardController@index')
             ->name('dashboard-leader');
+        Route::get('/projects', 'ProjectController@index')
+            ->name('project-leader');
+        Route::get('/show-member/{id}', 'ProjectController@showMember')
+            ->name('show-member-leader');
+
+
+        // Project File
+        Route::get('/project-file/{id}', 'ProjectFileController@index')
+            ->name('project-file-leader');
+        Route::post('/project-file/{id}/upload-project-file', 'ProjectFileController@store')
+            ->name('project-file-leader-upload');
+        Route::get('/project-file/download/{id}', 'ProjectFileController@download')->name('project-file-leader-download');
+        Route::delete('/project-file/delete/{id}', 'ProjectFileController@destroy')->name('project-file-leader-delete');
+
+        // Roadmap
+        Route::get('/roadmap/{id}', 'RoadmapController@index')->name('project-roadmap-leader');
+        Route::get('/roadmap/tasks/{id}', 'RoadmapController@showTask')->name('show-roadmap-task-leader');
+        Route::put('/roadmap/tasks/edit/{id}', 'RoadmapController@editTask')->name('edit-task-leader');
+
+        // Board
+        Route::get('/board/{id}', 'BoardController@index')->name('project-board-leader');
+        Route::post('/board/{id}/create', 'BoardController@create')->name('create-board-leader');
+        Route::put('/board/{id}/edit', 'BoardController@editBoard')->name('edit-board-leader');
+        Route::delete('/board/{id}/delete', 'BoardController@deleteBoard')->name('delete-board-leader');
+        Route::delete('/delete-task/{id}', 'BoardController@deleteTask')->name('delete-task-leader');
+        Route::delete('/archive-task/{id}', 'BoardController@archiveTask')->name('archive-task-leader');
+        Route::get('/board/{id}/show-create-task', 'BoardController@showCreateTask')->name('show-create-task-leader');
+        Route::post('/board/{id}/create-task', 'BoardController@createTask')->name('create-task-leader');
+        Route::get('/board/task/{id}', 'BoardController@showTask')->name('show-task-leader');
+        Route::put('/task/{id}name', 'BoardController@taskNameEdit')->name('edit-task-name-leader');
+        Route::post('/upload-task-file/{id}', 'BoardController@uploadFileTask')->name('upload-file-task-leader');
+        Route::get('/download-task-file/{id}', 'BoardController@downloadFileTask')->name('download-file-task-leader');
+        Route::delete('/delete-task-file/{id}', 'BoardController@deleteFileTask')->name('delete-file-task-leader');
+        Route::post('/sub-task/{id}', 'BoardController@storeSubTask')->name('add-sub-task-leader');
+        Route::get('/status-sub-task/{id}', 'BoardController@changeStatusSubTask')->name('change-status-sub-task-leader');
+        Route::delete('/delete-sub-task/{id}', 'BoardController@deleteSubTask')->name('delete-sub-task-leader');
+        Route::put('/change-tags/{id}', 'BoardController@changeTags')->name('change-tags-leader');
+        Route::post('/add-coment/{id}', 'BoardController@addComment')->name('add-comment-leader');
+        Route::delete('/comment/delete/{id}', 'BoardController@deleteComment')->name('delete-comment-leader');
+        Route::put('/change-status-task/{id}', 'BoardController@changeStatus')->name('change-status-leader');
+        Route::get('/task-member/{id}', 'BoardController@getMember')->name('cari-member-leader');
+        Route::post('/create-task-member', 'BoardController@createTaskMember')->name('create-task-member-leader');
+        Route::delete('/delete-task-member/{id}', 'BoardController@deleteTaskMember')->name('delete-task-member-leader');
+        Route::put('/task/description/{id}', 'BoardController@taskDescriptionUpdate')->name('task-description-update-leader');
+
+        // Log Activity
+        Route::get('/log-activity/{id}', 'LogActivityController@index')->name('log-activity-leader');
     });
 
 

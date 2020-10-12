@@ -12,6 +12,11 @@
                   ><i data-feather="monitor"></i><span>Overview</span></a
                 >
               </li>
+              <li class="dropdown {{(request()->is('leader/projects')) ? 'active' : ""}}">
+                <a href="{{ route('project-leader') }}" class="nav-link"
+                  ><i data-feather="briefcase"></i><span>Projects</span></a
+                >
+              </li>
               {{-- <li class="dropdown {{(request()->is('my-project*')) ? 'active' : ""}}">
                 <a href="#" class="menu-toggle nav-link has-dropdown"
                   ><i data-feather="briefcase"></i><span>Projects</span></a

@@ -1,4 +1,4 @@
- <form action="{{ route('edit-task',$item->id) }}" method="post">
+ <form action="{{ route('edit-task-leader',$item->id) }}" method="post">
     @method('PUT')
     @csrf
     

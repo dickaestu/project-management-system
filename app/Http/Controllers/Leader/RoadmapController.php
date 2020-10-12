@@ -1,22 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Leader;
 
 use App\Board;
 use App\BoardTask;
+use App\Http\Controllers\Controller;
 use App\LogActivity;
+use Auth;
 use App\Project;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Auth;
 
 class RoadmapController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index($id)
     {
         $item = Project::findOrFail($id);
@@ -30,7 +26,7 @@ class RoadmapController extends Controller
 
         if (empty($tasks)) {
             $listTask = 'Empty';
-            return view('pages.roadmap.index', [
+            return view('pages.leader.roadmap.index', [
                 'item' => $item,
                 'listTask' => json_encode($listTask),
                 'logs' => $logs
@@ -50,7 +46,7 @@ class RoadmapController extends Controller
         }
         if (empty($listTask)) {
             $listTask = 'Empty';
-            return view('pages.roadmap.index', [
+            return view('pages.leader.roadmap.index', [
                 'item' => $item,
                 'listTask' => json_encode($listTask),
                 'logs' => $logs
@@ -58,7 +54,7 @@ class RoadmapController extends Controller
         }
 
 
-        return view('pages.roadmap.index', [
+        return view('pages.leader.roadmap.index', [
             'item' => $item,
             'listTask' => json_encode($listTask),
             'logs' => $logs
@@ -74,7 +70,7 @@ class RoadmapController extends Controller
                 $q->where("projects_id", "=", $projects_id);
             })->get();
 
-        return view('pages.roadmap.show', compact('item', 'tasks'));
+        return view('pages.leader.roadmap.show', compact('item', 'tasks'));
     }
 
     public function editTask(Request $request, $id)
@@ -98,7 +94,7 @@ class RoadmapController extends Controller
 
         LogActivity::create([
             'projects_id' => $item->board->projects_id,
-            'activity' => Auth::user()->name . ' changed '  . $item->task_name . ' date',
+            'activity' => "Project Leader" . ' changed '  . $item->task_name . ' date',
             'activity_icon' => '<i class="fas fa-calendar-alt"></i>'
         ]);
 

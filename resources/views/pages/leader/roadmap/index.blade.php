@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.leader')
 @section('title', 'Project Roadmap')
 
 @section('content')
@@ -29,7 +29,7 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb bg-transparent">
                 <li class="breadcrumb-item">
-                  <a href="{{ route('my-project.index') }}">My Project</a>
+                  <a href="{{ route('project-leader') }}">Project</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
                   Roadmap
@@ -41,7 +41,7 @@
         
         <div class="row d-lg-none  mb-3">
           <div class="col">
-            <a href="{{ route('log-activity',$item->id) }}"
+            <a href="{{ route('log-activity-leader',$item->id) }}"
               class="btn btn-info btn-sm text-primary"  
               >
               <i class="fas fa-history"></i>  Log Activity
@@ -90,7 +90,7 @@
   </a>
   <div class="settingSidebar-body ps-container ps-theme-default">
     <div class=" fade show active">
-      <div class="setting-panel-header">Log Activity <a class="text-small text-decoration-none" href="{{ route('log-activity',$item->id) }}"><i class="fas fa-eye"></i></a>
+      <div class="setting-panel-header">Log Activity <a class="text-small text-decoration-none" href="{{ route('log-activity-leader',$item->id) }}"><i class="fas fa-eye"></i></a>
       </div>
       {{-- Content --}}
       <div class="container">
@@ -113,7 +113,7 @@
                           <a href="#" data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></a>
                           <div class="dropdown-menu">
                             <div class="dropdown-title">Options</div>
-                            <a href="{{ route('project-board',$log->projects_id) }}" class="dropdown-item has-icon"><i class="material-icons text-small">assignment</i> Board</a>
+                            <a href="{{ route('project-board-leader',$log->projects_id) }}" class="dropdown-item has-icon"><i class="material-icons text-small">assignment</i> Board</a>
                             <a href="#" class="dropdown-item has-icon"><i class="material-icons text-small">compare_arrows</i> Roadmap</a>
                           </div>
                         </div>
@@ -135,7 +135,6 @@
     </div>
   </div>
 </div>
-
 
 
 
@@ -187,7 +186,7 @@
               <a 
               class ="btn btn-info btn-sm"
               href="#modalRoadmap"
-              data-remote="/my-project/roadmap/tasks/${task.id}"
+              data-remote="/leader/roadmap/tasks/${task.id}"
               data-toggle="modal"
               data-target="#modalRoadmap"
               data-title="${task.name}"
