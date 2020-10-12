@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Leader;
 
 use App\Http\Controllers\Controller;
+use App\Project;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -14,7 +16,29 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('pages.leader.dashboard');
+        $project_on_progress = Project::where('project_status', 'In Progress')->count();
+        $project_completed = Project::where('project_status', 'Completed')->count();
+        $project_pending = Project::where('project_status', 'Pending')->count();
+        $project_abandoned = Project::where('project_status', 'Abandoned')->count();
+
+        // Deadline Project
+        $deadline_start = Carbon::now()->format('Y-m-d');
+        $deadline_end = Carbon::now()->addDays(7)->format('Y-m-d');
+
+        $deadline_project = Project::with('user')->whereBetween('end', [$deadline_start, $deadline_end])
+            ->where('project_status', 'In Progress')
+            ->orderBy('end', 'asc')->get();
+
+        $projects = Project::with('user')->where('project_status', 'In Progress')->get();
+
+        return view('pages.leader.dashboard', compact(
+            'project_on_progress',
+            'project_completed',
+            'project_pending',
+            'project_abandoned',
+            'deadline_project',
+            'projects'
+        ));
     }
 
     /**
