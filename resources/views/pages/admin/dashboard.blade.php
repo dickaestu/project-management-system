@@ -73,11 +73,12 @@
                             data-target="#modalDetailProjectMember"
                             data-title="Detail Member"
                             ><i class="fas fa-users"></i>Detail Member</a>
-                            <a class="dropdown-item has-icon" href="#"
+
+                            <a class="dropdown-item has-icon" href="{{ route('project-board-admin',$item->id) }}"
                               ><i class="fas fa-clone"></i> Board</a>
-                              <a class="dropdown-item has-icon" href="#"
+                              <a class="dropdown-item has-icon" href="{{ route('project-roadmap-admin',$item->id) }}"
                                 ><i class="fas fa-exchange-alt"></i> Roadmap</a>
-                                <a class="dropdown-item has-icon" href="#"
+                                <a class="dropdown-item has-icon" href="{{ route('project-file-admin',$item->id) }}"
                                   ><i class="fas fa-folder"></i> Project File</a>
                           </div>
                       </div>

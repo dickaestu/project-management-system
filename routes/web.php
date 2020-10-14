@@ -84,6 +84,22 @@ Route::prefix('admin')
         Route::get('show-task-user/{id}', 'DashboardController@showTaskUser')
             ->name('show-task-user');
         Route::resource('manage-users', 'ManageUsersController');
+
+        // Project File
+        Route::get('/project-file/{id}', 'ProjectFileController@index')
+            ->name('project-file-admin');
+        Route::get('/project-file/download/{id}', 'ProjectFileController@download')->name('project-file-download-admin');
+
+        // Roadmap
+        Route::get('/roadmap/{id}', 'RoadmapController@index')->name('project-roadmap-admin');
+
+        // Board
+        Route::get('/board/{id}', 'BoardController@index')->name('project-board-admin');
+        Route::get('/board/task/{id}', 'BoardController@showTask')->name('show-task-admin');
+        Route::get('/download-task-file/{id}', 'BoardController@downloadFileTask')->name('download-file-task-admin');
+
+        // Log Activity
+        Route::get('/log-activity/{id}', 'LogActivityController@index')->name('log-activity-admin');
     });
 
 // lEADER
