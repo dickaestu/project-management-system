@@ -47,25 +47,24 @@ class DashboardController extends Controller
                 })->whereHas('board_task', function ($q) {
                     return $q->where("deleted_at", null)->whereHas('board', function ($q) {
                         $q->whereHas('project', function ($q) {
-                            return $q->where('deleted_at', null);
+                            return $q->where('deleted_at', null)->where('project_status', 'In Progress');
                         });
                     });
                 })->count(),
             ];
         }
 
+
+
         return view('pages.admin.dashboard', compact('items', 'projects', 'tasks'));
     }
 
-    public function showProject($id)
+    public function showProjectMember($id)
     {
-        $items = BoardTask::with('task_member.project_members.user')->whereHas('board', function ($q) use ($id) {
-            return $q->where('projects_id', $id);
-        })->get();
 
         $members = ProjectMember::with('user')->where('projects_id', $id)->get();
 
-        return view('pages.admin.show-project', compact('items', 'members'));
+        return view('pages.admin.show-project-member', compact('members'));
     }
 
 
@@ -87,7 +86,7 @@ class DashboardController extends Controller
         })->whereHas('board_task', function ($q) {
             return $q->where("deleted_at", null)->whereHas('board', function ($q) {
                 $q->whereHas('project', function ($q) {
-                    return $q->where('deleted_at', null);
+                    return $q->where('deleted_at', null)->where("project_status", 'In Progress');
                 });
             });
         })->get();

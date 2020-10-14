@@ -77,8 +77,8 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', 'DashboardController@index')
             ->name('dashboard-admin');
-        Route::get('show-project/{id}', 'DashboardController@showProject')
-            ->name('show-project-detail');
+        Route::get('show-project-member/{id}', 'DashboardController@showProjectMember')
+            ->name('show-project-member');
         Route::get('show-project-user/{id}', 'DashboardController@showProjectUser')
             ->name('show-project-user');
         Route::get('show-task-user/{id}', 'DashboardController@showTaskUser')
@@ -95,9 +95,16 @@ Route::prefix('leader')
             ->name('dashboard-leader');
         Route::get('/projects', 'ProjectController@index')
             ->name('project-leader');
+        Route::get('/projects/edit/{id}', 'ProjectController@edit')
+            ->name('project-leader-edit');
+        Route::put('/projects/update/{id}', 'ProjectController@update')
+            ->name('project-leader-update');
         Route::get('/show-member/{id}', 'ProjectController@showMember')
             ->name('show-member-leader');
 
+        // Overview
+        Route::get('/projects/overview/{id}', 'ProjectOverview@index')
+            ->name('overview-leader');
 
         // Project File
         Route::get('/project-file/{id}', 'ProjectFileController@index')

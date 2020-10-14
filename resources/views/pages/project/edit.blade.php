@@ -52,7 +52,7 @@
                       
                       <div class="form-group">
                         <label>Project Description</label>
-                        <textarea name="description" id="" cols="30" rows="10" class="form-control @error('description') is-invalid @enderror">{{ $item->description }}</textarea>
+                        <textarea name="description" style="height: 160px !important"  class="form-control @error('description') is-invalid @enderror">{{ $item->description }}</textarea>
                         @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

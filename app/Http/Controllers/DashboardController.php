@@ -67,7 +67,7 @@ class DashboardController extends Controller
                 $q->whereHas('project_members', function ($query) use ($id) {
                     $query->where('users_id', $id);
                 });
-            })->orderBy('due_date', 'asc')->get()->take(5);
+            })->orderBy('due_date', 'asc')->get();
 
 
         // In Going Task
@@ -79,7 +79,7 @@ class DashboardController extends Controller
             $q->whereHas('project_members', function ($query) use ($id) {
                 $query->where('users_id', $id);
             });
-        })->orderBy('created_at', 'desc')->get()->take(5);
+        })->orderBy('created_at', 'desc')->get();
 
 
         return view('pages.dashboard', compact(

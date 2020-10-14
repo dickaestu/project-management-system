@@ -1,5 +1,5 @@
-@extends('layouts.main')
-@section('title', 'Create Project')
+@extends('layouts.leader')
+@section('title', 'Edit Project')
 
 @section('content')
 <div class="main-content">
@@ -8,13 +8,14 @@
       <div class="container">
         <div class="row">
           <div class="col-12">
-            <h3 class="text-dark mb-3">Create Project</h3>
+            <h3 class="text-dark mb-3">Edit Project</h3>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <div class="card" id="sample-login">
-              <form method="POST" action="{{ route('my-project.store') }}" enctype="multipart/form-data">
+              <form method="POST" action="{{ route('project-leader-update', $item->id) }}" enctype="multipart/form-data">
+                @method('PUT')
                 @csrf
                 <div class="card-header">
                   <h4>Project Details</h4>
@@ -22,6 +23,7 @@
                 <div class="card-body pb-0">
                   <div class="row">
                     <div class="col-lg-6">
+                   
                       <div class="form-group">
                         <label for="">Logo Project</label>
                         <input type="file" name="project_logo" class="form-control " id="">
@@ -33,7 +35,7 @@
                       
                       <div class="form-group">
                         <label for="">Project Name</label>
-                        <input type="text" name="project_name" class="form-control @error('project_name') is-invalid @enderror" value="{{ old('project_name') }}">
+                        <input type="text" name="project_name" class="form-control @error('project_name') is-invalid @enderror" value="{{ $item->project_name }}">
                         @error('project_name')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -41,7 +43,7 @@
                       
                       <div class="form-group">
                         <label for="">Client Name</label>
-                        <input type="text" name="client_name" class="form-control @error('client_name') is-invalid @enderror" value="{{ old('client_name') }}">
+                        <input type="text" name="client_name" class="form-control @error('client_name') is-invalid @enderror" value="{{ $item->client_name }}">
                         @error('client_name')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -50,7 +52,7 @@
                       
                       <div class="form-group">
                         <label>Project Description</label>
-                        <textarea name="description"  style="height: 105px !important"  class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                        <textarea name="description" style="height: 160px !important"  class="form-control @error('description') is-invalid @enderror">{{ $item->description }}</textarea>
                         @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -61,7 +63,7 @@
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label>Project Start</label>
-                        <input name="start" type="date" class="form-control @error('start') is-invalid @enderror" value="{{ old('start') }}">
+                        <input name="start" type="date" class="form-control @error('start') is-invalid @enderror" value="{{ $item->start }}">
                         @error('start')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -69,21 +71,29 @@
                       
                       <div class="form-group">
                         <label>Project Deadline</label>
-                        <input name="end" type="date" class="form-control  @error('end') is-invalid @enderror" value="{{ old('end') }}">
+                        <input name="end" type="date" class="form-control @error('end') is-invalid @enderror" value="{{ $item->end }}">
                         @error('end')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                       </div>
-                      
-                      <div class="form-group">
-                        <label for="">Add File</label>
-                        <input type="file" name="file_name[]" class="form-control" id="filer_input2" multiple="multiple" />
+
+                         <div class="form-group">
+                        <label>Change Project Status</label>
+                        <select class="form-control" name="project_status">
+                          <option value="{{ $item->project_status }}">Status Now ({{ $item->project_status }})</option>
+                          <option value="Pending">Pending</option>
+                          <option value="In Progress">In Progress</option>
+                          <option value="Completed">Completed</option>
+                          <option value="Abandoned">Abandoned</option>
+                        </select>
                       </div>
+                      
+                      
                     </div>
                   </div>
                 </div>
                 <div class="card-footer text-center">
-                  <button type="submit" class="btn btn-primary">Create Project</button>
+                  <button type="submit" class="btn btn-primary">Edit Project</button>
                 </div>
               </form>
             </div>
@@ -97,34 +107,3 @@
 </div>
 @endsection
 
-@push('addon-style')
-
-<link type="text/css" rel="stylesheet" href="{{ asset('assets/jquery-filler/css/jquery.filer.css') }}">
-<link type="text/css" rel="stylesheet" href="{{ asset('assets/jquery-filler/css/themes/jquery.filer-dragdropbox-theme.css') }}">
-<link type="text/css" rel="stylesheet" href="{{ asset('assets/css/gijgo.min.css') }}">
-
-
-@endpush
-
-@push('addon-script')
-<script src="{{ asset('assets/jquery-filler/js/jquery.filer.min.js') }}"></script>
-<script src="{{ asset('assets/jquery-filler/js/dragdrop.js') }}"></script>
-<script src="{{ asset('assets/js/gijgo.min.js') }}"></script>
-<script>
-  $(document).ready(function(){
-    $('.datepicker').datepicker({
-      uiLibrary: 'bootstrap4',
-      iconsLibrary: 'fontawesome',
-      showRightIcon: false,
-      format: 'yyyy-mm-dd'
-    });
-    $('.datepicker2').datepicker({
-      uiLibrary: 'bootstrap4',
-      iconsLibrary: 'fontawesome',
-      showRightIcon: false,
-      format: 'yyyy-mm-dd'
-    });
-  })
-</script>
-
-@endpush

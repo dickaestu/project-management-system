@@ -9,7 +9,7 @@
               <li class="menu-header">Main</li>
               <li class="dropdown {{(request()->is('leader')) ? 'active' : ""}}">
                 <a href="{{ route('dashboard-admin') }}" class="nav-link"
-                  ><i data-feather="monitor"></i><span>Overview</span></a
+                  ><i data-feather="monitor"></i><span>Dashboard</span></a
                 >
               </li>
               <li class="dropdown {{(request()->is('leader/projects')) ? 'active' : ""}}">

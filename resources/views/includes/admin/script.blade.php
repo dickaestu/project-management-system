@@ -14,7 +14,7 @@
   
   <script>
     jQuery(document).ready(function($){
-       $('#modalDetailProject').on('show.bs.modal', function(e){
+       $('#modalDetailProjectMember').on('show.bs.modal', function(e){
         var button = $(e.relatedTarget);
         var modal = $(this);
         modal.find('.modal-body').load(button.data("remote"));
@@ -39,7 +39,7 @@
     
   </script>
 
-  <div class="modal" id="modalDetailProject" tabindex="-1" role="dialog">
+  <div class="modal" id="modalDetailProjectMember" tabindex="-1" role="dialog">
     <div class="modal-dialog  modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
       <div class="modal-content">
         <div class="modal-header">

@@ -118,8 +118,6 @@ class ProjectController extends Controller
     {
         $item = Project::findOrFail($id);
 
-
-
         return view('pages.project.edit', compact('item'));
     }
 

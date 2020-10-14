@@ -15,7 +15,7 @@
     {{-- Card Bagian Atas --}}
     <div class="row">
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
+        <div class="card card-statistic-1" style="height: 115px">
           <div class="card-icon l-bg-purple">
             <i class="fas fa-suitcase"></i>
           </div>
@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
+        <div class="card card-statistic-1" style="height: 115px">
           <div class="card-icon l-bg-green">
             <i class="fas fa-check"></i>
           </div>
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
+        <div class="card card-statistic-1" style="height: 115px">
           <div class="card-icon l-bg-cyan">
             <i class="fas fa-clock"></i>
           </div>
@@ -66,7 +66,7 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
+        <div class="card card-statistic-1" style="height: 115px">
           <div class="card-icon l-bg-orange">
             <i class="fas fa-times"></i>
           </div>
@@ -88,8 +88,9 @@
       {{-- Project mendekati deadline --}}
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header">
-            <h4 class="d-inline text-black-50">This project is approaching the deadline.</h4>
+          <div class="card-header d-inline-block">
+            <h4 class="">Due Project</h4>
+            <p class="text-black-50">This project is approaching the deadline.</p>
           </div>
           <div class="card-body" style="max-height:400px; overflow:auto">
             <div class="table-responsive">
@@ -107,7 +108,7 @@
                   <td>{{ $project->client_name }}</td>
                   <td>{{ $project->user->name }}</td>
                   <td>{{ Carbon\Carbon::parse($project->end)->format('d, M Y') }}</td>
-                  <td><a href="#" class="btn btn-sm btn-info">Details</a></td>
+                  <td><a href="{{ route('project-board-leader',$item->id) }}" class="btn btn-sm btn-info">Boards</a></td>
                 </tr>
                 @empty 
                 <tr>
@@ -123,8 +124,9 @@
       {{-- Project On Progress --}}
       <div class="col-md-6">
         <div class="card">
-          <div class="card-header">
-            <h4 class="d-inline text-black-50">This project is on progress.</h4>
+          <div class="card-header d-inline-block">
+            <h4 class="">On Progress Project</h4>
+            <p class="text-black-50">This project is on progress</p>
           </div>
           <div class="card-body" style="max-height:400px; overflow:auto">
             <div class="table-responsive">
@@ -142,7 +144,7 @@
                   <td>{{ $item->client_name }}</td>
                   <td>{{ $item->user->name }}</td>
                   <td>{{ Carbon\Carbon::parse($item->end)->format('d, M Y') }}</td>
-                  <td><a href="#" class="btn btn-sm btn-info">Details</a></td>
+                  <td><a href="{{ route('project-board-leader',$item->id) }}" class="btn btn-sm btn-info">Boards</a></td>
                 </tr>
                 @empty 
                 <tr>

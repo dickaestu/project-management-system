@@ -11,7 +11,7 @@
       </div>
       <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
         <div class="card">
-          <div class="card-statistic-4 car">
+          <div class="card-statistic-4" >
             <div class="align-items-center justify-content-between">
               <div class="row">
                 <div
@@ -34,7 +34,7 @@
     </div>
     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
       <div class="card">
-        <div class="card-statistic-4">
+        <div class="card-statistic-4" >
           <div class="align-items-center justify-content-between">
             <div class="row">
               <div
@@ -57,7 +57,7 @@
   </div>
   <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
     <div class="card">
-      <div class="card-statistic-4">
+      <div class="card-statistic-4 "  >
         <div class="align-items-center justify-content-between">
           <div class="row">
             <div
@@ -65,7 +65,7 @@
             >
             <div class="card-content">
               <h5 class="font-18">{{ $total_project }}</h5>
-              <h2 class="mb-3 font-15">Total Project</h2>
+              <h2 class="mb-3 font-15">Total All Project</h2>
             </div>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -80,7 +80,7 @@
 </div>
 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
   <div class="card">
-    <div class="card-statistic-4">
+    <div class="card-statistic-4" >
       <div class="align-items-center justify-content-between">
         <div class="row">
           <div
@@ -115,7 +115,7 @@
         </div>
       </div>
       
-      <div class="card-body">
+      <div class="card-body" style="max-height:400px; overflow:auto">
        @forelse ($due_tasks as $due_task)
         <div class="row">
           <div class="col-8">
@@ -146,7 +146,7 @@
         </div>
       </div>
       
-      <div class="card-body">
+      <div class="card-body" style="max-height:400px; overflow:auto">
         @forelse ($in_going_tasks as $task)
         <div class="row">
           <div class="col-8">

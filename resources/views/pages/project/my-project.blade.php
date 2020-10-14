@@ -59,7 +59,7 @@
                         class="card-text text-black"
                         style="line-height: 18px;"
                         >
-                          {!! Str::limit($item->description,100,'<a id="readMore" href="#" class="text-decoration-none text-small">...Read More</a>') !!}
+                          {!! Str::limit($item->description,100,'<a id="readMore" href="/my-project/'.$item->id.'/edit" class="text-decoration-none text-small">...Read More</a>') !!}
                       </p>
                       <p
                       class="card-text mb-1 text-black-50"
