@@ -49,7 +49,9 @@
           </div>
         </div>
         
-        <div class="row roadmap-content">
+        <div class="card">
+          <div class="card-body">
+            <div class="row roadmap-content">
           
           <svg id="gantt"></svg>
         </div>
@@ -59,6 +61,8 @@
             <button id="btnDay" type="button" class="btn btn-primary">Day</button>
             <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
             <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
+          </div>
+        </div>
           </div>
         </div>
         
@@ -180,7 +184,7 @@
           custom_popup_html: function(task) {
             const end =  moment(task.end).format('LL');
             return `
-            <div class="p-4 rounded bg-primary" style="width:100%">
+            <div class="p-4 rounded bg-primary" style="width:180px">
               <h5 class="text-light">${task.name}</h5>
               <p class="text-light">Expected to finish by ${end}</p>
               

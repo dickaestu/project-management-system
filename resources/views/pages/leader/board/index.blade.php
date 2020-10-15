@@ -66,7 +66,7 @@
           <div class="board-content">
             <div class="row mb-4">
               <div class="col-8">
-                <a href="" style="text-decoration: none" 
+                <a href="#" style="text-decoration: none" 
                 data-toggle="modal"
                 data-remote="{{ route('show-task-leader', $task->id) }}"
                 data-target=".bd-example-modal-lg">

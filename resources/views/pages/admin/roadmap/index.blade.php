@@ -49,16 +49,20 @@
           </div>
         </div>
         
-        <div class="row roadmap-content">
-          
-          <svg id="gantt"></svg>
-        </div>
-        
-        <div class="row mt-3">
-          <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
-            <button id="btnDay" type="button" class="btn btn-primary">Day</button>
-            <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
-            <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
+        <div class="card">
+          <div class="card-body">
+            <div class="row roadmap-content">
+              
+              <svg id="gantt"></svg>
+            </div>
+            
+            <div class="row mt-3">
+              <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
+                <button id="btnDay" type="button" class="btn btn-primary">Day</button>
+                <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
+                <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -72,7 +76,7 @@
                 <li class="list-group-item">Start Day : <span class="text-dark">{{ Carbon\Carbon::parse($item->start)->format('d, F Y') }}</span></li>
                 <li class="list-group-item">End Day : <span class="text-dark">{{ Carbon\Carbon::parse($item->end)->format('d, F Y') }}</span></li>
                 <li class="list-group-item">Total Working Days : <span class="text-dark">{{ Carbon\Carbon::parse($item->start)->diffInBusinessDays(Carbon\Carbon::parse($item->end)->endOfDay()) }}</span></li>
-              
+                
               </ul>
             </div>
           </div>
@@ -179,42 +183,43 @@
           custom_popup_html: function(task) {
             const end =  moment(task.end).format('LL');
             return `
-            <div class="p-4 rounded bg-primary" style="width:100%">
+            <div class="p-4 rounded bg-primary" style="width:180px">
               <h5 class="text-light">${task.name}</h5>
               <p class="text-light">Expected to finish by ${end}</p>
               
               
-            
-          </div>
-          `;
-        }
-        
-        
-      });
-      gantt.change_view_mode('Week')
-      
-      $('#btnDay').click(function(){
-        gantt.change_view_mode('Day')
-      });
-      $('#btnWeek').click(function(){
+              
+            </div>
+            `;
+          }
+          
+          
+        });
         gantt.change_view_mode('Week')
-      });
-      $('#btnMonth').click(function(){
-        gantt.change_view_mode('Month')
-      });
+        
+        $('#btnDay').click(function(){
+          gantt.change_view_mode('Day')
+        });
+        $('#btnWeek').click(function(){
+          gantt.change_view_mode('Week')
+        });
+        $('#btnMonth').click(function(){
+          gantt.change_view_mode('Month')
+        });
+        
+      } else{
+        $('.roadmap-content').html(
+        `
+        <div class="col-12 text-center mt-3">
+          <img src="{{ asset('assets/img/no-project.svg') }}" height="250" class="mb-3">
+          <h5>Roadmap Is Empty</h5>
+        </div>
+        `
+        )
+      }
       
-    } else{
-      $('.roadmap-content').html(
-      `
-      <div class="col-12 text-center mt-3">
-        <img src="{{ asset('assets/img/no-project.svg') }}" height="250" class="mb-3">
-        <h5>Roadmap Is Empty</h5>
-      </div>
-      `
-      )
-    }
-    
-    
-  })
-</script>
-@endpush
+      
+    })
+  </script>
+  @endpush
+  

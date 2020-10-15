@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers\Leader;
 
+use App\Board;
+use App\BoardTask;
 use App\Http\Controllers\Controller;
+use App\LogActivity;
+use App\Project;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProjectOverview extends Controller
@@ -12,9 +17,67 @@ class ProjectOverview extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return view('pages.leader.overview.index');
+        $item = Project::findOrFail($id);
+        $board_tasks = BoardTask::with(['board'])->whereHas('board', function ($q) use ($id) {
+            return $q->where('projects_id', $id);
+        })->orderBy('due_date', 'asc')->get();
+        $h_3 = Carbon::now()->addDays(2)->format('Y-m-d');
+        $deadline_day = Carbon::now()->format('Y-m-d');
+
+        // Roadmap
+
+        $boards = Board::where('projects_id', $id)->get();
+        $logs = LogActivity::where('projects_id', $id)->orderBy('created_at', 'DESC')->get()->take(10);
+
+        foreach ($boards as $board) {
+            $tasks[] = BoardTask::where('boards_id', $board->id)->get();
+        }
+
+        if (empty($tasks)) {
+            $listTask = 'Empty';
+            return view('pages.leader.overview.index', [
+                'item' => $item,
+                'listTask' => json_encode($listTask),
+                'logs' => $logs,
+                'h_3' => $h_3,
+                'deadline_day' => $deadline_day,
+                'tasks' => $board_tasks
+            ]);
+        }
+
+        foreach ($tasks as $task) {
+            foreach ($task as $t) {
+                $listTask[] = [
+                    'id' => $t->id,
+                    'task_name' => $t->task_name,
+                    'boards_id' => $t->boards_id,
+                    'start_date' => $t->start_date,
+                    'due_date' => $t->due_date,
+                ];
+            }
+        }
+        if (empty($listTask)) {
+            $listTask = 'Empty';
+            return view('pages.leader.overview.index', [
+                'item' => $item,
+                'listTask' => json_encode($listTask),
+                'logs' => $logs,
+                'h_3' => $h_3,
+                'deadline_day' => $deadline_day,
+                'tasks' => $board_tasks
+            ]);
+        }
+
+        return view('pages.leader.overview.index', [
+            'item' => $item,
+            'listTask' => json_encode($listTask),
+            'logs' => $logs,
+            'h_3' => $h_3,
+            'deadline_day' => $deadline_day,
+            'tasks' => $board_tasks
+        ]);
     }
 
     /**
