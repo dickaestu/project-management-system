@@ -118,6 +118,10 @@ Route::prefix('leader')
         Route::get('/show-member/{id}', 'ProjectController@showMember')
             ->name('show-member-leader');
 
+        // Search
+        Route::post('/search-project', 'ProjectController@search')
+            ->name('search-project-leader');
+
         // Overview
         Route::get('/projects/overview/{id}', 'ProjectOverview@index')
             ->name('overview-leader');
@@ -164,6 +168,11 @@ Route::prefix('leader')
         // Log Activity
         Route::get('/log-activity/{id}', 'LogActivityController@index')->name('log-activity-leader');
     });
+
+// Route::get('/pusher', function () {
+//     event(new App\Events\NotifPusherEvent('Hi there Pusher!'));
+//     return "Event has been sent!";
+// });
 
 
 Auth::routes();

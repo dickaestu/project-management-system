@@ -16,6 +16,13 @@ class ProjectController extends Controller
         return view('pages.leader.project.index', compact('items'));
     }
 
+    public function search(Request $request)
+    {
+        $items = Project::with(['user', 'project_member.user', 'projectFile'])
+            ->where('project_name', 'like', '%' . $request->searchProject . '%')->get();
+        return view('pages.leader.project.index', compact('items'));
+    }
+
     public function showMember($id)
     {
         $item = Project::with(['project_member.user', 'user'])->findOrFail($id);

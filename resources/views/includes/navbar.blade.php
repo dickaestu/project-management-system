@@ -37,33 +37,27 @@
                 href="#"
                 data-toggle="dropdown"
                 class="nav-link nav-link-lg message-toggle"
-                ><i data-feather="mail"></i>
+                ><i data-feather="bell"></i>
                 <span class="badge headerBadge1"> 1 </span>
               </a>
               <div
                 class="dropdown-menu dropdown-list dropdown-menu-right pullDown"
               >
                 <div class="dropdown-header">
-                  Messages
+                  Notifications
                   <div class="float-right">
                     <a href="#">Mark All As Read</a>
                   </div>
                 </div>
-                <div class="dropdown-list-content dropdown-list-message">
+                <div class="dropdown-list-content dropdown-list-icons">
+                 
                   <a href="#" class="dropdown-item">
-                    <span class="dropdown-item-avatar text-white">
-                      <img
-                        alt="image"
-                        src="{{ asset('assets/img/users/user-8.png') }}"
-                        class="rounded-circle"
-                      />
+                    <span class="dropdown-item-icon bg-success text-white">
+                      <i class="fas fa-check"></i>
                     </span>
                     <span class="dropdown-item-desc">
-                      <span class="message-user">Novian Ardiansyah</span>
-                      <span class="time messege-text"
-                        >Woi nasrul</span
-                      >
-                      <span class="time">2 Min Ago</span>
+                      <b>Dicka Estu Saputra</b> has moved task <b>Fix bug header</b> to
+                      <b>Done</b> <span class="time">12 Hours Ago</span>
                     </span>
                   </a>
                 </div>
@@ -72,6 +66,8 @@
                 </div>
               </div>
             </li> --}}
+
+            
             {{-- Notifications --}}
             {{-- <li class="dropdown dropdown-list-toggle">
               <a
