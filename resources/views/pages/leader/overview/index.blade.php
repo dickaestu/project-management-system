@@ -37,6 +37,23 @@
       </div>
     </div>
     
+    <div class="card">
+      <div class="card-header"><h4>Roadmap</h4></div>
+      <div class="card-body">
+        <div class="row roadmap-content">
+          
+          <svg id="gantt"></svg>
+        </div>
+        
+        <div class="row mt-3">
+          <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
+            <button id="btnDay" type="button" class="btn btn-primary">Day</button>
+            <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
+            <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
+          </div>
+        </div>
+      </div>
+    </div>
     
     <div class="row">
       <div class="col-12">
@@ -82,25 +99,6 @@
                 </tbody>
               </table>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    
-    <div class="card">
-      <div class="card-header"><h4>Roadmap</h4></div>
-      <div class="card-body">
-        <div class="row roadmap-content">
-          
-          <svg id="gantt"></svg>
-        </div>
-        
-        <div class="row mt-3">
-          <div class="btn-group mb-3 btn-group-sm" role="group" aria-label="Basic example">
-            <button id="btnDay" type="button" class="btn btn-primary">Day</button>
-            <button id="btnWeek" autofocus type="button" class="btn btn-primary">Week</button>
-            <button id="btnMonth" type="button" class="btn btn-primary">Month</button>
           </div>
         </div>
       </div>
