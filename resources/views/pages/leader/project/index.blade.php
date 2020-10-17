@@ -60,7 +60,7 @@
     </div>
 
     <div class="row mt-4 project-item">
-      @foreach ($items as $item)
+      @forelse ($items as $item)
       <div class="col-12 col-md-4 col-lg-4 item
       @if($item->project_status == 'Pending')
       pending
@@ -163,7 +163,14 @@
     </div>
   </article>
 </div>
-@endforeach
+@empty 
+<div class="row mt-5">
+  <div class="col-12 text-center">
+    <img src="{{ asset('assets/img/no-project.svg') }}" height="250" class="mb-3">
+    <h5>Project still empty</h5>
+  </div>
+</div>
+@endforelse
 </div>
 
 </section>

@@ -119,11 +119,11 @@
                         <a class="dropdown-item has-icon" href="{{ route('project-file', $item->id) }}"
                         ><i class="fas fa-folder"></i> Project File</a
                         >
-                        @if ($item->project_status == 'Abandoned' && Auth::id() == $item->project_manager)
-                          <form id="project-delete" class="" action="{{ route('my-project.destroy', $item->id) }}" method="post">
-                            @method('delete')
+                        @if (Auth::id() == $item->project_manager)
+                          <form class="project-delete" action="{{ route('my-project.destroy', $item->id) }}" method="post">
+                          @method('delete')
                           @csrf
-                          <a href="#" onclick="document.getElementById('project-delete').submit();" class="dropdown-item has-icon text-danger"><i class="fas fa-trash"></i>Delete Project</a>  
+                          <button type="submit" onclick="return confirm('This project will be archived')" class="dropdown-item has-icon text-danger text-small d-flex align-items-center"><i class="fas fa-archive"></i>Archive Project</button>  
                           </form>    
 
                         @endif

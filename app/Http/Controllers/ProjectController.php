@@ -164,7 +164,7 @@ class ProjectController extends Controller
         // }
         // $item->project_member()->delete();
         $item->delete();
-        return redirect()->route('my-project.index')->with('success', 'Delete Success');
+        return redirect()->route('my-project.index')->with('success', 'Project has been archived');
     }
 
     public function deleteMember($id)
@@ -219,5 +219,18 @@ class ProjectController extends Controller
             'name' => $item->user->name,
             'role_member' => $item->role_member
         ]);
+    }
+
+    public function archivedProject()
+    {
+        $items = Project::onlyTrashed()->where('project_manager', Auth::id())->get();
+        return view('pages.archived-project', compact('items'));
+    }
+
+    public function restoreProject($id)
+    {
+        $item = Project::onlyTrashed()->findOrFail($id);
+        $item->restore();
+        return redirect()->route('my-project.index')->with('success', 'The project was successfully restored');
     }
 }

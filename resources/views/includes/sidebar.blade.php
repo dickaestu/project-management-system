@@ -30,6 +30,11 @@
                       >Create Project</a
                     >
                   </li>
+                  <li class="{{(request()->is('my-project/archived-project')) ? 'active' : ""}}">
+                    <a class="nav-link" href="{{ route('archived-project') }}"
+                      >Archived Project</a
+                    >
+                  </li>
                 </ul>
               </li>
             </ul>
