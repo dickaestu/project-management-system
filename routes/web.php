@@ -53,6 +53,8 @@ Route::middleware(['auth', 'member'])
         Route::delete('/my-project/delete-sub-task/{id}', 'BoardController@deleteSubTask')->name('delete-sub-task');
         Route::post('/my-project/{id}/add-comment', 'BoardController@addComment')->name('add-comment');
         Route::delete('/my-project/comment/delete/{id}', 'BoardController@deleteComment')->name('delete-comment');
+        Route::get('/my-project/archived-task/{id}', 'BoardController@archivedTask')->name('archived-task');
+        Route::get('/my-project/restore-task/{id}', 'BoardController@restoreTask')->name('restore-task');
 
         // Project File
         Route::get('/my-project/{id}/project-file', 'ProjectFileController@index')->name('project-file');

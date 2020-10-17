@@ -14,7 +14,7 @@
     
     {{-- Card Bagian Atas --}}
     <div class="row">
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-xl-3 col-sm-6 col-12">
         <div class="card card-statistic-1" style="height: 115px">
           <div class="card-icon l-bg-purple">
             <i class="fas fa-suitcase"></i>
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-xl-3 col-sm-6 col-12">
         <div class="card card-statistic-1" style="height: 115px">
           <div class="card-icon l-bg-green">
             <i class="fas fa-check"></i>
@@ -48,7 +48,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-xl-3 col-sm-6 col-12">
         <div class="card card-statistic-1" style="height: 115px">
           <div class="card-icon l-bg-cyan">
             <i class="fas fa-clock"></i>
@@ -65,7 +65,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+      <div class="col-xl-3 col-sm-6 col-12">
         <div class="card card-statistic-1" style="height: 115px">
           <div class="card-icon l-bg-orange">
             <i class="fas fa-times"></i>

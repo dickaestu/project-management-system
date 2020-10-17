@@ -32,12 +32,14 @@
             <button
             class="btn btn-primary btn-sm text-primary" type="button" data-toggle="modal" data-target="#createBoard" 
             >
-            <i class="fas fa-plus"></i> Create Board
+            <i class="fas fa-plus"></i> Board
           </button>
+           <a href="{{ route('archived-task',$item->id) }}" class="btn btn-warning btn-sm text-primary ml-2" type="button">
+            <i class="fas fa-file-alt"></i> Archived Task</a>
         </div>
       </div>
       @endif
-      <div class="row d-lg-none  mb-3">
+      <div class="row d-lg-none mb-3">
         <div class="col">
           <a href="{{ route('log-activity',$item->id) }}"
           class="btn btn-info btn-sm text-primary"  

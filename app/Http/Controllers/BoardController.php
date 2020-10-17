@@ -413,4 +413,28 @@ class BoardController extends Controller
             'success' => 'Delete Successfully',
         ]);
     }
+
+    public function archivedTask($id)
+    {
+        $tasks = BoardTask::with('board')->onlyTrashed()->whereHas('board', function ($q) use ($id) {
+            return $q->withTrashed()->where('projects_id', $id);
+        })->get();
+
+        $project_id = Project::select('id')->where('id', $id)->first();
+
+
+        return view('pages.board.archived-task', compact('tasks', 'project_id'));
+    }
+
+    public function restoreTask($id)
+    {
+        $task = BoardTask::onlyTrashed()->findOrFail($id);
+        $board = Board::onlyTrashed()->where('id', $task->boards_id)->first();
+        if ($board) {
+            $board->restore();
+        }
+        $task->restore();
+
+        return redirect()->back()->with('success', 'Task was successfully restored');
+    }
 }
