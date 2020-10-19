@@ -7,6 +7,7 @@
   <section class="section">
     <div class="section-body">
       <div class="container">
+      
         <div class="row">
           <div class="col-12">
             <h3 class="text-dark mb-3">{{ $item->project_name }} Board</h3>
@@ -26,6 +27,16 @@
             </nav>
           </div>
         </div>
+         @if($errors->any())
+        <div class="alert alert-danger">
+          <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+        @endif
+
         @if ($item->project_manager == Auth::id())
         <div class="row mb-3 float-left">
           <div class="col">
@@ -262,11 +273,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('create-board',$item->id) }}" method="POST">
+        <form action="{{ route('create-board',$item->id) }}" class="needs-validation" novalidate="" method="POST">
           @csrf
           <div class="form-group">
             <label>Name</label>
-            <input type="text" name="board_name" class="form-control" placeholder="Board Name">
+            <input type="text" name="board_name" required class="form-control" placeholder="Board Name">
+            <div class="invalid-feedback">
+              Please fill board name
+            </div>
           </div>
           <button type="submit" class="btn btn-primary m-t-15 waves-effect">Create</button>
         </form>

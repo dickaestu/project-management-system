@@ -1,12 +1,18 @@
- <form class="form-create-task" method="POST">
+ <form class="form-create-task" method="POST" class="needs-validation" novalidate="">
     @csrf
     <div class="form-group">
         <label>Task Name</label>
         <input required type="text" name="task_name" class="form-control" placeholder="task name">
+        <div class="invalid-feedback">
+            Task name is required
+        </div>
     </div>
     <div class="form-group">
         <label>Task Tags</label>
         <input required type="text" name="tags" class="form-control" placeholder="task tags">
+        <div class="invalid-feedback">
+            Task tags is required
+        </div>
     </div>
     <div class="form-group">
         <label class="form-label">Tags Color</label>
@@ -48,18 +54,28 @@
                 </label>
             </div>
         </div>
+        <div class="invalid-feedback">
+            Tags color is required
+        </div>
     </div>
     <div class="form-group">
         <label>Task Description</label>
         <textarea name="task_description" class="form-control" cols="30" rows="10" placeholder="description"></textarea>
+       
     </div>
     <div class="form-group">
         <label>Start Date</label>
         <input required type="date" name="start_date" class="form-control">
+        <div class="invalid-feedback">
+            Task start date is required
+        </div>
     </div>
     <div class="form-group">
         <label>Due Date</label>
         <input required type="date" name="due_date" class="form-control">
+        <div class="invalid-feedback">
+            Task due date is required
+        </div>
     </div>
     <button type="submit" class="btn btn-primary mb-5">Create</button>
 </form>

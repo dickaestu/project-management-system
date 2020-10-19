@@ -16,6 +16,8 @@ use Carbon\Carbon;
 use Auth;
 use Faker\Provider\Barcode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class BoardController extends Controller
@@ -31,6 +33,10 @@ class BoardController extends Controller
 
     public function create(Request $request, $id)
     {
+        $request->validate([
+            'board_name' => 'required|string|max:100'
+        ]);
+
         Board::create([
             'projects_id' => $id,
             'board_name' => $request->board_name
@@ -41,6 +47,8 @@ class BoardController extends Controller
             'activity' => Auth::user()->name . ' has created '  . $request->board_name . ' board',
             'activity_icon' => '<i class="fas fa-square"></i>'
         ]);
+
+
 
         return redirect()->route('project-board', $id)->with('success', 'Success Create' . $request->board_name);
     }
