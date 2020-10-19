@@ -5,7 +5,7 @@
   <script src="{{ url('assets/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
   <!-- JS Libraies -->
   <script src="{{ url('assets/bundles/sweetalert/sweetalert.min.js') }}"></script>
-  {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
+  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
   <!-- Template JS File -->
   <script src="{{ url('assets/js/scripts.js') }}"></script>
   <!-- Custom JS File -->
@@ -45,17 +45,17 @@
 
     // Notifikasi
     // jangan lupa log pushernya dimatiin pas udh production
-    // Pusher.logToConsole = true;
+    Pusher.logToConsole = true;
  
-    // var pusher = new Pusher('{{ config('notif.pusher_key')}}', {
-    //   cluster: '{{config('notif.pusher_cluster')}}'
-    // });
+    var pusher = new Pusher('{{ config('notif.pusher_key')}}', {
+      cluster: '{{config('notif.pusher_cluster')}}'
+    });
  
-    // var channel = pusher.subscribe('{{config('notif.channel')}}');
-    // channel.bind('my-event', function(data) {
-    //   alert(JSON.stringify(data));
-    //   console.log(data)
-    // });
+    var channel = pusher.subscribe('{{config('notif.channel')}}');
+    channel.bind('my-event', function(data) {
+      alert(JSON.stringify(data));
+      console.log(data)
+    });
 
     });
     

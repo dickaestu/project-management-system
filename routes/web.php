@@ -173,10 +173,10 @@ Route::prefix('leader')
         Route::get('/log-activity/{id}', 'LogActivityController@index')->name('log-activity-leader');
     });
 
-// Route::get('/pusher', function () {
-//     event(new App\Events\NotifPusherEvent('Hi there Pusher!'));
-//     return "Event has been sent!";
-// });
+Route::get('/pusher', function () {
+    event(new App\Events\NotifPusherEvent('Hi there Pusher!'));
+    return "Event has been sent!";
+});
 
 
 Auth::routes();
