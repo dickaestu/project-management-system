@@ -15,7 +15,7 @@
 
   <body>
     <div class="loader"></div>
-    <div id="app">
+    <div id="">
       <div class="main-wrapper main-wrapper-1">
        
         @include('includes.leader.navbar')

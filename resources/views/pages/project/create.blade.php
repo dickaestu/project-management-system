@@ -101,16 +101,17 @@
 
 <link type="text/css" rel="stylesheet" href="{{ asset('assets/jquery-filler/css/jquery.filer.css') }}">
 <link type="text/css" rel="stylesheet" href="{{ asset('assets/jquery-filler/css/themes/jquery.filer-dragdropbox-theme.css') }}">
-<link type="text/css" rel="stylesheet" href="{{ asset('assets/css/gijgo.min.css') }}">
+{{-- <link type="text/css" rel="stylesheet" href="{{ asset('assets/css/gijgo.min.css') }}"> --}}
 
 
 @endpush
 
 @push('addon-script')
+
 <script src="{{ asset('assets/jquery-filler/js/jquery.filer.min.js') }}"></script>
 <script src="{{ asset('assets/jquery-filler/js/dragdrop.js') }}"></script>
-<script src="{{ asset('assets/js/gijgo.min.js') }}"></script>
-<script>
+{{-- <script src="{{ asset('assets/js/gijgo.min.js') }}"></script> --}}
+{{-- <script>
   $(document).ready(function(){
     $('.datepicker').datepicker({
       uiLibrary: 'bootstrap4',
@@ -125,6 +126,6 @@
       format: 'yyyy-mm-dd'
     });
   })
-</script>
+</script> --}}
 
 @endpush

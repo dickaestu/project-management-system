@@ -1,5 +1,8 @@
   <!-- General JS Scripts -->
+  
+  <script src="{{ asset('js/app.js') }}"></script>
   <script src="{{ url('assets/js/jquery-3.5.1.min.js') }}"></script>
+  
   <script src="{{ url('assets/js/app.min.js') }}"></script>
   <!-- JS Libraies -->
   <script src="{{ url('assets/bundles/jquery-ui/jquery-ui.min.js') }}"></script>
@@ -11,6 +14,7 @@
   <!-- Custom JS File -->
   <script src="{{ url('assets/js/custom.js') }}"></script>
   
+
   
   
   <script>

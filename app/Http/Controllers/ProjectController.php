@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BoardTask;
 use App\Http\Requests\ProjectRequest;
 use App\LogActivity;
+use App\Notifications\ProjectAssigned;
 use Illuminate\Http\Request;
 use App\Project;
 use App\ProjectFile;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\ProjectMember;
 use App\User;
+use Exception;
 
 class ProjectController extends Controller
 {
@@ -213,6 +215,12 @@ class ProjectController extends Controller
             'activity' => '"' . Auth::user()->name . '"'  . ' assigned ' .  '"' . $item->user->name . '"' . ' into ' .  '"' . $item->project->project_name . '"' . ' as ' . $item->role_member,
             'activity_icon' => '<i class="fas fa-user-plus"></i>'
         ]);
+
+        $member = User::findOrFail($request->users_id);
+        try {
+            $member->notify(new ProjectAssigned($item));
+        } catch (\Exception $e) {
+        }
 
         return response()->json([
             'id' => $item->id,

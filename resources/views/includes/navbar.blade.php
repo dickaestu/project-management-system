@@ -31,44 +31,15 @@
             </ul>
           </div>
           <ul class="navbar-nav navbar-right">
-            {{-- Messages --}}
-            {{-- <li class="dropdown dropdown-list-toggle">
-              <a
-                href="#"
-                data-toggle="dropdown"
-                class="nav-link nav-link-lg message-toggle"
-                ><i data-feather="bell"></i>
-                <span class="badge headerBadge1"> 1 </span>
-              </a>
-              <div
-                class="dropdown-menu dropdown-list dropdown-menu-right pullDown"
-              >
-                <div class="dropdown-header">
-                  Notifications
-                  <div class="float-right">
-                    <a href="#">Mark All As Read</a>
-                  </div>
-                </div>
-                <div class="dropdown-list-content dropdown-list-icons">
-                 
-                  <a href="#" class="dropdown-item">
-                    <span class="dropdown-item-icon bg-success text-white">
-                      <i class="fas fa-check"></i>
-                    </span>
-                    <span class="dropdown-item-desc">
-                      <b>Dicka Estu Saputra</b> has moved task <b>Fix bug header</b> to
-                      <b>Done</b> <span class="time">12 Hours Ago</span>
-                    </span>
-                  </a>
-                </div>
-                <div class="dropdown-footer text-center">
-                  <a href="#">View All <i class="fas fa-chevron-right"></i></a>
-                </div>
-              </div>
-            </li> --}}
+   
+            {{-- Notifications --}}
+            
+             <assigned-projects :assigned-projects="assignedProjects" :user="{{ Auth::user() }}" >
+            </assigned-projects>
+            
 
             
-            {{-- Notifications --}}
+            {{-- Messages --}}
             {{-- <li class="dropdown dropdown-list-toggle">
               <a
                 href="#"

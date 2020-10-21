@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -9,6 +10,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class NotifPusherEvent implements ShouldBroadcast
 {
@@ -19,9 +21,9 @@ class NotifPusherEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct()
     {
-        $this->message = $message;
+        $this->message = User::findOrFail(Auth::id());
     }
 
     /**
@@ -31,7 +33,7 @@ class NotifPusherEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return config('notif.channel');
+        return new Channel('message');
     }
 
     public function broadcastAs()

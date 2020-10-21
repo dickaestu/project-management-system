@@ -162,7 +162,7 @@
                 type="button"
                 data-id = "`+ response.id +`"
                 data-token = "{{ csrf_token() }}"
-                data-url="/my-project/`+response.id +`"
+                data-url="/my-project/delete-member/`+response.id +`"
                 data-name="`+ response.name+`"
                 class="btn button_delete rounded-circle btn-sm py-0 btn-outline-danger"
                 >
