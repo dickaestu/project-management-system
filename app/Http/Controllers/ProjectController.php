@@ -192,7 +192,7 @@ class ProjectController extends Controller
 
         if ($request->has('q')) {
             $cari = $request->q;
-            $users = User::select('id', 'name')->where('name', 'LIKE', "%$cari%")->get();
+            $users = User::select('id', 'name')->where('name', 'LIKE', "%$cari%")->where('roles', 'MEMBER')->get();
             return response()->json($users);
         }
     }

@@ -23,7 +23,7 @@ class ProjectOverview extends Controller
         $board_tasks = BoardTask::with(['board'])->whereHas('board', function ($q) use ($id) {
             return $q->where('projects_id', $id);
         })->orderBy('due_date', 'asc')->get();
-        $h_3 = Carbon::now()->addDays(2)->format('Y-m-d');
+        $h_3 = Carbon::now()->addDays(3)->format('Y-m-d');
         $deadline_day = Carbon::now()->format('Y-m-d');
 
         // Roadmap

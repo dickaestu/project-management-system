@@ -81,9 +81,9 @@
                   @foreach ($tasks as $task)
                   <tr
                   @if($deadline_day > $task->due_date)
-                  class="bg-danger text-white"
+                  class="text-danger"
                   @elseif ($h_3 >= $task->due_date)
-                  class="bg-warning text-white"
+                  class="text-warning"
                   @endif>
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $task->task_name }}</td>
