@@ -24,7 +24,7 @@
                     </span>
                    
                    <span class="dropdown-item-desc">{{assigned.data.message}}  
-                     <span class="time">{{assigned.created_at}}</span>
+                     <span class="time">{{assigned.created_at | moment("from")}}</span>
                     </span> 
 
                     
@@ -35,7 +35,7 @@
                     There is no notifications
                   </span>
                 </div>
-                <div class="dropdown-footer text-center" v-if="assignedProjects.length > 0">
+                <div class="dropdown-footer text-center">
                   <a href="#">View All <i class="fas fa-chevron-right"></i></a>
                 </div>
               </div>
@@ -44,6 +44,8 @@
 </template>
 
 <script>
+
+
     export default {
       props:['assignedProjects','user'],
 

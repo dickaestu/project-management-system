@@ -27,8 +27,9 @@
         "blueimp-file-upload": "^10.31.0",
         "frappe-gantt": "^0.5.0",
         "laravel-echo": "^1.9.0",
-        "moment": "^2.27.0",
+        "moment": "^2.29.1",
         "pusher-js": "^7.0.0",
+        "vue-moment": "^4.1.0",
         "vue-popperjs": "^2.3.0"
     }
 }

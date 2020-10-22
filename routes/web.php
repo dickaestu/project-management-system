@@ -71,6 +71,12 @@ Route::middleware(['auth', 'member'])
         // Log Activity
         Route::get('/my-project/{id}/log-activity', 'LogActivityController@index')->name('log-activity');
 
+        // Notifications Project Member
+        Route::post('/assigned-projects/get', 'NotificationController@get');
+        Route::get('/assigned-projects/mark-all-read/{user}', function (User $user) {
+            $user->unreadNotifications->markAsRead();
+            return response(['message' => 'done']);
+        });
 
         Route::resource('/my-project', 'ProjectController');
     });
@@ -174,14 +180,7 @@ Route::prefix('leader')
         Route::get('/log-activity/{id}', 'LogActivityController@index')->name('log-activity-leader');
     });
 
-// Route::get('/pusher', function () {
-//     event(new App\Events\NotifPusherEvent('Hi there Pusher!'));
-//     return "Event has been sent!";
-// });
 
-Route::post('/assigned-projects/get', 'NotificationController@get');
-Route::get('/assigned-projects/mark-all-read/{user}', function (User $user) {
-    $user->unreadNotifications->markAsRead();
-    return response(['message' => 'done']);
-});
+
+
 Auth::routes();

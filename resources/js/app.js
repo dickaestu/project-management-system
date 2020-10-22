@@ -22,6 +22,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('assigned-projects', require('./components/AssignedProject.vue').default);
+Vue.use(require('vue-moment'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -37,6 +38,7 @@ const app = new Vue({
     created(){
         axios.post('/assigned-projects/get').then(response => {
             this.assignedProjects = response.data;
+            
         }) ;
 
 
