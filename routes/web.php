@@ -72,11 +72,12 @@ Route::middleware(['auth', 'member'])
         Route::get('/my-project/{id}/log-activity', 'LogActivityController@index')->name('log-activity');
 
         // Notifications Project Member
-        Route::post('/assigned-projects/get', 'NotificationController@get');
-        Route::get('/assigned-projects/mark-all-read/{user}', function (User $user) {
+        Route::get('/my-project/all-notification/', 'NotificationController@index');
+        Route::post('/notification-members/get', 'NotificationController@get');
+        Route::get('/notification-members/mark-all-read/{user}', function (User $user) {
             $user->unreadNotifications->markAsRead();
             return response(['message' => 'done']);
-        });
+        })->name('mark-all-read');
 
         Route::resource('/my-project', 'ProjectController');
     });

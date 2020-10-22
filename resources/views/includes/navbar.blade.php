@@ -34,8 +34,8 @@
    
             {{-- Notifications --}}
             
-             <assigned-projects :assigned-projects="assignedProjects" :user="{{ Auth::user() }}" >
-            </assigned-projects>
+             <notification-members :notifications="notifications" :user="{{ Auth::user() }}" >
+            </notification-members>
             
 
             

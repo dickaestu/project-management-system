@@ -21,7 +21,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('assigned-projects', require('./components/AssignedProject.vue').default);
+Vue.component('notification-members', require('./components/NotificationMember.vue').default);
 Vue.use(require('vue-moment'));
 
 /**
@@ -33,11 +33,11 @@ Vue.use(require('vue-moment'));
 const app = new Vue({
     el: '#app',
     data: {
-        assignedProjects: '',
+        notifications: '',
     },
     created(){
-        axios.post('/assigned-projects/get').then(response => {
-            this.assignedProjects = response.data;
+        axios.post('/notification-members/get').then(response => {
+            this.notifications = response.data;
             
         }) ;
 
