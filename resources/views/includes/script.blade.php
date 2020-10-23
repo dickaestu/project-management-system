@@ -46,6 +46,13 @@
         
       });
 
+      $('#show-description-modal').on('show.bs.modal', function(e){
+        var button = $(e.relatedTarget);
+        var modal = $(this);
+        modal.find('.modal-body').load(button.data("remote"));
+        
+      });
+
   
 
     });
@@ -124,3 +131,22 @@
     </div>
   </div>
 </div>
+
+{{-- Show Description --}}
+  <div class="modal fade" id="show-description-modal" tabindex="-1" role="dialog"
+    aria-labelledby="show-description-modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="show-description-modalTitle">Project Description</h5>
+          
+        </div>
+        <div class="modal-body">
+        
+        </div>
+        <div class="modal-footer bg-whitesmoke br">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

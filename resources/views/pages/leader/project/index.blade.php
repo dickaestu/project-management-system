@@ -208,9 +208,9 @@
       return false;
     });
 
-    // Live Search 
     
-  })
+
+  });
 </script>
 
 @endpush

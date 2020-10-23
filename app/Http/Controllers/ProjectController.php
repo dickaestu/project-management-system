@@ -34,6 +34,8 @@ class ProjectController extends Controller
         return view('pages.project.my-project', compact('items'));
     }
 
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -148,7 +150,7 @@ class ProjectController extends Controller
             'activity' => '"' . Auth::user()->name . '"'  . ' has edited ' . $item->project_name . ' project',
             'activity_icon' => '<i class="fas fa-edit"></i>'
         ]);
-        return redirect()->route('my-project.index')->with('success', 'Succes');
+        return redirect()->route('my-project.index')->with('success', 'Update Succes');
     }
 
     /**
@@ -241,5 +243,12 @@ class ProjectController extends Controller
         $item = Project::onlyTrashed()->findOrFail($id);
         $item->restore();
         return redirect()->route('my-project.index')->with('success', 'The project was successfully restored');
+    }
+
+    public function showDescription($id)
+    {
+        $item = Project::findOrFail($id);
+
+        return view('pages.project.show-description', compact('item'));
     }
 }

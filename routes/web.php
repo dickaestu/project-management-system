@@ -26,6 +26,9 @@ Route::middleware(['auth', 'member'])
         Route::post('/my-project/create-member', 'ProjectController@createMember')->name('create-member');
         Route::get('/my-project/archived-project', 'ProjectController@archivedProject')->name('archived-project');
         Route::get('/my-project/restore-project/{id}', 'ProjectController@restoreProject')->name('restore-project');
+        Route::get('/my-project/show-description/{id}', 'ProjectController@showDescription')->name('show-description');
+
+
 
         // Board
         Route::get('/my-project/{id}/board', 'BoardController@index')->name('project-board');
@@ -78,6 +81,8 @@ Route::middleware(['auth', 'member'])
             $user->unreadNotifications->markAsRead();
             return response(['message' => 'done']);
         })->name('mark-all-read');
+
+
 
         Route::resource('/my-project', 'ProjectController');
     });

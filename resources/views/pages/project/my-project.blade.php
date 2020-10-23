@@ -20,15 +20,33 @@
           <div class="col-12">
             <h3 class="text-dark mb-3">My Projects</h3>
           </div>
-          
         </div>
+
         <div class="row mb-2 text-right">
           <div class="col-12">
             <a href="{{ route('my-project.create') }}" class="btn btn-success btn-sm shadow-sm"><i class="fas fa-plus"></i> Create Project</a>
           </div>
         </div>
-        @forelse ($items as $item)
+
+        {{-- Search --}}
         <div class="row">
+            <div class="col-12 col-md-6">
+              
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="text" placeholder="Enter project name..." name="searchProject" id="searchProject" class="form-control">
+                  <div class="input-group-append">
+                      <button type="button" class="btn btn-primary "><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                </div>
+          
+            </div>
+          </div>
+
+          {{-- List Project --}}
+        @forelse ($items as $item)
+        <div class="row my-project">
           <div class="col-12">
             <div class="card mb-5">
               <div class="row no-gutters">
@@ -59,7 +77,12 @@
                         class="card-text text-black"
                         style="line-height: 18px;"
                         >
-                          {!! Str::limit($item->description,100,'<a id="readMore" href="/my-project/'.$item->id.'/edit" class="text-decoration-none text-small">...Read More</a>') !!}
+                          {!! Str::limit($item->description,100,
+                          '<a id="readMore"
+                          data-toggle="modal"
+                          data-target="#show-description-modal"
+                          data-remote="/my-project/show-description/'.$item->id.'"
+                          href="#show-description-modal">...Read More</a>') !!}
                       </p>
                       <p
                       class="card-text mb-1 text-black-50"
@@ -227,5 +250,19 @@
 
 @push('addon-script')
 <script src="{{ asset('assets/bundles/select2/dist/js/select2.full.min.js') }}"></script>
+
+<script>
+  $(document).ready(function(){
+    $("#searchProject").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $(".my-project").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+
+  })
+
+</script>
+
 
 @endpush
