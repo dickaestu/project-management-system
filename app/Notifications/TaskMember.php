@@ -2,27 +2,25 @@
 
 namespace App\Notifications;
 
-use App\ProjectMember;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\TaskMember as TaskMemberModel;
 
-class ProjectAssigned extends Notification
+class TaskMember extends Notification
 {
     use Queueable;
-    public $projectMember;
+    public $taskMember;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(ProjectMember $projectMember)
+    public function __construct(TaskMemberModel $taskMember)
     {
-        $this->project_member = $projectMember;
+        $this->task_member = $taskMember;
     }
 
     /**
@@ -59,29 +57,23 @@ class ProjectAssigned extends Notification
     public function toArray($notifiable)
     {
         return [
-            'projects_id' => $this->project_member->projects_id,
-            'users_id' => $this->project_member->users_id,
-            'icon' => "fas fa-briefcase",
-            'message' => "You are added to " . $this->project_member->project->project_name . " Project as " . $this->project_member->role_member,
-            'status' => "added-to-project",
+            'projects_id' => $this->task_member->project_members->projects_id,
+            'users_id' => $this->task_member->project_members->users_id,
+            'icon' => "fas fa-clipboard-list",
+            'message' => "You have been assigned to " . $this->task_member->board_task->task_name . " Task in " . $this->task_member->project_members->project->project_name . " Project",
+            'status' => "added-to-task",
         ];
     }
 
-    /**
-     * Get the broadcastable representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return BroadcastMessage
-     */
     public function toBroadcast($notifiable)
     {
         return [
             'data' => [
-                'projects_id' => $this->project_member->projects_id,
-                'users_id' => $this->project_member->users_id,
-                'icon' => "fas fa-briefcase",
-                'message' => "You are added to" . $this->project_member->project->project_name . " Project as " . $this->project_member->role_member,
-                'status' => "added-to-project",
+                'projects_id' => $this->task_member->project_members->projects_id,
+                'users_id' => $this->task_member->project_members->users_id,
+                'icon' => "fas fa-clipboard-list",
+                'message' => "You have been assigned to " . $this->task_member->board_task->task_name . " Task in " . $this->task_member->project_members->project->project_name . " Project",
+                'status' => "added-to-task",
             ],
             'created_at' => Carbon::now()->diffForHumans(),
             'read_at' => null,

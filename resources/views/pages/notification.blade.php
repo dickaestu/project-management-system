@@ -32,13 +32,13 @@
                                 </thead>
                                 <tbody>
                                     
-                                    @foreach ($items as $item)
+                                    @foreach ($notifications as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item['message']}}</td>
-                                        <td>{{ $item['created_at']}}</td>
-                                        <td>{{ $item['read_at'] == null ? 'Not Read' : 'Already Read' }}</td>
-                                        <td><a href="{{ route('project-board',$item['projects_id']) }}" class="btn btn-sm btn-primary">See Project</a></td>
+                                        <td>{{ $item->data['message']}}</td>
+                                        <td>asad</td>
+                                        <td>{{ $item->read_at == null ? 'Not Read' : 'Already Read' }}</td>
+                                        <td><a href="{{ route('project-board',$item->data['projects_id']) }}" class="btn btn-sm btn-primary">See Project</a></td>
                                     </tr> 
                                     @endforeach
                                     

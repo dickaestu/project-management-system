@@ -80,11 +80,12 @@
                 <tbody>
                   @foreach ($tasks as $task)
                   <tr
-                  @if($deadline_day > $task->due_date)
+                  {{-- @if($deadline_day > $task->due_date)
                   class="text-danger"
                   @elseif ($h_3 >= $task->due_date)
                   class="text-warning"
-                  @endif>
+                  @endif --}}
+                  >
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $task->task_name }}</td>
                   <td>{{ $task->board->board_name }}</td>

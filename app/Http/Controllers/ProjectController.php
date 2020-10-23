@@ -192,14 +192,15 @@ class ProjectController extends Controller
 
         if ($request->has('q')) {
             $cari = $request->q;
-            $users = User::select('id', 'name')->where('name', 'LIKE', "%$cari%")->where('roles', 'MEMBER')->get();
+            $users = User::select('id', 'name')->where('name', 'LIKE', "%$cari%")
+                ->where('roles', 'MEMBER')
+                ->get();
             return response()->json($users);
         }
     }
 
     public function createMember(Request $request)
     {
-
         $data = $request->all();
         if (
             ProjectMember::where('projects_id', $request->projects_id)->where('users_id', $request->users_id)->first()

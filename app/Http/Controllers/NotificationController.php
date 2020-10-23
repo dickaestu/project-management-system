@@ -14,18 +14,9 @@ class NotificationController extends Controller
     {
         $notifications = Auth::user()->notifications;
 
-        foreach ($notifications as $notification) {
-            $data = (object)$notification->data;
 
-            $items[] = [
-                'message' => $data->message,
-                'created_at' => $notification->created_at->format('d, F Y'),
-                'read_at' => $notification->read_at,
-                'projects_id' => $data->projects_id
-            ];
-        }
 
-        return view('pages.notification', compact('items'));
+        return view('pages.notification', compact('notifications'));
     }
 
     // Project Member

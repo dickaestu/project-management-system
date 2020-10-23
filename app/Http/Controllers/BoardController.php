@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\TaskMember as NotificationTaskMember;
 use App\Board;
 use App\BoardTask;
 use App\CommentTask;
@@ -218,6 +219,13 @@ class BoardController extends Controller
             'activity' => Auth::user()->name . ' assigned '  . $item->project_members->user->name . ' into ' . $item->board_task->task_name . ' task',
             'activity_icon' => '<i class="fas fa-user-plus"></i>'
         ]);
+
+        $member = User::findOrFail($request->users_id);
+        try {
+            $member->notify(new NotificationTaskMember($item));
+        } catch (\Exception $e) {
+        }
+
         return response()->json([
             'id' => $item->id,
             'name' => $item->project_members->user->name,
