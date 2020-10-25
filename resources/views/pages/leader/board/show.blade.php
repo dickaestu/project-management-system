@@ -15,7 +15,7 @@
         </form>
     </div>
 </div>
-<div class="row">
+<div class="row mb-5">
     <div class="col-12 col-lg-7 mb-4 mb-lg-0">
         <div class="btn-group">
             <a id="attachmentButton" href="#" class="btn btn-icon icon-left btn-secondary text-dark"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</a>
