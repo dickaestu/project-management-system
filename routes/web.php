@@ -28,6 +28,9 @@ Route::middleware(['auth', 'member'])
         Route::get('/my-project/restore-project/{id}', 'ProjectController@restoreProject')->name('restore-project');
         Route::get('/my-project/show-description/{id}', 'ProjectController@showDescription')->name('show-description');
 
+        // Settings
+        Route::get('/settings', 'SettingsController@index')->name('settings');
+        Route::put('/settings/change-password', 'SettingsController@update')->name('change-password');
 
 
         // Board
@@ -102,6 +105,10 @@ Route::prefix('admin')
             ->name('show-task-user');
         Route::resource('manage-users', 'ManageUsersController');
 
+        // Settings
+        Route::get('/settings', 'SettingsController@index')->name('settings-admin');
+        Route::put('/settings/change-password', 'SettingsController@update')->name('change-password-admin');
+
         // Project File
         Route::get('/project-file/{id}', 'ProjectFileController@index')
             ->name('project-file-admin');
@@ -134,6 +141,10 @@ Route::prefix('leader')
             ->name('project-leader-update');
         Route::get('/show-member/{id}', 'ProjectController@showMember')
             ->name('show-member-leader');
+
+        // Settings
+        Route::get('/settings', 'SettingsController@index')->name('settings-leader');
+        Route::put('/settings/change-password', 'SettingsController@update')->name('change-password-leader');
 
         // Search
         Route::post('/search-project', 'ProjectController@search')

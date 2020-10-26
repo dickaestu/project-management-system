@@ -111,6 +111,8 @@
                   ><i class="fas fa-exchange-alt"></i> Roadmap</a>
                 <a class="dropdown-item has-icon" href="{{ route('project-file-leader', $item->id) }}"
                   ><i class="fas fa-folder"></i> Project File</a>
+                <a class="dropdown-item has-icon" href="{{ route('project-leader-edit', $item->id) }}"
+                  ><i class="fas fa-pencil-alt"></i> Edit Project</a>
               </div>
             </div>
           </div>

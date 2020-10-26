@@ -36,7 +36,7 @@
                 </form>
             </div>
             <div class="col-lg-6 offset-1 d-none d-lg-block">
-                <img src="{{ asset('assets/img/img_login.png') }}" alt="img-login" class="w-100" style="height: 400px; margin-top: -50px; object-fit: cover;">
+                <img src="{{ asset('assets/img/forgot-password.png') }}" alt="forgot-password" class="w-100" style="height: 400px; margin-top: -50px; object-fit: cover;">
             </div>
         </div>
     </div>
