@@ -59,7 +59,7 @@
                                            <form class="d-inline-block" action="{{ route('manage-users.destroy',$item->id) }}" method="post">
                                                @csrf
                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-icon icon-left btn-danger btn-sm"><i class="fas fa-trash"></i>Delete</button>
+                                                <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-icon icon-left btn-danger btn-sm"><i class="fas fa-trash"></i>Delete</button>
                                            </form>
                                         </td>
                                     </tr>

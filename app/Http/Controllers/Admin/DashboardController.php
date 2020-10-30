@@ -21,6 +21,8 @@ class DashboardController extends Controller
     {
         $users = User::with(['project', 'project_member'])->where('roles', 'MEMBER')->get();
         $items = Project::with('user')->get();
+        $projects = [];
+        $tasks = [];
 
         // Project
         foreach ($users as $user) {
@@ -36,6 +38,7 @@ class DashboardController extends Controller
                 'total' => $pm + $project_member
             ];
         }
+
         // Task
         foreach ($users as $user) {
             $id = $user->id;
