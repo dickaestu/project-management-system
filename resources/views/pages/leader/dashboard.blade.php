@@ -108,7 +108,7 @@
                   <td>{{ $project->client_name }}</td>
                   <td>{{ $project->user->name }}</td>
                   <td>{{ Carbon\Carbon::parse($project->end)->format('d, M Y') }}</td>
-                  <td><a href="{{ route('project-board-leader',$item->id) }}" class="btn btn-sm btn-info">Boards</a></td>
+                  <td><a href="{{ route('project-board-leader',$project->id) }}" class="btn btn-sm btn-info">Boards</a></td>
                 </tr>
                 @empty 
                 <tr>
