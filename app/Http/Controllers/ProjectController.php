@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\ProjectMember;
 use App\User;
 use Exception;
+use Illuminate\Support\Facades\Hash;
 
 class ProjectController extends Controller
 {
@@ -250,5 +251,23 @@ class ProjectController extends Controller
         $item = Project::findOrFail($id);
 
         return view('pages.project.show-description', compact('item'));
+    }
+
+    public function createUser(Request $request){
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8'],
+        ]);
+
+        $data = $request->all();
+
+        $data = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        return response()->json($data);
     }
 }

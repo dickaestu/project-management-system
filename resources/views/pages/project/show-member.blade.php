@@ -22,6 +22,10 @@
       <option value="iOS Developer">iOS Developer</option>
     </select>
   </div>
+
+  <div class="mb-2">
+    <button id="createMember" class="btn btn-link" type="button">Create member account</button>
+  </div>
   
   <div class="row justify-content-center">
     <button type="submit" class="btn btn-primary">
@@ -29,6 +33,28 @@
     </button>
   </div>
 </form>
+
+<form id="formCreateMember">
+  @csrf
+  <div class="form-group">
+    <label>Name</label>
+    <input id="inputName" required type="text" name="name" class="form-control">
+  </div>
+  <div class="form-group">
+    <label>Email</label>
+    <input id="inputEmail" required type="email" name="email" class="form-control">
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <input id="inputPassword" required type="password" name="password" class="form-control">
+  </div>
+  
+  <div class="row justify-content-center">
+    <button class="btn btn-primary btn-small" type="submit">Submit</button>
+  </div>
+
+</form>
+
 @endif
 
 <div class="container mt-4">
@@ -101,6 +127,54 @@
 <script>
   $(document).ready(function(){
     
+    $('#formCreateMember').hide()
+
+    $('#createMember').on('click', function(e){
+      $('#formCreateMember').show()
+      $('.form-member').hide()
+    });
+
+    $('#formCreateMember').on('submit',function(e){
+      e.preventDefault();
+      var $this = $(this);
+      var data = $this.serializeArray();
+
+      const resetval = ()=>{
+        $('#inputName').val('')
+        $('#inputEmail').val('')
+        $('#inputPassword').val('')
+      }
+
+      $.ajax({
+        url: '{{ route('create-user') }}',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function(response){
+          resetval()
+          swal('Success',`Create Account Success` , 'success');
+          $('#formCreateMember').hide()
+          $('.form-member').show()
+        },
+        error: function(response){
+          resetval()
+
+          if(response.responseJSON.errors["email"]){
+            swal('Sorry',`Email already taken` , 'error');
+
+          } 
+          else if(response.responseJSON.errors["password"]){
+            swal('Sorry',`Password Min 8 Character` , 'error');
+
+          }else {
+
+          alert('Failed')
+          }
+        }
+      })
+
+    })
+
     // Untuk search dengan ajax
     $('#users_id').select2({
       dropdownParent : $('#modalMember'),
@@ -124,6 +198,7 @@
       }
     });
     
+
     // Untuk post data dengan ajax
     $('.form-member').on('submit', function(e){
       e.preventDefault();

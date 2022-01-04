@@ -24,6 +24,7 @@ Route::middleware(['auth', 'member'])
         Route::delete('/my-project/delete-member/{id}', 'ProjectController@deleteMember')->name('delete-member');
         Route::get('/my-project/cari', 'ProjectController@getUser')->name('cari-user');
         Route::post('/my-project/create-member', 'ProjectController@createMember')->name('create-member');
+        Route::post('/my-project/create-user', 'ProjectController@createUser')->name('create-user');
         Route::get('/my-project/archived-project', 'ProjectController@archivedProject')->name('archived-project');
         Route::get('/my-project/restore-project/{id}', 'ProjectController@restoreProject')->name('restore-project');
         Route::get('/my-project/show-description/{id}', 'ProjectController@showDescription')->name('show-description');
