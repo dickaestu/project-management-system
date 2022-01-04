@@ -54,7 +54,6 @@
     white-space: normal;
 }
 
-
 .board-content p {
     line-height: 20px;
     font-size: 18px;
@@ -71,3 +70,7 @@
     margin-right: 3px;
 }
 
+.main-sidebar .sidebar-brand a .header-logo {
+    width: 40px;
+    height: 40px;
+}
